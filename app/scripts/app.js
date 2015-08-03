@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('atacamaApp', [
+    .module('atacamaApp', [
     'ngAnimate',
     'ngCookies',
     'ngMessages',
@@ -17,26 +17,32 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'nvd3'
+    'nvd3',
+    'ngStomp'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
-      .when('/ohlc', {
-        templateUrl: 'views/ohlc.html',
-        controller: 'OhlcCtrl',
-        controllerAs: 'ohlc'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+    .config(function($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'views/main.html',
+                controller: 'MainCtrl',
+                controllerAs: 'main'
+            })
+            .when('/about', {
+                templateUrl: 'views/about.html',
+                controller: 'AboutCtrl',
+                controllerAs: 'about'
+            })
+            .when('/ohlc', {
+                templateUrl: 'views/ohlc.html',
+                controller: 'OhlcCtrl',
+                controllerAs: 'ohlc'
+            })
+            .when('/test', {
+                templateUrl: 'views/test.html',
+                controller: 'TestCtrl',
+                controllerAs: 'test'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    });

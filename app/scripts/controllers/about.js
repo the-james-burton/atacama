@@ -8,10 +8,10 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('AboutCtrl', function () {
-    this.awesomeThings = [
+    .controller('AboutCtrl', function() {
+        this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
-  });
+    });
