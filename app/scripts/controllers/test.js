@@ -13,6 +13,12 @@ angular.module('atacamaApp')
 
         $scope.testReply = 'reply goes here';
 
+        $scope.greeting = {
+            text: 'hello world!',
+            time: moment(0, "HH").format("x"),
+            milli: moment().format("x")
+        };
+
         // redirect debug
         $stomp.setDebug(function(args) {
             document.getElementById('log').value += args + '\n';

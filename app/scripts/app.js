@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'nvd3',
-    'ngStomp'
+    'ngStomp',
+    'angularMoment'
   ])
     .config(function($routeProvider) {
         $routeProvider

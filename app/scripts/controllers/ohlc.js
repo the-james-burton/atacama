@@ -11,7 +11,8 @@ angular.module('atacamaApp')
     .controller('OhlcCtrl', function($scope, tickService) {
         console.log('OhlcCtrl has been created');
 
-        $scope.data = tickService.list();
+        // $scope.data = tickService.list();
+        $scope.data = $scope.ticks;
 
         $scope.options = {
             chart: {

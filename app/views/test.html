@@ -1,7 +1,10 @@
 <p>This is the test view.</p>
 
 <div>
-    <p ng-bind="testReply"></p>
-    <hr/>
+    <p ng-bind="greeting.text"></p>
+    <p ng-bind="greeting.time"></p>
+    <p ng-bind="greeting.milli"></p>
     <p id="log"></p>
+    <p>Page loaded <span am-time-ago="greeting.time"></span></p>
+    <p ng-bind="testReply"></p>
 </div>
