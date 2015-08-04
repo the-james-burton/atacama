@@ -15,7 +15,8 @@ angular.module('atacamaApp')
 
         $scope.greeting = {
             text: 'hello world!',
-            time: moment(0, "HH").format("x"),
+            time: moment(),
+            sod: moment(0, "HH").format("x"),
             milli: moment().format("x")
         };
 
