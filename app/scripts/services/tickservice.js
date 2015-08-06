@@ -8,12 +8,14 @@
  * Service in the atacamaApp.
  */
 angular.module('atacamaApp')
-    .service('tickService', function($rootScope, $stomp) {
+    .service('tickService', function($rootScope, $stomp, $resource) {
         // AngularJS will instantiate a singleton by calling "new" on this function
         console.log('tickService has been created');
 
+        var url = 'http://localhost:48002';
+
         $stomp
-            .connect('http://localhost:48002/ticks', [])
+            .connect(url + '/ticks', [])
 
         // frame = CONNECTED headers
         .then(function(frame) {
@@ -38,6 +40,24 @@ angular.module('atacamaApp')
         this.list = function() {
             return $rootScope.ticks;
         };
+
+        var GetTicksAfter = $resource(url + '/tick/:symbol/:date');
+
+        this.getTicksAfter = function(symbol, date) {
+            var response = GetTicksAfter.get({
+                    symbol: 'ABC',
+                    date: date
+                },
+                function(ticks) {
+                    $rootScope.ticks[0].values = response.ticks;
+                })
+        };
+
+        //this.getTicksAfter(symbol, date) {
+        //    $http.get(url + '/' + symbol + '/' + date).
+        //      success(function(data, status, headers, config) {
+        //      })
+        //}
 
         // this.add = function(tick) {
         //    ticks.push(tick);

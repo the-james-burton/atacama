@@ -11,7 +11,10 @@ angular.module('atacamaApp')
     .controller('OhlcCtrl', function($scope, tickService) {
         console.log('OhlcCtrl has been created');
 
+        var sod = moment(0, "HH").format("x");
+
         // $scope.data = tickService.list();
+        tickService.getTicksAfter('ABC', sod);
         $scope.data = $scope.ticks;
 
         $scope.options = {
@@ -31,6 +34,7 @@ angular.module('atacamaApp')
                     return d['close'];
                 },
                 showValues: true,
+                refreshDataOnly: true,
                 transitionDuration: 500,
                 xAxis: {
                     axisLabel: 'Dates',
