@@ -19,9 +19,13 @@ angular
     'ngTouch',
     'nvd3',
     'ngStomp',
-    'angularMoment'
+    'angularMoment',
+    'restangular'
   ])
-    .config(function($routeProvider) {
+    .config(function($routeProvider, RestangularProvider) {
+
+        RestangularProvider.setBaseUrl('http://localhost:48002');
+
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',

@@ -5,10 +5,10 @@
  * @name atacamaApp.controller:TestCtrl
  * @description
  * # TestCtrl
- * Controller of the atacamaApp
+oller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('TestCtrl', function($scope, $stomp) {
+    .controller('TestCtrl', function($scope, $stomp, Restangular) {
         console.log('TestCtrl has been created');
 
         $scope.testReply = 'reply goes here';
@@ -19,6 +19,15 @@ angular.module('atacamaApp')
             sod: moment(0, "HH").format("x"),
             milli: moment().format("x")
         };
+
+        $scope.greeting.ping = 'ping!';
+
+        var ping = Restangular.one('/tick/ping');
+
+        ping.get().then(function(reply) {
+            $scope.greeting.ping = reply.time;
+        });
+
 
         // redirect debug
         $stomp.setDebug(function(args) {

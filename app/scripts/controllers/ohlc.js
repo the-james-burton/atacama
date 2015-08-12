@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('OhlcCtrl', function($scope, $stomp, $resource, tickService) {
+    .controller('OhlcCtrl', function($scope, $stomp, $resource, tickService, Restangular) {
         console.log('OhlcCtrl has been created');
 
         var url = 'http://localhost:48002';
@@ -26,6 +26,8 @@ angular.module('atacamaApp')
 
         //$scope.ticks = [];
 
+
+
         $stomp
             .connect(url + '/ticks', [])
 
@@ -42,21 +44,27 @@ angular.module('atacamaApp')
 
         });
 
-        var GetTicksAfter = $resource(url + '/tick/:symbol/:date');
-
         $scope.data = [{
             key: symbol
             //values: [{}]
         }];
 
-        var ticks = GetTicksAfter.get({
-                    symbol: symbol,
-                    date: sod
-            }
-            ,function(response) {
-                $scope.data[0].values = response.ticks;
-            }
-        );
+        var ticks = Restangular.one('tick').one(symbol).one(sod);
+
+        ticks.get().then(function(response) {
+            $scope.data[0].values = response.ticks;
+        });
+
+
+        // var GetTicksAfter = $resource(url + '/tick/:symbol/:date');
+        // var ticks = GetTicksAfter.get({
+        //             symbol: symbol,
+        //             date: sod
+        //     }
+        //     ,function(response) {
+        //         $scope.data[0].values = response.ticks;
+        //     }
+        // );
 
 
         //tickService.getTicksAfter(symbol, sod, $scope.data[0].values);

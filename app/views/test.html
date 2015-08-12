@@ -1,11 +1,12 @@
 <p>This is the test view.</p>
 
 <div>
-    <p ng-bind="greeting.text"></p>
-    <p ng-bind="greeting.time"></p>
-    <p>Start of day: <span ng-bind="greeting.sod"></span></p>
-    <p ng-bind="greeting.milli"></p>
-    <p id="log"></p>
+    <p>greeting.text: <span ng-bind="greeting.text"></span></p>
+    <p>greeting.time: <span ng-bind="greeting.time"></span></p>
+    <p>greeting.ping: <span ng-bind="greeting.ping"></span></p>
+    <p>greeting.sod: <span ng-bind="greeting.sod"></span></p>
+    <p>greeting.milli: <span ng-bind="greeting.milli"></span></p>
+    <p>log: <span id="log"></span></p>
     <p>Page loaded <span am-time-ago="greeting.time"></span></p>
-    <p ng-bind="testReply"></p>
+    <p>reply: <span ng-bind="testReply"></span></p>
 </div>
