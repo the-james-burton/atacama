@@ -19,7 +19,7 @@ angular.module('atacamaApp')
         $scope.openSettings = function(widget) {
             $modal.open({
                 scope: $scope,
-                templateUrl: 'partials/widget_settings.html',
+                templateUrl: 'partials/widgetsettings.html',
                 controller: 'WidgetSettingsCtrl',
                 resolve: {
                     widget: function() {
