@@ -21,7 +21,8 @@ angular
         'ngStomp',
         'angularMoment',
         'restangular',
-        'gridster'
+        'gridster',
+        'ui.bootstrap'
     ])
     .config(function($routeProvider, RestangularProvider) {
 
