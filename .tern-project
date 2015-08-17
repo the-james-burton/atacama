@@ -3,6 +3,9 @@
     "browser",
     "ecma5"
   ],
+  "loadEagerly": [
+    "bower_components/moment/moment.js"
+  ],
   "plugins": {
     "angular": {}
   }
