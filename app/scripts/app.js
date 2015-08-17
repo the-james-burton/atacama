@@ -6,6 +6,7 @@
  * @description
  * # atacamaApp
  *
+ *
  * Main module of the application.
  */
 angular

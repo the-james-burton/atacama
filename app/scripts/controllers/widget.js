@@ -12,14 +12,18 @@ angular.module('atacamaApp')
 .controller('CustomWidgetCtrl', ['$scope', '$modal',
     function($scope, $modal) {
 
-        $scope.remove = function(widget) {
-            $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
-        };
+      $scope.remove = function(widget) {
+          $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
+      };
+
+      $scope.addContent = function(widget) {
+          $scope.message = moment();
+      };
 
         $scope.openSettings = function(widget) {
             $modal.open({
                 scope: $scope,
-                templateUrl: 'partials/widgetsettings.html',
+                templateUrl: 'views/partials/widgetsettings.html',
                 controller: 'WidgetSettingsCtrl',
                 resolve: {
                     widget: function() {
