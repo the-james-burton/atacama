@@ -25,8 +25,8 @@ angular.module('atacamaApp')
                 widgets: [{
                     col: 0,
                     row: 0,
-                    sizeY: 1,
-                    sizeX: 1,
+                    sizeY: 2,
+                    sizeX: 2,
                     name: "Widget 1"
                 }, {
                     col: 2,
