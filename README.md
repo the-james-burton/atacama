@@ -1,4 +1,4 @@
-# atacama
+# atacama [![Build Status](https://api.travis-ci.org/the-james-burton/atacama.svg?branch=master)](https://travis-ci.org/the-james-burton/atacama)
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.12.1.
