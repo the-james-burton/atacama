@@ -49,7 +49,7 @@ angular.module('atacamaApp')
               chart: {
                   disabled: false,
                   type: 'discreteBarChart',
-                  height: 450,
+                  // height: 450,
                   margin : {
                       top: 20,
                       right: 20,
@@ -75,19 +75,10 @@ angular.module('atacamaApp')
 
       };
 
+      // set the size of the chart as the widget is resized...
       $scope.$on('gridster-item-resized', function(item) {
-          // item.$element
-          // item.gridster
-          // item.row
-          // item.col
-          // item.sizeX
-          // item.sizeY
-          // item.minSizeX
-          // item.minSizeY
-          // item.maxSizeX
-          // item.maxSizeY
-          console.log("resized");
-          // $scope.data[0].values.push({ "label" : "Z" , "value" : -1.7 })
+          $scope.options.chart.height = 170 + ((item.targetScope.gridsterItem.sizeY -1) * 238);
+          $scope.options.chart.width = 218 + ((item.targetScope.gridsterItem.sizeX -1) * 238);
           $scope.api.update();
       })
 
