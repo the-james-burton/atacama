@@ -9,14 +9,16 @@
  */
 angular.module('atacamaApp')
 
-.controller('CustomWidgetCtrl', ['$scope', '$modal',
-    function($scope, $modal) {
+.controller('CustomWidgetCtrl', function($scope, $modal, $stomp, $resource, tickService, Restangular) {
 
       $scope.options = {
           chart: {
-            disabled: true,
-            type: 'discreteBarChart'
+            // TODO error message appears in console...
           }
+        };
+
+        $scope.config = {
+          disabled: true
         };
 
       $scope.data = [{
@@ -45,9 +47,12 @@ angular.module('atacamaApp')
               ]
           }];
 
+          $scope.config = {
+            disabled: false
+          };
+
           $scope.options = {
               chart: {
-                  disabled: false,
                   type: 'discreteBarChart',
                   // height: 450,
                   margin : {
@@ -96,4 +101,4 @@ angular.module('atacamaApp')
         };
 
     }
-]);
+);
