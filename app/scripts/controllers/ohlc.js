@@ -93,7 +93,6 @@ angular.module('atacamaApp')
           return d['close'];
         },
         showValues: true,
-        refreshDataOnly: true,
         transitionDuration: 500,
         xAxis: {
           axisLabel: 'Dates',
