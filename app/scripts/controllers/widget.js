@@ -8,11 +8,10 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('CustomWidgetCtrl', function($scope, $modal, $stomp, $resource, tickService, Restangular) {
+    .controller('CustomWidgetCtrl', function($scope, $modal, $stomp, $resource, $log, tickService, Restangular) {
 
         var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");
-        var symbol = 'ABC';
         var subscription;
 
         // TODO how to properly size the chart?
@@ -20,6 +19,10 @@ angular.module('atacamaApp')
         var firstWidth = 218
         var nextHeight = 238;
         var nextWidth = 238;
+
+        $scope.selectedSymbol = 'ABC';
+
+        $scope.symbols = ['ABC', 'DEF'];
 
         $scope.options = {
             chart: {
@@ -32,7 +35,7 @@ angular.module('atacamaApp')
         };
 
         $scope.data = [{
-            key: symbol
+            key: $scope.selectedSymbol
                 //values: [{}]
         }];
 
@@ -44,7 +47,7 @@ angular.module('atacamaApp')
             console.log("widget.js::addContent");
             // $scope.message = moment();
 
-            var ticks = Restangular.one('tick').one(symbol).one(sod);
+            var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
 
             ticks.get().then(function(response) {
                 $scope.data[0].values = response.ticks;
@@ -94,7 +97,7 @@ angular.module('atacamaApp')
             // frame = CONNECTED headers
             .then(function(frame) {
                 console.log('connected to tick websocket');
-                subscription = $stomp.subscribe('/topic/ticks', function(payload, headers, res) {
+                subscription = $stomp.subscribe('/topic/ticks.FTSE100.' + $scope.selectedSymbol, function(payload, headers, res) {
                     // alert(payload.message);
                     $scope.data[0].values.push(payload);
                     $scope.$apply();
@@ -125,5 +128,9 @@ angular.module('atacamaApp')
                 }
             });
         };
+
+        $scope.selectSymbol = function() {
+          $log.log('select symbol: ', $scope.selectedSymbol);
+        }
 
     });
