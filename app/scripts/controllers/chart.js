@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc function
- * @name atacamaApp.controller:OhlcCtrl
+ * @name atacamaApp.controller:ChartCtrl
  * @description
- * # OhlcCtrl
+ * # ChartCtrl
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('OhlcCtrl', function ($scope, $stomp, $resource, tickService, Restangular) {
-    console.log('OhlcCtrl has been created');
+  .controller('ChartCtrl', function ($scope, $stomp, $resource, tickService, Restangular) {
+    console.log('ChartCtrl has been created');
 
     var url = 'http://localhost:48002';
 

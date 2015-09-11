@@ -45,6 +45,11 @@ angular
                 controller: 'OhlcCtrl',
                 controllerAs: 'ohlc'
             })
+            .when('/chart', {
+                templateUrl: 'views/chart.html',
+                controller: 'ChartCtrl',
+                controllerAs: 'chart'
+            })
             .when('/test', {
                 templateUrl: 'views/test.html',
                 controller: 'TestCtrl',

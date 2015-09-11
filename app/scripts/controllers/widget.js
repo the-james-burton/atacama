@@ -91,6 +91,8 @@ angular.module('atacamaApp')
                 }
             }
 
+            // TODO disconnect if alrady connected
+
             $stomp
                 .connect(url + '/ticks', [])
 
