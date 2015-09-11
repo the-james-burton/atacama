@@ -17,15 +17,8 @@ angular.module('atacamaApp')
 
     // {"date": 1437583864374, "open": 100.0, "high": 100.24021489109903, "low": 98.2724267098159, "close": 99.51909089116204, "volume": 107.79215866544341, "symbol": "ABC.L", "exchange": "FTSE100", "timestamp": "2015-07-22T17:52:04.377+01:00" }
 
-    // $scope.data = tickService.list();
     var exchange = 'FTSE100';
     var symbol = 'ABC';
-
-    //$scope.ticks = {};
-    //$scope.ticks[symbol] = [];
-    //$scope.ticks[symbol].values = [];
-
-    //$scope.ticks = [];
 
 
     $stomp
@@ -36,50 +29,26 @@ angular.module('atacamaApp')
         console.log('connected to tick websocket');
         var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
           // alert(payload.message);
-          $scope.data[0].values.push(payload);
-          $scope.$apply();
+          //$scope.data[0].values.push(payload);
+          //$scope.$apply();
         }, {
           "headers": "are awesome"
         });
 
       });
 //dummy
-    $scope.data = [{
-      key: symbol
-      //values: [{}]
-    }];
+    $scope.data = sinAndCos();
 
-    var ticks = Restangular.one('tick').one(symbol).one(sod);
+    // var ticks = Restangular.one('tick').one(symbol).one(sod);
 
-    ticks.get().then(function (response) {
-      $scope.data[0].values = response.ticks;
-    });
+    // ticks.get().then(function (response) {
+    //   $scope.data[0].values = response.ticks;
+    // });
 
-
-    // var GetTicksAfter = $resource(url + '/tick/:symbol/:date');
-    // var ticks = GetTicksAfter.get({
-    //             symbol: symbol,
-    //             date: sod
-    //     }
-    //     ,function(response) {
-    //         $scope.data[0].values = response.ticks;
-    //     }
-    // );
-
-
-    //tickService.getTicksAfter(symbol, sod, $scope.data[0].values);
-    //$scope.ticks[symbol].values = response.ticks;
-    //$scope.data.values = $scope.ticks.ticks;
-
-    $scope.$watch('data', function (newVal, oldVal) {
-        if (newVal !== null) {
-        }
-      }
-    );
 
     $scope.options = {
       chart: {
-        type: 'ohlcBarChart',
+        type: 'lineChart',
         height: 450,
         margin: {
           top: 20,
@@ -87,12 +56,12 @@ angular.module('atacamaApp')
           bottom: 50,
           left: 75
         },
-        x: function (d) {
-          return d['date'];
-        },
-        y: function (d) {
-          return d['close'];
-        },
+        // x: function (d) {
+        //   return d['date'];
+        // },
+        // y: function (d) {
+        //  return d['close'];
+        // },
         showValues: true,
         transitionDuration: 500,
         xAxis: {
@@ -108,6 +77,59 @@ angular.module('atacamaApp')
           }
         }
       }
-    }
+    };
+
+
+        function sinAndCos() {
+            var sin = [],
+                sin2 = [],
+                cos = [],
+                rand = [],
+                rand2 = []
+                ;
+
+            // dates on x axis...
+            for (var i = 1437583864000; i < 1437583894000; i = i + 1000) {
+                sin.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) }); //the nulls are to show how defined works
+                sin2.push({x: i, y: Math.sin(i/5) * 0.4 - 0.25});
+                cos.push({x: i, y: .5 * Math.cos(i/10)});
+                rand.push({x:i, y: Math.random() / 10});
+                rand2.push({x: i, y: Math.cos(i/10) + Math.random() / 10 })
+            }
+
+            return [
+                {
+                    area: true,
+                    values: sin,
+                    key: "Sine Wave",
+                    color: "#ff7f0e",
+                    strokeWidth: 4,
+                    classed: 'dashed'
+                },
+                {
+                    values: cos,
+                    key: "Cosine Wave",
+                    color: "#2ca02c"
+                },
+                {
+                    values: rand,
+                    key: "Random Points",
+                    color: "#2222ff"
+                },
+                {
+                    values: rand2,
+                    key: "Random Cosine",
+                    color: "#667711",
+                    strokeWidth: 3.5
+                },
+                {
+                    area: true,
+                    values: sin2,
+                    key: "Fill opacity",
+                    color: "#EF9CFB",
+                    fillOpacity: .1
+                }
+            ];
+        }
 
   });
