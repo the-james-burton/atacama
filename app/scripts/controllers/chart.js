@@ -28,22 +28,87 @@ angular.module('atacamaApp')
       .then(function (frame) {
         console.log('connected to tick websocket');
         var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
-          // alert(payload.message);
-          //$scope.data[0].values.push(payload);
-          //$scope.$apply();
+          // alert(payload.close);
+          // var point = {x: payload.date, y: payload.close};
+          var open = _.map([payload], _.curry(convertTicks)('open'));
+          var high = _.map([payload], _.curry(convertTicks)('high'));
+          var low = _.map([payload], _.curry(convertTicks)('low'));
+          var close = _.map([payload], _.curry(convertTicks)('close'));
+
+          $scope.data[0].values.push(open);
+          $scope.data[1].values.push(high);
+          $scope.data[2].values.push(low);
+          $scope.data[3].values.push(close);
+          $scope.$apply();
         }, {
           "headers": "are awesome"
         });
 
       });
 //dummy
-    $scope.data = sinAndCos();
+    // $scope.data = sinAndCos();
 
-    // var ticks = Restangular.one('tick').one(symbol).one(sod);
+    var open = [],
+        high = [],
+        low = [],
+        close = [];
 
-    // ticks.get().then(function (response) {
-    //   $scope.data[0].values = response.ticks;
-    // });
+    $scope.data = [
+          {
+              values: open,
+              key: "open",
+              color: "#bdc42d"
+          },
+          {
+              values: high,
+              key: "high",
+              color: "#2ca02c"
+          },
+          {
+              values: low,
+              key: "low",
+              color: "#9f442c"
+          },
+          {
+              values: close,
+              key: "close",
+              color: "#2c649f"
+          }
+        ];
+
+
+    function convertTicks(property, ticks) {
+     return _(ticks).pick([property, 'date']).mapKeys(renameProperties).value();
+    }
+
+    function renameProperties(value, key) {
+      switch (key) {
+        case 'open':
+        case 'close':
+        case 'high':
+        case 'low':
+          return 'y';
+        case 'date':
+          return 'x'
+        default:
+          return 'unknown';
+     }
+     return key;
+   }
+
+    var ticks = Restangular.one('tick').one(symbol).one(sod);
+
+    ticks.get().then(function (response) {
+     // $scope.data[0].values = response.ticks;
+
+     console.log("original ticks:" + JSON.stringify(response.ticks));
+
+     $scope.data[0].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('open')), 'x');
+     $scope.data[1].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('high')), 'x');
+     $scope.data[2].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('low')), 'x');
+     $scope.data[3].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('close')), 'x');
+
+    });
 
 
     $scope.options = {
