@@ -35,10 +35,11 @@ angular.module('atacamaApp')
           var low = _.map([payload], _.curry(convertTicks)('low'));
           var close = _.map([payload], _.curry(convertTicks)('close'));
 
-          $scope.data[0].values.push(open);
-          $scope.data[1].values.push(high);
-          $scope.data[2].values.push(low);
-          $scope.data[3].values.push(close);
+          // TODO support multiple ticks...
+          $scope.data[0].values.push(open[0]);
+          $scope.data[1].values.push(high[0]);
+          $scope.data[2].values.push(low[0]);
+          $scope.data[3].values.push(close[0]);
           $scope.$apply();
         }, {
           "headers": "are awesome"
@@ -101,7 +102,7 @@ angular.module('atacamaApp')
     ticks.get().then(function (response) {
      // $scope.data[0].values = response.ticks;
 
-     console.log("original ticks:" + JSON.stringify(response.ticks));
+     // console.log("original ticks:" + JSON.stringify(response.ticks));
 
      $scope.data[0].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('open')), 'x');
      $scope.data[1].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('high')), 'x');
@@ -143,58 +144,5 @@ angular.module('atacamaApp')
         }
       }
     };
-
-
-        function sinAndCos() {
-            var sin = [],
-                sin2 = [],
-                cos = [],
-                rand = [],
-                rand2 = []
-                ;
-
-            // dates on x axis...
-            for (var i = 1437583864000; i < 1437583894000; i = i + 1000) {
-                sin.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) }); //the nulls are to show how defined works
-                sin2.push({x: i, y: Math.sin(i/5) * 0.4 - 0.25});
-                cos.push({x: i, y: .5 * Math.cos(i/10)});
-                rand.push({x:i, y: Math.random() / 10});
-                rand2.push({x: i, y: Math.cos(i/10) + Math.random() / 10 })
-            }
-
-            return [
-                {
-                    area: true,
-                    values: sin,
-                    key: "Sine Wave",
-                    color: "#ff7f0e",
-                    strokeWidth: 4,
-                    classed: 'dashed'
-                },
-                {
-                    values: cos,
-                    key: "Cosine Wave",
-                    color: "#2ca02c"
-                },
-                {
-                    values: rand,
-                    key: "Random Points",
-                    color: "#2222ff"
-                },
-                {
-                    values: rand2,
-                    key: "Random Cosine",
-                    color: "#667711",
-                    strokeWidth: 3.5
-                },
-                {
-                    area: true,
-                    values: sin2,
-                    key: "Fill opacity",
-                    color: "#EF9CFB",
-                    fillOpacity: .1
-                }
-            ];
-        }
 
   });
