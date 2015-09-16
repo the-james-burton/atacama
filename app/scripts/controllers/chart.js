@@ -28,18 +28,18 @@ angular.module('atacamaApp')
       .then(function (frame) {
         console.log('connected to tick websocket');
         var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
-          // alert(payload.close);
-          // var point = {x: payload.date, y: payload.close};
+
+          // TODO remove the square brackets if sent an array instead of single object...
           var open = _.map([payload], _.curry(convertTicks)('open'));
           var high = _.map([payload], _.curry(convertTicks)('high'));
           var low = _.map([payload], _.curry(convertTicks)('low'));
           var close = _.map([payload], _.curry(convertTicks)('close'));
 
-          // TODO support multiple ticks...
-          $scope.data[0].values.push(open[0]);
-          $scope.data[1].values.push(high[0]);
-          $scope.data[2].values.push(low[0]);
-          $scope.data[3].values.push(close[0]);
+          // TODO is there a way of merging arrays in lodash..?
+          Array.prototype.push.apply($scope.data[0].values, open);
+          Array.prototype.push.apply($scope.data[1].values, high);
+          Array.prototype.push.apply($scope.data[2].values, low);
+          Array.prototype.push.apply($scope.data[3].values, close);
           $scope.$apply();
         }, {
           "headers": "are awesome"
