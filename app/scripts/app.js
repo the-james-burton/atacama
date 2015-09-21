@@ -23,7 +23,8 @@ angular
         'angularMoment',
         'restangular',
         'gridster',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'elasticsearch'
     ])
     .config(function($routeProvider, RestangularProvider) {
 
@@ -44,6 +45,16 @@ angular
                 templateUrl: 'views/ohlc.html',
                 controller: 'OhlcCtrl',
                 controllerAs: 'ohlc'
+            })
+            .when('/ohlc', {
+                templateUrl: 'views/ohlc.html',
+                controller: 'OhlcCtrl',
+                controllerAs: 'ohlc'
+            })
+            .when('/direct', {
+                templateUrl: 'views/direct.html',
+                controller: 'DirectCtrl',
+                controllerAs: 'direct'
             })
             .when('/chart', {
                 templateUrl: 'views/chart.html',
@@ -77,6 +88,13 @@ angular
             });
         }
     };
+})
+
+.service('es', function (esFactory) {
+  return esFactory({
+    host: 'localhost:9200',
+    // ...
+  });
 })
 
 // helper code

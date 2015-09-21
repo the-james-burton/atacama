@@ -35,7 +35,9 @@ angular.module('atacamaApp')
           var low = _.map([payload], _.curry(convertTicks)('low'));
           var close = _.map([payload], _.curry(convertTicks)('close'));
 
-          // TODO is there a way of merging arrays in lodash..?
+          // how to merge arrays in lodash..
+          // $scope.data[0].values = _($scope.data[0].values).concat(open).value();
+
           Array.prototype.push.apply($scope.data[0].values, open);
           Array.prototype.push.apply($scope.data[1].values, high);
           Array.prototype.push.apply($scope.data[2].values, low);

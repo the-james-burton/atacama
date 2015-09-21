@@ -8,8 +8,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css" />
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css" />
+    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -42,6 +42,7 @@
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Home</a></li>
               <li><a ng-href="#/ohlc">OHLC</a></li>
+              <li><a ng-href="#/direct">direct</a></li>
               <li><a ng-href="#/chart">chart</a></li>
               <li><a ng-href="#/test">test</a></li>
               <li><a ng-href="#/grid">grid</a></li>
@@ -81,28 +82,29 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/javascript-detect-element-resize/detect-element-resize.js"></script>
+    <script src="bower_components/angular-gridster/src/angular-gridster.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/build/nv.d3.js"></script>
+    <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/d3/d3.js"></script>
-    <script src="bower_components/nvd3/build/nv.d3.js"></script>
-    <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+    <script src="bower_components/elasticsearch/elasticsearch.angular.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/sockjs/sockjs.js"></script>
     <script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
     <script src="bower_components/ng-stomp/ng-stomp.js"></script>
-    <script src="bower_components/moment/moment.js"></script>
-    <script src="bower_components/angular-moment/angular-moment.js"></script>
-    <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/restangular/dist/restangular.js"></script>
-    <script src="bower_components/javascript-detect-element-resize/detect-element-resize.js"></script>
-    <script src="bower_components/angular-gridster/src/angular-gridster.js"></script>
     <script src="bower_components/streamjs/stream.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -111,6 +113,7 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/ohlc.js"></script>
+        <script src="scripts/controllers/direct.js"></script>
         <script src="scripts/controllers/chart.js"></script>
         <script src="scripts/controllers/test.js"></script>
         <script src="scripts/services/tickservice.js"></script>
