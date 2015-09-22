@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('OhlcCtrl', function ($scope, $stomp, $resource, tickService, Restangular) {
+  .controller('OhlcCtrl', function ($scope, ngstomp, $resource, tickService, Restangular) {
     console.log('OhlcCtrl has been created');
 
     var url = 'http://localhost:48002';
@@ -28,21 +28,14 @@ angular.module('atacamaApp')
     //$scope.ticks = [];
 
 
-    $stomp
-      .connect(url + '/ticks', [])
+    ngstomp
+      .subscribe('/topic/ticks.' + exchange + '.' + symbol, onTick, {}, $scope);
 
-      // frame = CONNECTED headers
-      .then(function (frame) {
-        console.log('connected to tick websocket');
-        var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
-          // alert(payload.message);
-          $scope.data[0].values.push(payload);
-          $scope.$apply();
-        }, {
-          "headers": "are awesome"
-        });
+    function onTick(message) {
+      $scope.data[0].values.push(JSON.parse(message.body));
+      $scope.$apply();
+    }
 
-      });
 //dummy
     $scope.data = [{
       key: symbol

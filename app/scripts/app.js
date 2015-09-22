@@ -19,16 +19,23 @@ angular
         'ngSanitize',
         'ngTouch',
         'nvd3',
-        'ngStomp',
         'angularMoment',
         'restangular',
         'gridster',
         'ui.bootstrap',
-        'elasticsearch'
+        'elasticsearch',
+        'AngularStompDK'
     ])
-    .config(function($routeProvider, RestangularProvider) {
+    .config(function($routeProvider, RestangularProvider, ngstompProvider) {
 
         RestangularProvider.setBaseUrl('http://localhost:48002');
+
+        ngstompProvider
+            .url('http://localhost:48002/ticks')
+            .credential('guest', 'guest')
+            .debug(true)
+            .vhost('localhost')
+            .class(SockJS);
 
         $routeProvider
             .when('/', {
@@ -75,6 +82,7 @@ angular
                 redirectTo: '/'
             });
     })
+
 
 .directive('integer', function() {
     return {

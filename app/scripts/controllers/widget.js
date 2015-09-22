@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('CustomWidgetCtrl', function($scope, $modal, $stomp, $resource, $log, tickService, Restangular) {
+    .controller('CustomWidgetCtrl', function($scope, $modal, ngstomp, $resource, $log, tickService, Restangular) {
 
         var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");
@@ -19,6 +19,8 @@ angular.module('atacamaApp')
         var firstWidth = 218
         var nextHeight = 238;
         var nextWidth = 238;
+
+        var exchange = 'FTSE100';
 
         $scope.selectedSymbol = 'ABC';
 
@@ -93,21 +95,13 @@ angular.module('atacamaApp')
 
             // TODO disconnect if alrady connected
 
-            $stomp
-                .connect(url + '/ticks', [])
+            ngstomp
+              .subscribe('/topic/ticks.' + exchange + '.' + $scope.selectedSymbol, onTick, {}, $scope);
 
-            // frame = CONNECTED headers
-            .then(function(frame) {
-                console.log('connected to tick websocket');
-                subscription = $stomp.subscribe('/topic/ticks.FTSE100.' + $scope.selectedSymbol, function(payload, headers, res) {
-                    // alert(payload.message);
-                    $scope.data[0].values.push(payload);
-                    $scope.$apply();
-                }, {
-                    "headers": "are awesome"
-                });
-
-            });
+            function onTick(message) {
+              $scope.data[0].values.push(JSON.parse(message.body));
+              $scope.$apply();
+            }
 
         };
 

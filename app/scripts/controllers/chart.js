@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('ChartCtrl', function ($scope, $stomp, $resource, tickService, Restangular) {
+  .controller('ChartCtrl', function ($scope, ngstomp, $resource, tickService, Restangular) {
     console.log('ChartCtrl has been created');
 
     var url = 'http://localhost:48002';
@@ -20,34 +20,28 @@ angular.module('atacamaApp')
     var exchange = 'FTSE100';
     var symbol = 'ABC';
 
+    ngstomp
+      .subscribe('/topic/ticks.' + exchange + '.' + symbol, onTick, {}, $scope);
 
-    $stomp
-      .connect(url + '/ticks', [])
+    function onTick(message) {
 
-      // frame = CONNECTED headers
-      .then(function (frame) {
-        console.log('connected to tick websocket');
-        var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
+      var payload = JSON.parse(message.body);
+      // TODO remove the square brackets if sent an array instead of single object...
+      var open = _.map([payload], _.curry(convertTicks)('open'));
+      var high = _.map([payload], _.curry(convertTicks)('high'));
+      var low = _.map([payload], _.curry(convertTicks)('low'));
+      var close = _.map([payload], _.curry(convertTicks)('close'));
 
-          // TODO remove the square brackets if sent an array instead of single object...
-          var open = _.map([payload], _.curry(convertTicks)('open'));
-          var high = _.map([payload], _.curry(convertTicks)('high'));
-          var low = _.map([payload], _.curry(convertTicks)('low'));
-          var close = _.map([payload], _.curry(convertTicks)('close'));
+      // how to merge arrays in lodash..
+      // $scope.data[0].values = _($scope.data[0].values).concat(open).value();
 
-          // how to merge arrays in lodash..
-          // $scope.data[0].values = _($scope.data[0].values).concat(open).value();
+      Array.prototype.push.apply($scope.data[0].values, open);
+      Array.prototype.push.apply($scope.data[1].values, high);
+      Array.prototype.push.apply($scope.data[2].values, low);
+      Array.prototype.push.apply($scope.data[3].values, close);
+      $scope.$apply();
+    }
 
-          Array.prototype.push.apply($scope.data[0].values, open);
-          Array.prototype.push.apply($scope.data[1].values, high);
-          Array.prototype.push.apply($scope.data[2].values, low);
-          Array.prototype.push.apply($scope.data[3].values, close);
-          $scope.$apply();
-        }, {
-          "headers": "are awesome"
-        });
-
-      });
 //dummy
     // $scope.data = sinAndCos();
 

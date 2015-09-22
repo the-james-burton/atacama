@@ -8,31 +8,37 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('DirectCtrl', function ($scope, $stomp, $resource, es, Restangular) {
+  .controller('DirectCtrl', function ($scope, ngstomp, $resource, es, Restangular) {
     console.log('DirectCtrl has been created');
 
-    var url = 'http://localhost:48002';
+    // var url = 'http://localhost:48002';
+    // var url = 'http://localhost:15674';
 
     var sod = moment(0, "HH").format("x");
 
     var exchange = 'FTSE100';
     var symbol = 'ABC';
 
-    $stomp
-      .connect(url + '/ticks', [])
+    ngstomp
+      .subscribe('/topic/ticks.' + exchange + '.' + symbol, onTick, {}, $scope);
 
-      // frame = CONNECTED headers
-      .then(function (frame) {
-        console.log('connected to tick websocket');
-        var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
-          // alert(payload.message);
-          $scope.data[0].values.push(payload);
-          $scope.$apply();
-        }, {
-          "headers": "are awesome"
-        });
+    function onTick(message) {
+      $scope.data[0].values.push(JSON.parse(message.body));
+      $scope.$apply();
+    }
 
-      });
+    // $stomp
+    //   .connect(url + '/stomp', [])
+    //   .then(function (frame) {
+    //     console.log('connected to tick websocket');
+    //     var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
+    //       $scope.data[0].values.push(payload);
+    //       $scope.$apply();
+    //     }, {
+    //       "headers": "are awesome"
+    //     });
+    //   });
+
 
     $scope.data = [{
       key: symbol
@@ -80,7 +86,7 @@ angular.module('atacamaApp')
         }
       }
     }).then(function (response) {
-      var results = _.map(response.hits.hits, '_source');
+      var results = _.sortBy(_.map(response.hits.hits, '_source'), 'date');
       $scope.data[0].values = results;
     }, function (err) {
       console.trace(err.message);
@@ -92,12 +98,6 @@ angular.module('atacamaApp')
     //   $scope.data[0].values = response.ticks;
     // });
 
-
-    $scope.$watch('data', function (newVal, oldVal) {
-        if (newVal !== null) {
-        }
-      }
-    );
 
     $scope.options = {
       chart: {
