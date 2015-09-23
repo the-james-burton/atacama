@@ -42,7 +42,7 @@ module.exports = function(config) {
       'bower_components/stomp-websocket/lib/stomp.min.js',
       'bower_components/AngularStompDK/dist/angular-stomp.min.js',
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
-      'bower_components/elasticsearch/elasticsearch.js',
+      'bower_components/elasticsearch/elasticsearch.angular.js',
       'bower_components/lodash/lodash.js',
       'bower_components/restangular/dist/restangular.js',
       'bower_components/sockjs/sockjs.js',
