@@ -27,19 +27,6 @@ angular.module('atacamaApp')
       $scope.$apply();
     }
 
-    // $stomp
-    //   .connect(url + '/stomp', [])
-    //   .then(function (frame) {
-    //     console.log('connected to tick websocket');
-    //     var subscription = $stomp.subscribe('/topic/ticks.' + exchange + '.' + symbol, function (payload, headers, res) {
-    //       $scope.data[0].values.push(payload);
-    //       $scope.$apply();
-    //     }, {
-    //       "headers": "are awesome"
-    //     });
-    //   });
-
-
     $scope.data = [{
       key: symbol
       //values: [{}]
@@ -64,6 +51,7 @@ angular.module('atacamaApp')
       index: 'test-tick',
       type: 'tick',
       body: {
+        size: 5000,
         query: {
           bool: {
             must: [

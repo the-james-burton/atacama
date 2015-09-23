@@ -30,11 +30,14 @@ angular
 
         RestangularProvider.setBaseUrl('http://localhost:48002');
 
+        // var url = 'http://localhost:48002/ticks';
+        var url = 'http://localhost:15674/stomp';
+
         ngstompProvider
-            .url('http://localhost:48002/ticks')
+            .url(url)
             .credential('guest', 'guest')
             .debug(true)
-            .vhost('localhost')
+            .vhost('/')
             .class(SockJS);
 
         $routeProvider
@@ -101,7 +104,7 @@ angular
 .service('es', function (esFactory) {
   return esFactory({
     host: 'localhost:9200',
-    // ...
+    apiVersion: '1.7'
   });
 })
 
