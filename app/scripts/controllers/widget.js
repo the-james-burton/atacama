@@ -20,7 +20,7 @@ angular.module('atacamaApp')
         var nextHeight = 238;
         var nextWidth = 238;
 
-        var exchange = 'FTSE100';
+        var market = 'FTSE100';
 
         $scope.selectedSymbol = 'ABC';
 
@@ -96,7 +96,7 @@ angular.module('atacamaApp')
             // TODO disconnect if alrady connected
 
             ngstomp
-              .subscribe('/topic/ticks.' + exchange + '.' + $scope.selectedSymbol, onTick, {}, $scope);
+              .subscribe('/topic/ticks.' + market + '.' + $scope.selectedSymbol, onTick, {}, $scope);
 
             function onTick(message) {
               $scope.data[0].values.push(JSON.parse(message.body));

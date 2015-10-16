@@ -15,10 +15,10 @@ angular.module('atacamaApp')
 
     var sod = moment(0, "HH").format("x");
 
-    // {"date": 1437583864374, "open": 100.0, "high": 100.24021489109903, "low": 98.2724267098159, "close": 99.51909089116204, "volume": 107.79215866544341, "symbol": "ABC.L", "exchange": "FTSE100", "timestamp": "2015-07-22T17:52:04.377+01:00" }
+    // {"date": 1437583864374, "open": 100.0, "high": 100.24021489109903, "low": 98.2724267098159, "close": 99.51909089116204, "volume": 107.79215866544341, "symbol": "ABC.L", "market": "FTSE100", "timestamp": "2015-07-22T17:52:04.377+01:00" }
 
     // $scope.data = tickService.list();
-    var exchange = 'FTSE100';
+    var market = 'FTSE100';
     var symbol = 'ABC';
 
     //$scope.ticks = {};
@@ -29,7 +29,7 @@ angular.module('atacamaApp')
 
 
     ngstomp
-      .subscribe('/topic/ticks.' + exchange + '.' + symbol, onTick, {}, $scope);
+      .subscribe('/topic/ticks.' + market + '.' + symbol, onTick, {}, $scope);
 
     function onTick(message) {
       $scope.data[0].values.push(JSON.parse(message.body));

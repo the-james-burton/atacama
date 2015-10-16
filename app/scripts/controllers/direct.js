@@ -16,11 +16,11 @@ angular.module('atacamaApp')
 
     var sod = moment(0, "HH").format("x");
 
-    var exchange = 'FTSE100';
+    var market = 'FTSE100';
     var symbol = 'ABC';
 
     ngstomp
-      .subscribe('/topic/ticks.' + exchange + '.' + symbol, onTick, {}, $scope);
+      .subscribe('/topic/ticks.' + market + '.' + symbol, onTick, {}, $scope);
 
     function onTick(message) {
       $scope.data[0].values.push(JSON.parse(message.body));

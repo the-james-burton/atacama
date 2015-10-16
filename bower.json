@@ -32,7 +32,7 @@
   "appPath": "app",
   "moduleName": "atacamaApp",
   "overrides": {
-    "elasticsearch" : {
+    "elasticsearch": {
       "main": "elasticsearch.angular.js"
     },
     "bootstrap": {
