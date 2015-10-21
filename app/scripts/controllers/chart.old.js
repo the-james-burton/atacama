@@ -16,7 +16,6 @@ angular.module('atacamaApp')
     var sod = moment(0, "HH").format("x");
 
     // {"date": 1437583864374, "open": 100.0, "high": 100.24021489109903, "low": 98.2724267098159, "close": 99.51909089116204, "volume": 107.79215866544341, "symbol": "ABC.L", "market": "FTSE100", "timestamp": "2015-07-22T17:52:04.377+01:00" }
-    // {"date":1445445787547,"closePriceIndicator":101.3170343070584,"bollingerBandsMiddleIndicator":101.83027737657682,"bollingerBandsLowerIndicator":100.43909562456751,"bollingerBandsUpperIndicator":103.22145912858613,"symbol":"DEF","market":"FTSE100","timestamp":"2015-10-21T17:43:07.547+01:00"}
 
     var market = 'FTSE100';
     var symbol = 'ABC';
@@ -27,41 +26,49 @@ angular.module('atacamaApp')
     function onTick(message) {
 
       var payload = JSON.parse(message.body);
+      // TODO remove the square brackets if sent an array instead of single object...
+      var open = _.map([payload], _.curry(convertTicks)('open'));
+      var high = _.map([payload], _.curry(convertTicks)('high'));
+      var low = _.map([payload], _.curry(convertTicks)('low'));
+      var close = _.map([payload], _.curry(convertTicks)('close'));
+
       // how to merge arrays in lodash..
       // $scope.data[0].values = _($scope.data[0].values).concat(open).value();
 
-      // we expect that each charted item is present in the incoming payload...
-      _.forEach($scope.data, function(item) {
-        Array.prototype.push.apply($scope.data[item.position].values, _.map([payload], _.curry(convertTicks)(item.key)));
-      });
-
+      Array.prototype.push.apply($scope.data[0].values, open);
+      Array.prototype.push.apply($scope.data[1].values, high);
+      Array.prototype.push.apply($scope.data[2].values, low);
+      Array.prototype.push.apply($scope.data[3].values, close);
       $scope.$apply();
     }
 
-    // position is a bespoke non-nvd3 field used in the onTick function above...
+//dummy
+    // $scope.data = sinAndCos();
+
+    var open = [],
+        high = [],
+        low = [],
+        close = [];
+
     $scope.data = [
           {
-              values: [],
+              values: open,
               key: "open",
-              position: 0,
               color: "#bdc42d"
           },
           {
-              values: [],
+              values: high,
               key: "high",
-              position: 1,
               color: "#2ca02c"
           },
           {
-              values: [],
+              values: low,
               key: "low",
-              position: 2,
               color: "#9f442c"
           },
           {
-              values: [],
+              values: close,
               key: "close",
-              position: 3,
               color: "#2c649f"
           }
         ];
@@ -84,10 +91,15 @@ angular.module('atacamaApp')
     var ticks = Restangular.one('tick').one(symbol).one(sod);
 
     ticks.get().then(function (response) {
-      // we expect that each charted item is present in the incoming payload...
-      _.forEach($scope.data, function(item) {
-        $scope.data[item.position].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)(item.key)), 'x');
-      });
+     // $scope.data[0].values = response.ticks;
+
+     // console.log("original ticks:" + JSON.stringify(response.ticks));
+
+     $scope.data[0].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('open')), 'x');
+     $scope.data[1].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('high')), 'x');
+     $scope.data[2].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('low')), 'x');
+     $scope.data[3].values = _.sortBy(_.map(response.ticks, _.curry(convertTicks)('close')), 'x');
+
     });
 
 
