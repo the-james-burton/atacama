@@ -101,23 +101,23 @@ angular.module('atacamaApp')
           bottom: 50,
           left: 75
         },
-        // x: function (d) {
+        //x: function (d) {
         //   return d['date'];
         // },
         // y: function (d) {
-        //  return d['close'];
+        //  return d['closePriceIndicator'];
         // },
         showValues: true,
         transitionDuration: 500,
         xAxis: {
           axisLabel: 'Dates',
-          messageFormat: function (d) {
+          tickFormat: function (d) {
             return d3.time.format('%X')(new Date(d));
           },
         },
         yAxis: {
           axisLabel: 'Stock Price',
-          messageFormat: function (d, i) {
+          tickFormat: function (d, i) {
             return '$' + d3.format(',.1f')(d);
           }
         }
