@@ -39,10 +39,10 @@ angular.module('atacamaApp')
         var objectToSend = { message : 'atacama test page'},
             stompHeaders = {headers1 : 'xx', headers2 : 'yy'};
 
-        $scope.sendDataToWS = function(message) {
+        // $scope.sendDataToWS = function(message) {
             ngstomp
-                .send('/app/reply', objectToSend, stompHeaders);
-        };
+                .send('/amq/queue/request', objectToSend, stompHeaders);
+        // };
 
 /*
         $stomp
