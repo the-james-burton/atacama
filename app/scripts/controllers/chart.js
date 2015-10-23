@@ -81,14 +81,25 @@ angular.module('atacamaApp')
      return key;
    }
 
-    var messages = Restangular.one('stocks').one(symbol).one(sod);
+    // var messages = Restangular.one('stocks').one(symbol).one(sod);
 
-    messages.get().then(function (response) {
+    // messages.get().then(function (response) {
       // we expect that each charted item is present in the incoming payload...
+    //  _.forEach($scope.data, function(item) {
+    //    $scope.data[item.position].values = _.sortBy(_.map(response.stocks, _.curry(convertMessages)(item.key)), 'x');
+    //  });
+    //});
+
+    var promise = elasticsearchService.getStocksAfter('ABC', sod)
+
+    promise.then(function (response) {
+      var results = elasticsearchService.parseResults(response);
       _.forEach($scope.data, function(item) {
-        $scope.data[item.position].values = _.sortBy(_.map(response.stocks, _.curry(convertMessages)(item.key)), 'x');
+        $scope.data[item.position].values = _.sortBy(_.map(results, _.curry(convertMessages)(item.key)), 'x');
       });
-    });
+    }, function (err) {
+      console.trace(err.message);
+    })
 
 
     $scope.options = {

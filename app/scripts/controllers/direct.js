@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('DirectCtrl', function ($scope, ngstomp, $resource, es, Restangular) {
+  .controller('DirectCtrl', function ($scope, ngstomp, $resource, elasticsearchService) {
     console.log('DirectCtrl has been created');
 
     // var url = 'http://localhost:48002';
@@ -32,60 +32,13 @@ angular.module('atacamaApp')
       //values: [{}]
     }];
 
-    /*
-    es.ping({
-      requestTimeout: 3000,
-      // undocumented params are appended to the query string
-      hello: "elasticsearch"
-    }, function (error) {
-      if (error) {
-        console.error('elasticsearch cluster is down!');
-      } else {
-        console.log('elasticsearch cluster returned ping');
-      }
-    });
-    */
+    var promise = elasticsearchService.getTicksAfter('ABC', sod)
 
-    //  [2015-09-21 08:09:30,744][INFO ][index.search.slowlog.query] [Fault Zone] [test-tick][4] took[14.8ms], took_millis[14], types[tick], stats[], search_type[DFS_QUERY_THEN_FETCH], total_shards[5], source[{"from":0,"size":17,"query":{"bool":{"must":[{"query_string":{"query":"ABC","fields":["symbol"],"default_operator":"and"}},{"range":{"date":{"from":1442790000000,"to":null,"include_lower":true,"include_upper":true}}}]}}}], extra_source[],
-    es.search({
-      index: 'turbine-ticks',
-      type: 'turbine-tick',
-      body: {
-        size: 5000,
-        query: {
-          bool: {
-            must: [
-              {query_string: {
-                query: 'ABC',
-                fields: ['symbol'],
-                default_operator: 'and'
-              }
-            },{
-              range: {
-                date: {
-                  from: sod,
-                  to: null,
-                  include_lower: true,
-                  include_upper: true
-                }
-              }
-            }]
-          }
-        }
-      }
-    }).then(function (response) {
-      var results = _.sortBy(_.map(response.hits.hits, '_source'), 'date');
-      $scope.data[0].values = results;
+    promise.then(function (response) {
+      $scope.data[0].values = elasticsearchService.parseResults(response);
     }, function (err) {
       console.trace(err.message);
-    });
-
-    // var ticks = Restangular.one('tick').one(symbol).one(sod);
-
-    // ticks.get().then(function (response) {
-    //   $scope.data[0].values = response.ticks;
-    // });
-
+    })
 
     $scope.options = {
       chart: {
