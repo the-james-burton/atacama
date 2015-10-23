@@ -75,7 +75,7 @@ angular.module('atacamaApp')
         this.getStocksAfter = function(symbol, date) {
           return es.search({
             index: 'turbine-stocks',
-            type: 'turbine-stocks', //TODO TYPO!!!
+            type: 'turbine-stock', //TODO TYPO!!!
             body: template(symbol, date)
           });
         }
