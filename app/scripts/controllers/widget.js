@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('CustomWidgetCtrl', function($scope, $modal, ngstomp, $resource, $log, tickService, Restangular) {
+    .controller('CustomWidgetCtrl', function($scope, $modal, ngstomp, $resource, $log, elasticsearchService, Restangular) {
 
         var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");

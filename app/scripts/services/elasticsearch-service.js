@@ -2,15 +2,15 @@
 
 /**
  * @ngdoc service
- * @name atacamaApp.tickService
+ * @name atacamaApp.elasticsearchService
  * @description
- * # tickService
+ * # elasticsearchService
  * Service in the atacamaApp.
  */
 angular.module('atacamaApp')
-    .service('tickService', function($rootScope, $resource) {
+    .service('elasticsearchService', function($rootScope, $resource) {
         // AngularJS will instantiate a singleton by calling "new" on this function
-        console.log('tickService has been created');
+        console.log('elasticsearchService has been created');
 
         var url = 'http://localhost:48002';
 

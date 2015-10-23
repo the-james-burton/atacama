@@ -9,7 +9,7 @@
  */
 angular.module('atacamaApp')
 
-.controller('CustomWidgetCtrl', function($scope, $modal, $stomp, $resource, tickService, Restangular) {
+.controller('CustomWidgetCtrl', function($scope, $modal, $stomp, $resource, elasticsearchService, Restangular) {
 
       $scope.options = {
           chart: {

@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('ChartCtrl', function ($scope, ngstomp, $resource, tickService, Restangular) {
+  .controller('ChartCtrl', function ($scope, ngstomp, $resource, elasticsearchService, Restangular) {
     console.log('ChartCtrl has been created');
 
     var url = 'http://localhost:48002';

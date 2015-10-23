@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('OhlcCtrl', function ($scope, ngstomp, $resource, tickService, Restangular) {
+  .controller('OhlcCtrl', function ($scope, ngstomp, $resource, elasticsearchService, Restangular) {
     console.log('OhlcCtrl has been created');
 
     var url = 'http://localhost:48002';
@@ -17,7 +17,7 @@ angular.module('atacamaApp')
 
     // {"date": 1437583864374, "open": 100.0, "high": 100.24021489109903, "low": 98.2724267098159, "close": 99.51909089116204, "volume": 107.79215866544341, "symbol": "ABC.L", "market": "FTSE100", "timestamp": "2015-07-22T17:52:04.377+01:00" }
 
-    // $scope.data = tickService.list();
+    // $scope.data = elasticsearchService.list();
     var market = 'FTSE100';
     var symbol = 'ABC';
 
@@ -60,7 +60,7 @@ angular.module('atacamaApp')
     // );
 
 
-    //tickService.getTicksAfter(symbol, sod, $scope.data[0].values);
+    //elasticsearchService.getTicksAfter(symbol, sod, $scope.data[0].values);
     //$scope.ticks[symbol].values = response.ticks;
     //$scope.data.values = $scope.ticks.ticks;
 
