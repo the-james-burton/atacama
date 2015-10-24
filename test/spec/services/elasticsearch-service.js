@@ -1,14 +1,14 @@
 'use strict';
 
-describe('Service: tickService', function () {
+describe('Service: elasticsearchService', function () {
 
   // load the service's module
   beforeEach(module('atacamaApp'));
 
   // instantiate service
   var tickService;
-  beforeEach(inject(function (_tickService_) {
-    tickService = _tickService_;
+  beforeEach(inject(function (elasticsearchService) {
+    elasticsearchService = _elasticsearchService_;
   }));
 
   it('should do something', function () {
