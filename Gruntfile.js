@@ -491,4 +491,18 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+/*
+  grunt.loadNpmTasks('grunt-version-check');
+
+  grunt.initConfig({
+  versioncheck: {
+    options: {
+      skip : [],
+      hideUpToDate : false
+    }
+  },
+});
+*/
+
 };
