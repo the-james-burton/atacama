@@ -12,7 +12,7 @@ describe('Service: elasticsearchService', function () {
   }));
 
   it('should do something', function () {
-    expect(!!tickService).toBe(true);
+    expect(!!elasticsearchService).toBe(true);
   });
 
 });
