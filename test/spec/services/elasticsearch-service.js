@@ -6,8 +6,8 @@ describe('Service: elasticsearchService', function () {
   beforeEach(module('atacamaApp'));
 
   // instantiate service
-  var tickService;
-  beforeEach(inject(function (elasticsearchService) {
+  var elasticsearchService;
+  beforeEach(inject(function (_elasticsearchService_) {
     elasticsearchService = _elasticsearchService_;
   }));
 
