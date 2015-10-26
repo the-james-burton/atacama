@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-  .controller('ChartCtrl', function ($scope, ngstomp, $resource, elasticsearchService, Restangular) {
+  .controller('ChartCtrl', function ($scope, ngstomp, $resource, elasticsearchService, chartService, Restangular) {
     console.log('ChartCtrl has been created');
 
     var url = 'http://localhost:48002';
@@ -28,9 +28,10 @@ angular.module('atacamaApp')
       // $scope.data[0].values = _($scope.data[0].values).concat(open).value();
 
       // we expect that each charted item is present in the incoming payload...
-      _.forEach($scope.data, function(item) {
-        Array.prototype.push.apply($scope.data[item.position].values, _.map([payload], _.curry(convertMessages)(item.key)));
-      });
+      chartService.addData($scope.data, payload);
+      // _.forEach($scope.data, function(item) {
+      //   Array.prototype.push.apply($scope.data[item.position].values, _.map([payload], _.curry(chartService.convertMessages)(item.key)));
+      // });
 
       $scope.$apply();
     }
@@ -67,19 +68,6 @@ angular.module('atacamaApp')
         ];
 
 
-    function convertMessages(property, messages) {
-     return _(messages).pick([property, 'date']).mapKeys(renameProperties).value();
-    }
-
-    function renameProperties(value, key) {
-      switch (key) {
-        case 'date':
-          return 'x'
-        default:
-          return 'y';
-     }
-     return key;
-   }
 
     // var messages = Restangular.one('stocks').one(symbol).one(sod);
 
@@ -94,9 +82,10 @@ angular.module('atacamaApp')
 
     promise.then(function (response) {
       var results = elasticsearchService.parseResults(response);
-      _.forEach($scope.data, function(item) {
-        $scope.data[item.position].values = _.sortBy(_.map(results, _.curry(convertMessages)(item.key)), 'x');
-      });
+      chartService.convertData($scope.data, results);
+      //_.forEach($scope.data, function(item) {
+      //  $scope.data[item.position].values = _.sortBy(_.map(results, _.curry(chartService.convertMessages)(item.key)), 'x');
+      //});
     }, function (err) {
       console.trace(err.message);
     })

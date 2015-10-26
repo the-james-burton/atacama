@@ -8,7 +8,7 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('CustomWidgetCtrl', function($scope, $modal, ngstomp, $resource, $log, elasticsearchService, Restangular) {
+    .controller('CustomWidgetCtrl', function($scope, $modal, ngstomp, $resource, $log, elasticsearchService, chartService, Restangular) {
 
         var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");
@@ -45,15 +45,23 @@ angular.module('atacamaApp')
             $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
         };
 
-        $scope.addContent = function(widget) {
-            console.log("widget.js::addContent");
+        $scope.addOHLC = function(widget) {
+            console.log("widget.js::addOHLC");
             // $scope.message = moment();
 
-            var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
+            // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
 
-            ticks.get().then(function(response) {
-                $scope.data[0].values = response.ticks;
-            });
+            // ticks.get().then(function(response) {
+            //     $scope.data[0].values = response.ticks;
+            // });
+
+            var promise = elasticsearchService.getTicksAfter($scope.selectedSymbol, sod)
+
+            promise.then(function (response) {
+              $scope.data[0].values = elasticsearchService.parseResults(response);
+            }, function (err) {
+              console.trace(err.message);
+            })
 
             $scope.config = {
                 disabled: false
