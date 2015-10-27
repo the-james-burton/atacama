@@ -38,4 +38,9 @@ angular.module('atacamaApp')
          return key;
        };
 
+      // this.ohlcChart = function(symbol, date) {
+      //    return {
+      //    }
+      //  };
+
     });
