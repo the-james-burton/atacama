@@ -86,13 +86,17 @@ angular.module('atacamaApp')
                       values: [],
                       key: "closePriceIndicator",
                       position: 0,
-                      color: "#bdc42d"
+                      color: "#bdc42d",
+                      strokeWidth: 1,
+                      classed: 'dotted'
                   },
                   {
                       values: [],
                       key: "bollingerBandsUpperIndicator",
                       position: 1,
-                      color: "#2ca02c"
+                      color: "#2ca02c",
+                      strokeWidth: 4,
+                      classed: 'dashed'
                   },
                   {
                       values: [],

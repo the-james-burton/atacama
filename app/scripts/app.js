@@ -24,7 +24,8 @@ angular
         'gridster',
         'ui.bootstrap',
         'elasticsearch',
-        'AngularStompDK'
+        'AngularStompDK',
+        'smart-table'
     ])
     .config(function($routeProvider, RestangularProvider, ngstompProvider) {
 

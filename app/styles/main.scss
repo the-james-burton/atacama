@@ -155,3 +155,8 @@ input {
     float: right;
     padding: 10px;
 }
+
+/* for nvd3 */
+.dashed {
+    stroke-dasharray: 5,5;
+}

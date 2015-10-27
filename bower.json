@@ -12,6 +12,7 @@
     "angular-resource": "^1.4.7",
     "angular-route": "^1.4.7",
     "angular-sanitize": "^1.4.7",
+    "angular-smart-table": "~2.1.4",
     "angular-touch": "^1.4.7",
     "angular-gridster": "~0.13.5",
     "AngularStompDK": "~0.3.1",
