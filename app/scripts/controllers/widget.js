@@ -87,29 +87,30 @@ angular.module('atacamaApp')
                       key: "closePriceIndicator",
                       position: 0,
                       color: "#bdc42d",
-                      strokeWidth: 1,
-                      classed: 'dotted'
+                      strokeWidth: 2,
                   },
                   {
                       values: [],
                       key: "bollingerBandsUpperIndicator",
                       position: 1,
-                      color: "#2ca02c",
-                      strokeWidth: 4,
+                      color: "#9f442c",
+                      strokeWidth: 1,
                       classed: 'dashed'
                   },
                   {
                       values: [],
                       key: "bollingerBandsLowerIndicator",
                       position: 2,
-                      color: "#9f442c"
-                  },
-                  {
-                      values: [],
-                      key: "bollingerBandsMiddleIndicator",
-                      position: 3,
-                      color: "#2c649f"
+                      color: "#9f442c",
+                      classed: 'dashed'
                   }
+                  // {
+                  //     values: [],
+                  //     key: "bollingerBandsMiddleIndicator",
+                  //     position: 3,
+                  //     color: "#2c649f"
+                  //     classed: 'dashed'
+                  // }
                 ];
 
             var promise = elasticsearchService.getStocksAfter($scope.selectedSymbol, sod)
