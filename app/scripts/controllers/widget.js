@@ -48,6 +48,12 @@ angular.module('atacamaApp')
             $scope.api.update();
         });
 
+        function reset() {
+          $scope.typeOHLC = false;
+          $scope.typeIndicators = false;
+          $scope.typeStrategies = false;
+        }
+
         $scope.openSettings = function(widget) {
             $modal.open({
                 scope: $scope,
@@ -71,6 +77,8 @@ angular.module('atacamaApp')
 
         $scope.addIndicators = function(widget) {
             console.log("widget.js::addIndicators");
+            reset();
+            $scope.typeIndicators = true;
 
             ngstomp
               .subscribe('/topic/stocks.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
@@ -102,6 +110,7 @@ angular.module('atacamaApp')
                       key: "bollingerBandsLowerIndicator",
                       position: 2,
                       color: "#9f442c",
+                      strokeWidth: 1,
                       classed: 'dashed'
                   }
                   // {
@@ -162,6 +171,9 @@ angular.module('atacamaApp')
 
         $scope.addOHLC = function(widget) {
             console.log("widget.js::addOHLC");
+            reset();
+            $scope.typeOHLC = true;
+
             // $scope.message = moment();
 
             // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
@@ -225,6 +237,12 @@ angular.module('atacamaApp')
             ngstomp
               .subscribe('/topic/ticks.' + market + '.' + $scope.selectedSymbol, onTick, {}, $scope);
 
+        };
+
+        $scope.addStrategies = function(widget) {
+            console.log("widget.js::addStrategies");
+            reset();
+            $scope.typeStrategies = true;
         };
 
     });
