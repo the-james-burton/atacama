@@ -22,6 +22,8 @@ angular.module('atacamaApp')
 
         var market = 'FTSE100';
 
+        var topic = '';
+
         $scope.selectedSymbol = 'ABC';
 
         $scope.symbols = ['ABC', 'DEF'];
@@ -79,6 +81,7 @@ angular.module('atacamaApp')
             console.log("widget.js::addIndicators");
             reset();
             $scope.typeIndicators = true;
+            unsubscribeTopic();
 
             ngstomp
               .subscribe('/topic/stocks.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
@@ -173,6 +176,7 @@ angular.module('atacamaApp')
             console.log("widget.js::addOHLC");
             reset();
             $scope.typeOHLC = true;
+            unsubscribeTopic();
 
             // $scope.message = moment();
 
@@ -234,8 +238,8 @@ angular.module('atacamaApp')
             }
 
             // TODO disconnect if alrady connected
-            ngstomp
-              .subscribe('/topic/ticks.' + market + '.' + $scope.selectedSymbol, onTick, {}, $scope);
+            topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
+            ngstomp.subscribe(topic, onTick, {}, $scope);
 
         };
 
@@ -243,6 +247,21 @@ angular.module('atacamaApp')
             console.log("widget.js::addStrategies");
             reset();
             $scope.typeStrategies = true;
+            unsubscribeTopic();
+        };
+
+        $scope.$on('$destroy', function() {
+          unsubscribeTopic();
+        });
+
+        function unsubscribeTopic() {
+          if (topic.length > 0) {
+            ngstomp.unsubscribe(topic, unsubscribeCallback);
+          };
+        };
+
+        function unsubscribeCallback() {
+          console.log("Unsubscribed from " + topic);
         };
 
     });
