@@ -28,6 +28,19 @@ angular.module('atacamaApp')
 
         $scope.symbols = ['ABC', 'DEF'];
 
+        $scope.strategies = [
+          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+          { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
+        ];
+
         $scope.options = {
             chart: {
                 // TODO error message appears in console...
@@ -248,6 +261,8 @@ angular.module('atacamaApp')
             reset();
             $scope.typeStrategies = true;
             unsubscribeTopic();
+
+
         };
 
         $scope.$on('$destroy', function() {

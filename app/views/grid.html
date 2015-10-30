@@ -23,16 +23,31 @@
 						<a title="Remove widget" ng-click="remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>
 					</div>
 				</div>
+
 				<!-- TODO is there a better way of switching widget content than ng-if? -->
 				<div ng-if="typeOHLC" class="box-content">
-					<!-- <div ng-bind="message"></div> -->
 					<nvd3 options='options' data='data' api="api"></nvd3>
 				</div>
 				<div ng-if="typeIndicators" class="box-content">
 					<nvd3 options='options' data='data' api="api"></nvd3>
 				</div>
 				<div ng-if="typeStrategies" class="box-content">
-					<p>not implemented</p>
+						<table st-table="rowCollection" class="table table-condensed table-responsive">
+							<thead>
+							<tr>
+								<th>Action</th>
+								<th>Symbol</th>
+								<th>Market</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="strategy in strategies">
+								<td>{{strategy.action}}</td>
+								<td>{{strategy.symbol}}</td>
+								<td>{{strategy.market}}</td>
+							</tr>
+							</tbody>
+						</table>
 				</div>
 			</div>
 		</li>
