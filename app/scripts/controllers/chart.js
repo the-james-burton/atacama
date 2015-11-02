@@ -43,28 +43,22 @@ angular.module('atacamaApp')
     $scope.data = [
           {
               values: [],
-              key: "closePriceIndicator",
+              key: "close",
               position: 0,
               color: "#bdc42d"
           },
           {
               values: [],
-              key: "bollingerBandsUpperIndicator",
+              key: "indicators.bollingerBandsUpperIndicator",
               position: 1,
               color: "#2ca02c"
           },
           {
               values: [],
-              key: "bollingerBandsLowerIndicator",
+              key: "indicators.bollingerBandsLowerIndicator",
               position: 2,
               color: "#9f442c"
           },
-          {
-              values: [],
-              key: "bollingerBandsMiddleIndicator",
-              position: 3,
-              color: "#2c649f"
-          }
         ];
 
 

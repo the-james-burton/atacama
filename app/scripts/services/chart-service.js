@@ -25,7 +25,8 @@ angular.module('atacamaApp')
         };
 
         var convertMessages = function(property, messages) {
-         return _(messages).pick([property, 'date']).mapKeys(renameProperties).value();
+          return _.mapKeys({'date' : _.get(messages, 'date'), property: _.get(messages, property)}, renameProperties);
+         // return _(messages).pick([property, 'date']).mapKeys(renameProperties).value();
        };
 
         var renameProperties = function(value, key) {
