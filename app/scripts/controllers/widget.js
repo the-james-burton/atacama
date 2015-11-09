@@ -256,14 +256,98 @@ angular.module('atacamaApp')
 
         };
 
-        $scope.addStrategies = function(widget) {
-            console.log("widget.js::addStrategies");
-            reset();
-            $scope.typeStrategies = true;
-            unsubscribeTopic();
+        // for smart-table...
+        // $scope.addStrategies = function(widget) {
+        //    console.log("widget.js::addStrategies");
+        //    reset();
+        //    $scope.typeStrategies = true;
+        //    unsubscribeTopic();
+        //  };
 
+        // for chart...
+        $scope.addStrategies = function(widget) {
+          console.log("widget.js::addStrategies");
+          reset();
+          $scope.typeStrategies = true;
+          unsubscribeTopic();
+
+          // {"date":1401174943825,"symbol":"ABC","market":"FTSE100","close":100.0,"action":"enter","amount":1,"position":6,"cost":11.0,"value":14.0,"timestamp":"2015-11-06T18:21:47.263Z"}
+
+          ngstomp
+            .subscribe('/topic/strategies.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
+
+          function onMessage(message) {
+            var payload = JSON.parse(message.body);
+            chartService.addData($scope.data, payload);
+            $scope.$apply();
+          }
+
+          $scope.data = [
+                {
+                    values: [],
+                    key: "position",
+                    position: 0,
+                    color: "#bdc42d",
+                    strokeWidth: 2,
+                },
+                {
+                    values: [],
+                    key: "value",
+                    position: 1,
+                    color: "#9f442c",
+                    strokeWidth: 1,
+                    classed: '2ca02c'
+                },
+                {
+                    values: [],
+                    key: "cost",
+                    position: 2,
+                    color: "#9f442c",
+                    strokeWidth: 1,
+                    classed: 'dashed'
+                }
+              ];
+
+          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, sod)
+
+          promise.then(function (response) {
+            var results = elasticsearchService.parseResults(response);
+            chartService.convertData($scope.data, results);
+          }, function (err) {
+            console.trace(err.message);
+          })
+
+          $scope.options = {
+            chart: {
+              type: 'lineChart',
+              height: firstHeight + ((widget.sizeY - 1) * nextHeight),
+              width: firstWidth + ((widget.sizeX - 1) * nextWidth),
+              margin: {
+                  top: 20,
+                  right: 40,
+                  bottom: 40,
+                  left: 40
+              },
+              showValues: true,
+              showLegend: false,
+              transitionDuration: 500,
+              xAxis: {
+                axisLabel: 'Dates',
+                tickFormat: function (d) {
+                  return d3.time.format('%X')(new Date(d));
+                },
+              },
+              yAxis: {
+                axisLabel: 'Value',
+                tickFormat: function (d, i) {
+                  return '$' + d3.format(',.1f')(d);
+                }
+              }
+            }
+          };
 
         };
+
 
         $scope.$on('$destroy', function() {
           unsubscribeTopic();
