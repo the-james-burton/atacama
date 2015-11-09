@@ -115,8 +115,15 @@ angular.module('atacamaApp')
                   },
                   {
                       values: [],
-                      key: "indicators.bollingerBandsUpperIndicator",
+                      key: "indicators.smaTwelve",
                       position: 1,
+                      color: "#9f442c",
+                      strokeWidth: 1,
+                  },
+                  {
+                      values: [],
+                      key: "indicators.bollingerBandsUpperIndicator",
+                      position: 2,
                       color: "#9f442c",
                       strokeWidth: 1,
                       classed: 'dashed'
@@ -124,7 +131,7 @@ angular.module('atacamaApp')
                   {
                       values: [],
                       key: "indicators.bollingerBandsLowerIndicator",
-                      position: 2,
+                      position: 3,
                       color: "#9f442c",
                       strokeWidth: 1,
                       classed: 'dashed'
