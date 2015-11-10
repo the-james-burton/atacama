@@ -307,7 +307,7 @@ angular.module('atacamaApp')
                 },
                 {
                     values: [],
-                    key: "cost",
+                    key: "cash",
                     position: 2,
                     color: "#9f442c",
                     strokeWidth: 1,
