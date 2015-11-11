@@ -117,7 +117,7 @@ angular.module('atacamaApp')
                       values: [],
                       key: "indicators.smaTwelve",
                       position: 1,
-                      color: "#9f442c",
+                      color: "#6090c7",
                       strokeWidth: 1,
                   },
                   {
@@ -294,24 +294,28 @@ angular.module('atacamaApp')
                     values: [],
                     key: "position",
                     position: 0,
-                    color: "#bdc42d",
+                    type: 'line',
+                    yAxis: 2,
+                    color: "#d3da41",
                     strokeWidth: 2,
                 },
                 {
                     values: [],
                     key: "value",
                     position: 1,
-                    color: "#9f442c",
-                    strokeWidth: 1,
-                    classed: '2ca02c'
+                    type: 'line',
+                    yAxis: 1,
+                    color: "#4b9f51",
+                    strokeWidth: 3
                 },
                 {
                     values: [],
                     key: "cash",
                     position: 2,
-                    color: "#9f442c",
-                    strokeWidth: 1,
-                    classed: 'dashed'
+                    type: 'bar',
+                    yAxis: 2,
+                    color: "#d4e6f0",
+                    strokeWidth: 1
                 }
               ];
 
@@ -326,12 +330,12 @@ angular.module('atacamaApp')
 
           $scope.options = {
             chart: {
-              type: 'lineChart',
+              type: 'multiChart',
               height: firstHeight + ((widget.sizeY - 1) * nextHeight),
               width: firstWidth + ((widget.sizeX - 1) * nextWidth),
               margin: {
                   top: 20,
-                  right: 40,
+                  right: 70,
                   bottom: 40,
                   left: 40
               },
@@ -344,8 +348,14 @@ angular.module('atacamaApp')
                   return d3.time.format('%X')(new Date(d));
                 },
               },
-              yAxis: {
+              yAxis1: {
                 axisLabel: 'Value',
+                tickFormat: function (d, i) {
+                  return '$' + d3.format(',.1f')(d);
+                }
+              },
+              yAxis2: {
+                axisLabel: 'Cash',
                 tickFormat: function (d, i) {
                   return '$' + d3.format(',.1f')(d);
                 }
