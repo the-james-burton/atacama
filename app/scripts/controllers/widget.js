@@ -92,6 +92,7 @@ angular.module('atacamaApp')
 
         $scope.addIndicators = function(widget) {
             console.log("widget.js::addIndicators");
+            widget.name = 'Ind: ' + $scope.selectedSymbol;
             reset();
             $scope.typeIndicators = true;
             unsubscribeTopic();
@@ -194,6 +195,7 @@ angular.module('atacamaApp')
 
         $scope.addOHLC = function(widget) {
             console.log("widget.js::addOHLC");
+            widget.name = 'OHLC: ' + $scope.selectedSymbol;
             reset();
             $scope.typeOHLC = true;
             unsubscribeTopic();
@@ -220,7 +222,7 @@ angular.module('atacamaApp')
 
             $scope.options = {
                 chart: {
-                    type: 'ohlcBarChart',
+                    type: 'candlestickBarChart',
                     height: firstHeight + ((widget.sizeY - 1) * nextHeight),
                     width: firstWidth + ((widget.sizeX - 1) * nextWidth),
                     margin: {
@@ -274,6 +276,7 @@ angular.module('atacamaApp')
         // for chart...
         $scope.addStrategies = function(widget) {
           console.log("widget.js::addStrategies");
+          widget.name = 'Str: ' + $scope.selectedSymbol;
           reset();
           $scope.typeStrategies = true;
           unsubscribeTopic();
@@ -294,8 +297,6 @@ angular.module('atacamaApp')
                     values: [],
                     key: "position",
                     position: 0,
-                    type: 'line',
-                    yAxis: 2,
                     color: "#d3da41",
                     strokeWidth: 2,
                 },
@@ -303,8 +304,6 @@ angular.module('atacamaApp')
                     values: [],
                     key: "value",
                     position: 1,
-                    type: 'line',
-                    yAxis: 1,
                     color: "#4b9f51",
                     strokeWidth: 3
                 },
@@ -312,10 +311,8 @@ angular.module('atacamaApp')
                     values: [],
                     key: "cash",
                     position: 2,
-                    type: 'bar',
-                    yAxis: 2,
-                    color: "#d4e6f0",
-                    strokeWidth: 1
+                    color: "#af2727",
+                    strokeWidth: 2
                 }
               ];
 
@@ -330,12 +327,12 @@ angular.module('atacamaApp')
 
           $scope.options = {
             chart: {
-              type: 'multiChart',
+              type: 'lineChart',
               height: firstHeight + ((widget.sizeY - 1) * nextHeight),
               width: firstWidth + ((widget.sizeX - 1) * nextWidth),
               margin: {
                   top: 20,
-                  right: 70,
+                  right: 40,
                   bottom: 40,
                   left: 40
               },
@@ -348,18 +345,12 @@ angular.module('atacamaApp')
                   return d3.time.format('%X')(new Date(d));
                 },
               },
-              yAxis1: {
+              yAxis: {
                 axisLabel: 'Value',
                 tickFormat: function (d, i) {
                   return '$' + d3.format(',.1f')(d);
                 }
               },
-              yAxis2: {
-                axisLabel: 'Cash',
-                tickFormat: function (d, i) {
-                  return '$' + d3.format(',.1f')(d);
-                }
-              }
             }
           };
 
