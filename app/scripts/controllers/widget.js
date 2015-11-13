@@ -98,7 +98,7 @@ angular.module('atacamaApp')
             unsubscribeTopic();
 
             ngstomp
-              .subscribe('/topic/stocks.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
+              .subscribe('/topic/indicators.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
 
             function onMessage(message) {
               var payload = JSON.parse(message.body);
@@ -114,17 +114,17 @@ angular.module('atacamaApp')
                       color: "#bdc42d",
                       strokeWidth: 2,
                   },
-                  {
-                      values: [],
-                      key: "indicators.smaTwelve",
-                      position: 1,
-                      color: "#6090c7",
-                      strokeWidth: 1,
-                  },
+                  // {
+                  //     values: [],
+                  //     key: "indicators.sma12",
+                  //     position: 1,
+                  //     color: "#6090c7",
+                  //     strokeWidth: 1,
+                  // },
                   {
                       values: [],
                       key: "indicators.bollingerBandsUpperIndicator",
-                      position: 2,
+                      position: 1,
                       color: "#9f442c",
                       strokeWidth: 1,
                       classed: 'dashed'
@@ -132,7 +132,7 @@ angular.module('atacamaApp')
                   {
                       values: [],
                       key: "indicators.bollingerBandsLowerIndicator",
-                      position: 3,
+                      position: 2,
                       color: "#9f442c",
                       strokeWidth: 1,
                       classed: 'dashed'
@@ -146,7 +146,7 @@ angular.module('atacamaApp')
                   // }
                 ];
 
-            var promise = elasticsearchService.getStocksAfter($scope.selectedSymbol, sod)
+            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, sod)
 
             promise.then(function (response) {
               var results = elasticsearchService.parseResults(response);

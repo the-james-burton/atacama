@@ -70,10 +70,10 @@ angular.module('atacamaApp')
           });
         };
 
-        this.getStocksAfter = function(symbol, date) {
+        this.getIndicatorsAfter = function(symbol, date) {
           return es.search({
-            index: 'turbine-stocks',
-            type: 'turbine-stock',
+            index: 'turbine-indicators',
+            type: 'turbine-indicator',
             body: template(symbol, date)
           });
         };

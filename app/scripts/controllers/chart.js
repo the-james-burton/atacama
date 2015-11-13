@@ -19,7 +19,7 @@ angular.module('atacamaApp')
     var symbol = 'ABC';
 
     ngstomp
-      .subscribe('/topic/stocks.' + market + '.' + symbol, onMessage, {}, $scope);
+      .subscribe('/topic/indicators.' + market + '.' + symbol, onMessage, {}, $scope);
 
     function onMessage(message) {
 
@@ -72,7 +72,7 @@ angular.module('atacamaApp')
     //  });
     //});
 
-    var promise = elasticsearchService.getStocksAfter('ABC', sod)
+    var promise = elasticsearchService.getIndicatorsAfter('ABC', sod)
 
     promise.then(function (response) {
       var results = elasticsearchService.parseResults(response);
