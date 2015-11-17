@@ -21,24 +21,17 @@ angular.module('atacamaApp')
         //   $scope.data[0].values = response.ticks;
         // });
 
-        var template = function(symbol, date) {
+        // TODO improve templating by using lodash to insert a list of tuples as query strings...
+        var template = function(symbol, name, date) {
           return {
             size: 5000,
             query: {
               bool: {
-                must: [
-                  {query_string: {
-                    query: symbol,
-                    fields: ['symbol'],
-                    default_operator: 'and'
-                  }
-                },{
-                  range: {
+                must: [{query_string: {query: symbol, fields: ['symbol']}},
+                       {query_string: {query: name, fields: ['name']}},
+                {range: {
                     date: {
-                      from: date,
-                      to: null,
-                      include_lower: true,
-                      include_upper: true
+                      from: date, to: null, include_lower: true, include_upper: true
                     }
                   }
                 }]
@@ -66,23 +59,36 @@ angular.module('atacamaApp')
           return es.search({
             index: 'turbine-ticks',
             type: 'turbine-tick',
-            body: template(symbol, date)
+            body: {
+              size: 5000,
+              query: {
+                bool: {
+                  must: [
+                    {query_string: {query: symbol, fields: ['symbol']}
+                  },{
+                    range: {date: {from: date, to: null, include_lower: true, include_upper: true
+                      }
+                    }
+                  }]
+                }
+              }
+            }
           });
         };
 
-        this.getIndicatorsAfter = function(symbol, date) {
+        this.getIndicatorsAfter = function(symbol, name, date) {
           return es.search({
             index: 'turbine-indicators',
             type: 'turbine-indicator',
-            body: template(symbol, date)
+            body: template(symbol, name, date)
           });
         };
 
-        this.getStrategiesAfter = function(symbol, date) {
+        this.getStrategiesAfter = function(symbol, name, date) {
           return es.search({
             index: 'turbine-strategies',
             type: 'turbine-strategy',
-            body: template(symbol, date)
+            body: template(symbol, name, date)
           });
         };
 

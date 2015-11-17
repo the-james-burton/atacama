@@ -72,7 +72,7 @@ angular.module('atacamaApp')
     //  });
     //});
 
-    var promise = elasticsearchService.getIndicatorsAfter('ABC', sod)
+    var promise = elasticsearchService.getIndicatorsAfter('ABC', 'BollingerBands', sod)
 
     promise.then(function (response) {
       var results = elasticsearchService.parseResults(response);

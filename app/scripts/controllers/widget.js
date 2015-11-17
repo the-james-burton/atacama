@@ -101,7 +101,12 @@ angular.module('atacamaApp')
               .subscribe('/topic/indicators.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
 
             function onMessage(message) {
+              // TODO add proper selection of indicators and strategies...
+              // TODO publish different indicators and strategies on their own topics...
               var payload = JSON.parse(message.body);
+              if (payload.name !== 'BollingerBands') {
+                return;
+              }
               chartService.addData($scope.data, payload);
               $scope.$apply();
             }
@@ -146,7 +151,7 @@ angular.module('atacamaApp')
                   // }
                 ];
 
-            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, sod)
+            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, 'BollingerBands', sod)
 
             promise.then(function (response) {
               var results = elasticsearchService.parseResults(response);
@@ -288,6 +293,9 @@ angular.module('atacamaApp')
 
           function onMessage(message) {
             var payload = JSON.parse(message.body);
+            if (payload.name !== 'SMAStrategy') {
+              return;
+            }
             chartService.addData($scope.data, payload);
             $scope.$apply();
           }
@@ -316,7 +324,7 @@ angular.module('atacamaApp')
                 }
               ];
 
-          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, sod)
+          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, 'SMAStrategy', sod)
 
           promise.then(function (response) {
             var results = elasticsearchService.parseResults(response);
