@@ -97,16 +97,20 @@ angular.module('atacamaApp')
             $scope.typeIndicators = true;
             unsubscribeTopic();
 
+            var topic = '/topic/indicators' + '.' + market + '.' + $scope.selectedSymbol + '.' + 'BollingerBands';
+
+            console.log(topic);
+
             ngstomp
-              .subscribe('/topic/indicators.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
+              .subscribe(topic, onMessage, {}, $scope);
 
             function onMessage(message) {
               // TODO add proper selection of indicators and strategies...
               // TODO publish different indicators and strategies on their own topics...
               var payload = JSON.parse(message.body);
-              if (payload.name !== 'BollingerBands') {
-                return;
-              }
+              // if (payload.name !== 'BollingerBands') {
+              //  return;
+              //}
               chartService.addData($scope.data, payload);
               $scope.$apply();
             }
@@ -151,14 +155,14 @@ angular.module('atacamaApp')
                   // }
                 ];
 
-            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, 'BollingerBands', sod)
+            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, 'BollingerBands', sod);
 
             promise.then(function (response) {
               var results = elasticsearchService.parseResults(response);
               chartService.convertData($scope.data, results);
             }, function (err) {
               console.trace(err.message);
-            })
+            });
 
 
             $scope.options = {
@@ -219,7 +223,7 @@ angular.module('atacamaApp')
               $scope.data[0].values = elasticsearchService.parseResults(response);
             }, function (err) {
               console.trace(err.message);
-            })
+            });
 
             $scope.config = {
                 disabled: false
@@ -288,14 +292,18 @@ angular.module('atacamaApp')
 
           // {"date":1401174943825,"symbol":"ABC","market":"FTSE100","close":100.0,"action":"enter","amount":1,"position":6,"cost":11.0,"value":14.0,"timestamp":"2015-11-06T18:21:47.263Z"}
 
+          var topic = '/topic/strategies' + '.' + market + '.' + $scope.selectedSymbol + '.' + 'SMAStrategy';
+
+          console.log(topic);
+
           ngstomp
-            .subscribe('/topic/strategies.' + market + '.' + $scope.selectedSymbol, onMessage, {}, $scope);
+            .subscribe(topic, onMessage, {}, $scope);
 
           function onMessage(message) {
             var payload = JSON.parse(message.body);
-            if (payload.name !== 'SMAStrategy') {
-              return;
-            }
+            // if (payload.name !== 'SMAStrategy') {
+            //  return;
+            // }
             chartService.addData($scope.data, payload);
             $scope.$apply();
           }
@@ -324,14 +332,14 @@ angular.module('atacamaApp')
                 }
               ];
 
-          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, 'SMAStrategy', sod)
+          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, 'SMAStrategy', sod);
 
           promise.then(function (response) {
             var results = elasticsearchService.parseResults(response);
             chartService.convertData($scope.data, results);
           }, function (err) {
             console.trace(err.message);
-          })
+          });
 
           $scope.options = {
             chart: {
