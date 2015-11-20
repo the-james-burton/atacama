@@ -18,8 +18,10 @@ angular.module('atacamaApp')
     var market = 'FTSE100';
     var symbol = 'ABC';
 
+    var topic = '/topic/indicators' + '.' + market + '.' + symbol + '.' + 'BollingerBands';
+
     ngstomp
-      .subscribe('/topic/indicators.' + market + '.' + symbol, onMessage, {}, $scope);
+      .subscribe(topic, onMessage, {}, $scope);
 
     function onMessage(message) {
 
