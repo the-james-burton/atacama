@@ -8,11 +8,12 @@
  * Service in the atacamaApp.
  */
 angular.module('atacamaApp')
-    .service('chartService', function($rootScope, $resource) {
+    .service('chartService', function($rootScope, $resource, $log) {
         // AngularJS will instantiate a singleton by calling "new" on this function
         console.log('chartService has been created');
 
         this.convertData = function(data, results) {
+          $log.debug(data + ',' + results);
           _.forEach(data, function(item) {
             data[item.position].values = _.sortBy(_.map(results, _.curry(convertMessages)(item.key)), 'x');
           });
@@ -25,6 +26,7 @@ angular.module('atacamaApp')
         };
 
         var convertMessages = function(property, messages) {
+          $log.debug(property + '.' + messages);
           return _.mapKeys({'date' : _.get(messages, 'date'), property: _.get(messages, property)}, renameProperties);
          // return _(messages).pick([property, 'date']).mapKeys(renameProperties).value();
        };

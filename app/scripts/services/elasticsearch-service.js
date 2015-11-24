@@ -96,6 +96,10 @@ angular.module('atacamaApp')
           return _.sortBy(_.map(response.hits.hits, '_source'), 'date');
         };
 
+        this.testReply = function(message) {
+          return "hello " + message;
+        }
+
         //this.getTicksAfter = function(symbol, date, reply) {
         //    var call = GetTicksAfter.get({
         //            symbol: symbol,

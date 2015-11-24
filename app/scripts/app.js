@@ -27,7 +27,9 @@ angular
         'AngularStompDK',
         'smart-table'
     ])
-    .config(function($routeProvider, RestangularProvider, ngstompProvider) {
+    .config(function($routeProvider, $logProvider, RestangularProvider, ngstompProvider) {
+
+        $logProvider.debugEnabled(true);
 
         RestangularProvider.setBaseUrl('http://localhost:48002');
 

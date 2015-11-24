@@ -15,4 +15,8 @@ describe('Service: elasticsearchService', function () {
     expect(!!elasticsearchService).toBe(true);
   });
 
+  it('should return something', function () {
+    expect(elasticsearchService.testReply("jasmine")).toEqual("hello jasmine");
+  });
+
 });
