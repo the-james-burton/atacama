@@ -12,6 +12,9 @@ angular.module('atacamaApp')
         // AngularJS will instantiate a singleton by calling "new" on this function
         console.log('elasticsearchService has been created');
 
+        // http://stackoverflow.com/questions/19842669/calling-a-function-in-angularjs-service-from-the-same-service
+        var self = this;
+
         // TODO 1. return from resource to passed-in variable $scope.data[0].values does not work
         // TODO 2. cannot access $scope.data[0].values from websocket callback in here
 
@@ -20,6 +23,19 @@ angular.module('atacamaApp')
         // ticks.get().then(function (response) {
         //   $scope.data[0].values = response.ticks;
         // });
+
+        this.createQueryString = function(key, value) {
+          return {query_string: {query: key, fields: [value]}};
+        };
+
+        var createQueryStringTuple = function(tuple) {
+          // return {query_string: {query: tuple[0], fields: [tuple[1]]}};
+          return self.createQueryString(tuple[0], tuple[1]);
+        };
+
+        this.createQueryStrings = function(arrayOfKeyValueTuples) {
+          return _.map(arrayOfKeyValueTuples, createQueryStringTuple);
+        };
 
         // TODO improve templating by using lodash to insert a list of tuples as query strings...
         var template = function(symbol, name, date) {
@@ -39,6 +55,24 @@ angular.module('atacamaApp')
             }
           };
         };
+
+        // var template = function(symbol, name, date) {
+        //   return {
+        //     size: 5000,
+        //     query: {
+        //       bool: {
+        //         must: [{query_string: {query: symbol, fields: ['symbol']}},
+        //                {query_string: {query: name, fields: ['name']}},
+        //         {range: {
+        //             date: {
+        //               from: date, to: null, include_lower: true, include_upper: true
+        //             }
+        //           }
+        //         }]
+        //       }
+        //     }
+        //   };
+        // };
 
         this.ping = function() {
           es.ping({
