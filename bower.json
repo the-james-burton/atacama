@@ -8,7 +8,7 @@
     "angular-cookies": "^1.4.7",
     "angular-messages": "^1.4.7",
     "angular-moment": "~0.10.2",
-    "angular-nvd3": "1.0.1",
+    "angular-nvd3": "1.0.3",
     "angular-resource": "^1.4.7",
     "angular-route": "^1.4.7",
     "angular-sanitize": "^1.4.7",

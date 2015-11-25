@@ -36,7 +36,11 @@ angular.module('atacamaApp')
       $scope.$apply();
     }
 
-//dummy
+    $scope.config = {
+      deepWatchData: true,
+      refreshDataOnly: false
+    };
+
     $scope.data = [{
       key: symbol
       //values: [{}]

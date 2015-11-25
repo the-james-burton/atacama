@@ -41,6 +41,12 @@ angular.module('atacamaApp')
     // {"date": 1437583864374, "open": 100.0, "high": 100.24021489109903, "low": 98.2724267098159, "close": 99.51909089116204, "volume": 107.79215866544341, "symbol": "ABC.L", "market": "FTSE100", "timestamp": "2015-07-22T17:52:04.377+01:00" }
     // {"date":1445445787547,"closePriceIndicator":101.3170343070584,"bollingerBandsMiddleIndicator":101.83027737657682,"bollingerBandsLowerIndicator":100.43909562456751,"bollingerBandsUpperIndicator":103.22145912858613,"symbol":"DEF","market":"FTSE100","timestamp":"2015-10-21T17:43:07.547+01:00"}
 
+
+    $scope.config = {
+      deepWatchData: true,
+      refreshDataOnly: false
+    };
+
     // position is a bespoke non-nvd3 field used in the onMessage function above...
     $scope.data = [
           {
@@ -74,7 +80,7 @@ angular.module('atacamaApp')
     //  });
     //});
 
-    var promise = elasticsearchService.getIndicatorsAfter('ABC', 'BollingerBands', sod)
+    var promise = elasticsearchService.getIndicatorsAfter('ABC', 'BollingerBands', sod);
 
     promise.then(function (response) {
       var results = elasticsearchService.parseResults(response);
@@ -84,8 +90,7 @@ angular.module('atacamaApp')
       //});
     }, function (err) {
       console.trace(err.message);
-    })
-
+    });
 
     $scope.options = {
       chart: {

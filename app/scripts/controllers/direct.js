@@ -40,6 +40,11 @@ angular.module('atacamaApp')
       console.trace(err.message);
     })
 
+    $scope.config = {
+      deepWatchData: true,
+      refreshDataOnly: false
+    };
+
     $scope.options = {
       chart: {
         type: 'ohlcBarChart',

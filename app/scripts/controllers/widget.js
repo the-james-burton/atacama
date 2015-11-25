@@ -48,6 +48,8 @@ angular.module('atacamaApp')
         };
 
         $scope.config = {
+            deepWatchData: true,
+            refreshDataOnly: false,
             disabled: true
         };
 
@@ -114,6 +116,12 @@ angular.module('atacamaApp')
               chartService.addData($scope.data, payload);
               $scope.$apply();
             }
+
+            $scope.config = {
+              deepWatchData: true,
+              refreshDataOnly: false,
+              disabled: false
+            };
 
             $scope.data = [
                   {
@@ -226,7 +234,9 @@ angular.module('atacamaApp')
             });
 
             $scope.config = {
-                disabled: false
+              deepWatchData: true,
+              refreshDataOnly: false,
+              disabled: false
             };
 
             $scope.options = {
@@ -307,6 +317,12 @@ angular.module('atacamaApp')
             chartService.addData($scope.data, payload);
             $scope.$apply();
           }
+
+          $scope.config = {
+            deepWatchData: true,
+            refreshDataOnly: false,
+            disabled: false
+          };
 
           $scope.data = [
                 {
