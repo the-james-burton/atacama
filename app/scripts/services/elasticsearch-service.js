@@ -37,6 +37,19 @@ angular.module('atacamaApp')
           return _.map(arrayOfKeyValueTuples, createQueryStringTuple);
         };
 
+        this.createQueries = function(arrayOfQueryStrings, date) {
+          var queries = [];
+          _.forEach(arrayOfQueryStrings, function(item) { queries.push(item); });
+          queries.push(
+                {range: {
+                    date: {
+                      from: date, to: null, include_lower: true, include_upper: true
+                    }
+                  }
+                });
+          return queries;
+        };
+
         // TODO improve templating by using lodash to insert a list of tuples as query strings...
         var template = function(symbol, name, date) {
           return {
@@ -55,24 +68,6 @@ angular.module('atacamaApp')
             }
           };
         };
-
-        // var template = function(symbol, name, date) {
-        //   return {
-        //     size: 5000,
-        //     query: {
-        //       bool: {
-        //         must: [{query_string: {query: symbol, fields: ['symbol']}},
-        //                {query_string: {query: name, fields: ['name']}},
-        //         {range: {
-        //             date: {
-        //               from: date, to: null, include_lower: true, include_upper: true
-        //             }
-        //           }
-        //         }]
-        //       }
-        //     }
-        //   };
-        // };
 
         this.ping = function() {
           es.ping({
