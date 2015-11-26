@@ -8,7 +8,7 @@
  * Service in the atacamaApp.
  */
 angular.module('atacamaApp')
-    .service('elasticsearchService', function($rootScope, $resource, es) {
+    .service('elasticsearchService', function($rootScope, $resource, $log, es) {
         // AngularJS will instantiate a singleton by calling "new" on this function
         console.log('elasticsearchService has been created');
 
@@ -25,7 +25,7 @@ angular.module('atacamaApp')
         // });
 
         this.createQueryString = function(key, value) {
-          return {query_string: {query: key, fields: [value]}};
+          return {query_string: {query: value, fields: [key]}};
         };
 
         var createQueryStringTuple = function(tuple) {
@@ -38,36 +38,48 @@ angular.module('atacamaApp')
         };
 
         this.createQueries = function(arrayOfQueryStrings, date) {
-          var queries = [];
-          _.forEach(arrayOfQueryStrings, function(item) { queries.push(item); });
-          queries.push(
+          return arrayOfQueryStrings.concat(
                 {range: {
                     date: {
                       from: date, to: null, include_lower: true, include_upper: true
                     }
                   }
                 });
-          return queries;
         };
 
         // TODO improve templating by using lodash to insert a list of tuples as query strings...
-        var template = function(symbol, name, date) {
+        this.createESQuery = function(arrayOfKeyValueTuples, date) {
+          // TODO perhaps a little more functional style..?
+          var queryStrings = self.createQueryStrings(arrayOfKeyValueTuples);
+          var queries = self.createQueries(queryStrings, date);
           return {
             size: 5000,
             query: {
               bool: {
-                must: [{query_string: {query: symbol, fields: ['symbol']}},
-                       {query_string: {query: name, fields: ['name']}},
-                {range: {
-                    date: {
-                      from: date, to: null, include_lower: true, include_upper: true
-                    }
-                  }
-                }]
+                must: queries
               }
             }
           };
         };
+
+        // // TODO improve templating by using lodash to insert a list of tuples as query strings...
+        // var template = function(symbol, name, date) {
+        //   return {
+        //     size: 5000,
+        //     query: {
+        //       bool: {
+        //         must: [{query_string: {query: symbol, fields: ['symbol']}},
+        //                {query_string: {query: name, fields: ['name']}},
+        //         {range: {
+        //             date: {
+        //               from: date, to: null, include_lower: true, include_upper: true
+        //             }
+        //           }
+        //         }]
+        //       }
+        //     }
+        //   };
+        // };
 
         this.ping = function() {
           es.ping({
@@ -85,39 +97,32 @@ angular.module('atacamaApp')
 
         this.getTicksAfter = function(symbol, date) {
           //  [2015-09-21 08:09:30,744][INFO ][index.search.slowlog.query] [Fault Zone] [test-tick][4] took[14.8ms], took_millis[14], types[tick], stats[], search_type[DFS_QUERY_THEN_FETCH], total_shards[5], source[{"from":0,"size":17,"query":{"bool":{"must":[{"query_string":{"query":"ABC","fields":["symbol"],"default_operator":"and"}},{"range":{"date":{"from":1442790000000,"to":null,"include_lower":true,"include_upper":true}}}]}}}], extra_source[],
+          var query = self.createESQuery([ ['symbol', symbol] ], date);
+          $log.debug(JSON.stringify(query));
           return es.search({
             index: 'turbine-ticks',
             type: 'turbine-tick',
-            body: {
-              size: 5000,
-              query: {
-                bool: {
-                  must: [
-                    {query_string: {query: symbol, fields: ['symbol']}
-                  },{
-                    range: {date: {from: date, to: null, include_lower: true, include_upper: true
-                      }
-                    }
-                  }]
-                }
-              }
-            }
+            body: query
           });
         };
 
         this.getIndicatorsAfter = function(symbol, name, date) {
+          var query = self.createESQuery([ ['symbol', symbol], ['name', name] ], date);
+          $log.debug(JSON.stringify(query));
           return es.search({
             index: 'turbine-indicators',
             type: 'turbine-indicator',
-            body: template(symbol, name, date)
+            body: query
           });
         };
 
         this.getStrategiesAfter = function(symbol, name, date) {
+          var query = self.createESQuery([ ['symbol', symbol], ['name', name] ], date);
+          $log.debug(JSON.stringify(query));
           return es.search({
             index: 'turbine-strategies',
             type: 'turbine-strategy',
-            body: template(symbol, name, date)
+            body: query
           });
         };
 
