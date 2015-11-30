@@ -72,7 +72,7 @@ angular.module('atacamaApp')
         }
 
         $scope.openSettings = function(widget) {
-            $modal.open({
+            $uibModal.open({
                 scope: $scope,
                 templateUrl: 'views/partials/widgetsettings.html',
                 controller: 'WidgetSettingsCtrl',
@@ -122,6 +122,8 @@ angular.module('atacamaApp')
               refreshDataOnly: false,
               disabled: false
             };
+
+            // TODO when subscribing to a feed, the server acknowledgement should contain a list of key/value indicator tuples
 
             $scope.data = [
                   {
@@ -396,11 +398,11 @@ angular.module('atacamaApp')
         function unsubscribeTopic() {
           if (topic.length > 0) {
             ngstomp.unsubscribe(topic, unsubscribeCallback);
-          };
-        };
+          }
+        }
 
         function unsubscribeCallback() {
           console.log("Unsubscribed from " + topic);
-        };
+        }
 
     });
