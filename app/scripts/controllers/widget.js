@@ -49,6 +49,7 @@ angular.module('atacamaApp')
 
         $scope.config = {
             deepWatchData: true,
+            // deepWatchDataDepth: 1,
             refreshDataOnly: false,
             disabled: true
         };
@@ -119,6 +120,7 @@ angular.module('atacamaApp')
 
             $scope.config = {
               deepWatchData: true,
+              // deepWatchDataDepth: 1,
               refreshDataOnly: false,
               disabled: false
             };
@@ -237,6 +239,7 @@ angular.module('atacamaApp')
 
             $scope.config = {
               deepWatchData: true,
+              // deepWatchDataDepth: 1,
               refreshDataOnly: false,
               disabled: false
             };
@@ -322,6 +325,7 @@ angular.module('atacamaApp')
 
           $scope.config = {
             deepWatchData: true,
+            // deepWatchDataDepth: 1,
             refreshDataOnly: false,
             disabled: false
           };

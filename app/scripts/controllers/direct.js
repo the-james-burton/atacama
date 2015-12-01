@@ -42,6 +42,7 @@ angular.module('atacamaApp')
 
     $scope.config = {
       deepWatchData: true,
+      // deepWatchDataDepth: 1,
       refreshDataOnly: false
     };
 
