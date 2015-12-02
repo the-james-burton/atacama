@@ -28,10 +28,10 @@ describe('Service: elasticsearchService', function () {
   };
 
   var checkQueryString = function(result) {
-    expect(result[0].query_string.query).toEqual(keyValueTuple1[0]);
-    expect(result[0].query_string.fields).toContain(keyValueTuple1[1]);
-    expect(result[1].query_string.query).toEqual(keyValueTuple2[0]);
-    expect(result[1].query_string.fields).toContain(keyValueTuple2[1]);
+    expect(result[0].query_string.query).toEqual(keyValueTuple1[1]);
+    expect(result[0].query_string.fields).toContain(keyValueTuple1[0]);
+    expect(result[1].query_string.query).toEqual(keyValueTuple2[1]);
+    expect(result[1].query_string.fields).toContain(keyValueTuple2[0]);
   };
 
   it('should do something', function () {
@@ -43,7 +43,7 @@ describe('Service: elasticsearchService', function () {
   });
 
   it('should create an elasticsearch query string', function () {
-    var expected = {query_string: {query: key1, fields: [value1]}};
+    var expected = {query_string: {query: value1, fields: [key1]}};
     expect(elasticsearchService.createQueryString(key1, value1)).toEqual(expected);
     console.log(JSON.stringify(expected));
   });
