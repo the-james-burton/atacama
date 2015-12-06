@@ -18,12 +18,12 @@ Further down the line, this minimum-runtime plus burst-on-demand approach will p
 It is a HTML5/Angular-JS single-page application that runs in a web browser. It communicates with three principal back end components...
 
 * **elasticsearch** Using a factory-provided elasticsearch javascript client. Ultimately, this client communicates via the elasticsearch rest API. Historic data is fetched from elasticsearch for presenting to the user. My *turbine* server project also has spring-data-elasticsearch and some rest APIs to provide the same data. This will allow me to swap easily between the two to try out different architectures.
-* **rabbitMQ** Real-time data is streamed to Atacama using Stomp over Websockets. Thanks to a plugin, rabbitMQ is able to act as a websocket broker for my web app. It is actually very easy to swap rabbitMQ for a native spring-boot solution and I will be experimenting with scalability at some point to see which is the best option.
+* **rabbitMQ** Real-time data is streamed to Atacama using Stomp over Websockets. Thanks to a plugin, rabbitMQ is able to act as a websocket broker for Atacama. It is actually very easy to swap rabbitMQ for a native spring-boot solution and I will be experimenting with scalability at some point to see which is the best option.
 * **the-turbine** Using spring-boot provided bespoke rest APIs. This is for control only and is not used for data at the moment, although as explained above it is easy for me to make it the sole point of contact for Atacama if I so wish.
 
 ## How do I use it?
 
-The easiest way to get it up and running is to clone the repo and then build it. Make sure you have git, node, bower and grunt-cli installed then run something like the following...
+The easiest way to get it up and running is to clone this repo and then build it. Make sure you have git, node, bower and grunt-cli installed then run something like the following...
 
 ```bash
 git clone https://github.com/the-james-burton//atacama/atacama.git atacama
@@ -33,19 +33,21 @@ bower install
 grunt serve
 ```
 
-Then browse to http://localhost:9000 and you should see the app.
+Then browse to http://localhost:9000 and you should see the app. For it to actually work and show something, you will also need to get *the-turbine* working.
 
-## What is it build on?
+You can also run `grunt` for building a distributable for nginx, `grunt test` to run the tests and `grunt serve` for preview. When development reaches a sensible point, I will provide a distributable via github 'releases' tab which can be deployed into nginx.
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.12.1. This gives me a number of core angular-js components, as well as bootstrap and sass. In addition to those, I have found a number of very helpful open-source projects that deserve a special mention...
+## What is it built on?
 
-* **angular-moment** Easy use of moment-js from within angular-js.
-* **angular-nvd3** Does great charts really easily.
+I am, of course, standing very much on the shoulders of giants. Indeed, part of the fun is finding these giants and then standing on their shoulders. In this project, I have set out to write a business application and therefore I want to write as little code as possible. This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular). This gives me a number of core angular-js components, as well as bootstrap and sass. In addition to those, I have found a number of very helpful open-source projects that deserve a special mention...
+
+* **angular-moment** Easy use of the essential moment-js from within angular-js.
+* **angular-nvd3** Does great dynamic charts really easily.
 * **angular-gridster** A fantastic dynamic dashboard.
 * **AngularStompDK** Very nice stomp integration for angular-js.
 * **elasticsearch** The factory elasticsearch javascript client.
 * **lodash** An awesome functional programming library for javascript.
-* **restangular** An alternative REST client for angular-js.
+* **restangular** An alternative REST client for angular-js which I find easier to work with.
 * **stomp-websocket** The defacto stomp over websockets implementation for javascript.
 
 ## What is already done?
@@ -55,21 +57,19 @@ This project is generated with [yo angular generator](https://github.com/yeoman/
 
 ## What is going to be done soon?
 
-* **tests for controllers** I will try and ensure that more of the code is tested, particularly the angular controllers.
-* **more refactoring** I tend to deliver early, let code evolve and refactor later as patterns emerge. This works well when trying new technologies, which I am doing all the time in the project.
 * **styling, logo and tidy up** The UI is pretty rough at the moment with very little custom formatting. Most of what you see is the default look of a yeoman app with bootstrap and sass. I want to do some unique styling, largely as a way to get familiar with CSS, SASS and bootstrap.
+* **more refactoring** I tend to deliver early, let code evolve and refactor later as patterns emerge. This works well when trying new technologies, which I am doing all the time in the project.
+* **tests for controllers** I will try and ensure that more of the code is tested, particularly the angular controllers.
+* **persistent dashboards**
+* **text-based content**
 
 ## What is going to be done in the long term?
 
-* **DevOps** When functionally complete and stable, I want to ensure that this project is easily deployable into nginx, perhaps wrapped in a docker container and scaled via OpenShift. I would also like to look at a CI/CD pipeline that fabric8 could prvovide. This is a chunky piece of work and is likely to be combined into one effort alongside my associated *turbine* project.
+* **DevOps** When functionally complete and stable, I want to ensure that this project is easily deployable into nginx, perhaps wrapped in a docker container and scaled via OpenShift. I would also like to look at a CI/CD pipeline that fabric8 could prvovide. This is a chunky piece of work and is likely to be combined into one effort alongside my associated *turbine* project when I feel everything is sufficiently complete.
 
 ## What is unlikely to be done?
 
 * **angular2** Typescript and various other things in angular2 look awesome, but this project is going to stay as angular-js. When I do decide to make the jump to angular2 it will be when that it is a little more mature. I will also create a brand new project instead of refactoring this one. For now, I want to concentrate on angular-js and get better at it.
 * **gulp** Grunt is fine and I don't mind the declarative approach over coded streams. Having said that, gulp does look cool but I want to concentrate on other things just now.
-* **alternative scaffolding** Yeoman has and is working very well for me. In theory I should be able to easily migrate into another scaffold tool in the future if I want to, but it is not the priority just now.
-* **foundation** So I have bootstrap just now from Yeoman. That will do just fine for now.
-
-## Build & development
-
-Run `grunt` for building, `grunt test` to run the tests and `grunt serve` for preview.
+* **alternative scaffolding** Yeoman has and is working very well for me. In theory I should be able to easily migrate into another scaffold tool in the future, such as the Google web framework if I want to, but it is not the priority just now.
+* **zurb foundation** So I have bootstrap from Yeoman. That will do just fine for now.
