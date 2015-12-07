@@ -58,6 +58,8 @@ I am, of course, standing very much on the shoulders of giants. Indeed, part of 
 ## What is going to be done soon?
 
 * **styling, logo and tidy up** The UI is pretty rough at the moment with very little custom formatting. Most of what you see is the default look of a yeoman app with bootstrap and sass. I want to do some unique styling, largely as a way to get familiar with CSS, SASS and bootstrap.
+* **ability to choose indicators**
+* **ability to chose strategies**
 * **more refactoring** I tend to deliver early, let code evolve and refactor later as patterns emerge. This works well when trying new technologies, which I am doing all the time in the project.
 * **tests for controllers** I will try and ensure that more of the code is tested, particularly the angular controllers.
 * **persistent dashboards**
@@ -65,7 +67,7 @@ I am, of course, standing very much on the shoulders of giants. Indeed, part of 
 
 ## What is going to be done in the long term?
 
-* **DevOps** When functionally complete and stable, I want to ensure that this project is easily deployable into nginx, perhaps wrapped in a docker container and scaled via OpenShift. I would also like to look at a CI/CD pipeline that fabric8 could prvovide. This is a chunky piece of work and is likely to be combined into one effort alongside my associated *turbine* project when I feel everything is sufficiently complete.
+* **DevOps** When functionally complete and stable, I want to ensure that this project is easily deployable into nginx, perhaps wrapped in a docker container and scaled via OpenShift. I would also like to look at a CI/CD pipeline that fabric8 could provide. This is a chunky piece of work and is likely to be combined into one effort alongside my associated *turbine* project when I feel everything is sufficiently complete.
 
 ## What is unlikely to be done?
 
