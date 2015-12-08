@@ -15,8 +15,8 @@ angular.module('atacamaApp')
         var subscription;
 
         // TODO how to properly size the chart?
-        var firstHeight = 170;
-        var firstWidth = 218;
+        var firstHeight = 150;
+        var firstWidth = 210;
         var nextHeight = 238;
         var nextWidth = 238;
 
@@ -95,7 +95,7 @@ angular.module('atacamaApp')
 
         $scope.addIndicators = function(widget) {
             console.log("widget.js::addIndicators");
-            widget.name = 'Ind: ' + $scope.selectedSymbol;
+            widget.name = $scope.selectedSymbol;
             reset();
             $scope.typeIndicators = true;
             unsubscribeTopic();
@@ -216,7 +216,7 @@ angular.module('atacamaApp')
 
         $scope.addOHLC = function(widget) {
             console.log("widget.js::addOHLC");
-            widget.name = 'OHLC: ' + $scope.selectedSymbol;
+            widget.name = $scope.selectedSymbol;
             reset();
             $scope.typeOHLC = true;
             unsubscribeTopic();
@@ -300,7 +300,7 @@ angular.module('atacamaApp')
         // for chart...
         $scope.addStrategies = function(widget) {
           console.log("widget.js::addStrategies");
-          widget.name = 'Str: ' + $scope.selectedSymbol;
+          widget.name = $scope.selectedSymbol;
           reset();
           $scope.typeStrategies = true;
           unsubscribeTopic();

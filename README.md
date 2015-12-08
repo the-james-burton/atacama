@@ -11,7 +11,9 @@ Further down the line, this minimum-runtime plus burst-on-demand approach will p
 
 ## What does it looks like?
 
-*(Screenshots to follow)*
+The dashboard currently looks like this. All the 'widgets' are resizable and moveable, just like a Kibana dashboard.
+
+![atacama](https://github.com/the-james-burton/atacama/blob/master/docs/atacama.png "atacama")
 
 ## How does it work?
 
