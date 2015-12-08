@@ -2,12 +2,11 @@
 
 ## What is it?
 
-Atacama is a backronym that I thought could mean *Automated technical analysis, combined and made available*. It is a web client application for my *turbine* server-side technical analysis engine. I originally designed *the-turbine* specifically so that everything could be viewed in Kibana without the need for a separate client app. Atacama was really conceived as a way for me to learn how to program in angular-js and (hopefully) demonstrate how easy it is to write powerful, single-page applications with angular-js and off-the-shelf open-source components with the minimum of code.
+Atacama is a web client application for my *turbine* server-side technical analysis engine. I originally designed *the-turbine* specifically so that everything could be viewed in Kibana without the need for a separate client app. Atacama was really conceived as a way for me to learn how to program in angular-js and (hopefully) demonstrate how easy it is to write powerful, single-page applications with angular-js and off-the-shelf open-source components with the minimum of code.
 
-As I have developed the app, some interesting opportunities for optimisation above a Kibana-only approach have emerged. One of these is to only calculate indicators and strategies for markets, stocks and interests of the users. Anything that becomes an interest of the user will be a catch-up job for *the-turbine*, which will then do it as fast as possible. In reality, this is a better fit for real enterprise problems such as ticking risk calculations where is it just not feasible to calculate everything all the time.
+As I have developed the app, some interesting opportunities for optimisation above a Kibana-only approach have emerged. One of these is to only calculate indicators and strategies for markets, stocks and interests of the users. Anything that becomes an interest of the user will be a catch-up job for *the-turbine*, which will then do it as fast as possible. In reality, this is a better fit for real enterprise problems such as ticking risk calculations where is it just not feasible to calculate everything all the time. Of course for pro-active full-market trading, everything will need to be analysed all the time. A balance must therefore be struck.
 
 Further down the line, this minimum-runtime plus burst-on-demand approach will provide for some interesting horizontal scalability work. This should give me some nice real world reasons to use the emerging auto-scaling features in products such as OpenShift.
-
 
 ## What does it looks like?
 
@@ -77,3 +76,7 @@ I am, of course, standing very much on the shoulders of giants. Indeed, part of 
 * **gulp** Grunt is fine and I don't mind the declarative approach over coded streams. Having said that, gulp does look cool but I want to concentrate on other things just now.
 * **alternative scaffolding** Yeoman has and is working very well for me. In theory I should be able to easily migrate into another scaffold tool in the future, such as the Google web framework if I want to, but it is not the priority just now.
 * **zurb foundation** So I have bootstrap from Yeoman. That will do just fine for now.
+
+## Where did the name come from?
+
+The Atacama desert is a barren, near waterless place. I believe it has a 'flowering desert' phenomenon whereby vast areas of seemingly lifeless land burst into flower upon receiving rainfall. Of course, you have to be in the right place to see it. This metaphor holds true, I think, for technical (and fundamental) stock market analysis. The analysis alerts you as to where you need to be to see the flowering hapen. Plus, the name Atacama didn't already seem to be taken by any other software project. Pushing it a bit, Atacama could also be a backronym such as *Automated technical analysis, combined and made available*. 
