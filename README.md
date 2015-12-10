@@ -8,6 +8,8 @@ As I have developed the app, some interesting opportunities for optimisation abo
 
 Further down the line, this minimum-runtime plus burst-on-demand approach will provide for some interesting horizontal scalability work. This should give me some nice real world reasons to use the emerging auto-scaling features in products such as OpenShift.
 
+> *DO NOT USE THIS APP FOR REAL TRADING !!*
+
 ## What does it looks like?
 
 The dashboard currently looks like this. All the 'widgets' are resizable and moveable, just like a Kibana dashboard.
@@ -79,4 +81,4 @@ I am, of course, standing very much on the shoulders of giants. Indeed, part of 
 
 ## Where did the name come from?
 
-The Atacama desert is a barren, near waterless place. I believe it has a 'flowering desert' phenomenon whereby vast areas of seemingly lifeless land burst into flower upon receiving rainfall. Of course, you have to be in the right place to see it. This metaphor holds true, I think, for technical (and fundamental) stock market analysis. The analysis alerts you as to where you need to be to see the flowering hapen. Plus, the name Atacama didn't already seem to be taken by any other software project. Pushing it a bit, Atacama could also be a backronym such as *Automated technical analysis, combined and made available*. 
+The Atacama desert is a barren, near waterless place. I believe it has a 'flowering desert' phenomenon whereby vast areas of seemingly lifeless land burst into flower upon receiving rainfall. Of course, you have to be in the right place to see it. This metaphor holds true, I think, for technical (and fundamental) stock market analysis. The analysis alerts you as to where you need to be to see the flowering hapen. Plus, the name Atacama didn't already seem to be taken by any other software project. Pushing it a bit, Atacama could also be a backronym such as *Automated technical analysis, combined and made available*.

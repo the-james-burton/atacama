@@ -24,22 +24,47 @@ angular.module('atacamaApp')
 
         var topic = '';
 
-        $scope.selectedSymbol = 'ABC';
+        // TODO why do these rest calls get executed twice?
 
-        $scope.symbols = ['ABC', 'DEF'];
+        // REST call to get list of symbols from the server...
+        var symbolList = Restangular.one('turbine').one('stocks').one(market);
 
-        $scope.strategies = [
-          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-          { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-          { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-          { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
-        ];
+        symbolList.get().then(function(response) {
+          // console.log(JSON.stringify(response.stocks));
+          $scope.symbols = _.pluck(response.stocks, 'symbol');
+          $scope.selectedSymbol = $scope.symbols[0];
+        });
+
+        // REST call to get list of indicators from the server...
+        var indicators = Restangular.one('turbine').one('indicators');
+
+        indicators.get().then(function(response) {
+          $scope.indicators = response.indicators;
+          $scope.selectedIndicator = $scope.indicators[0];
+          console.log(JSON.stringify($scope.indicators));
+        });
+
+        // REST call to get list of indicators from the server...
+        var strategies = Restangular.one('turbine').one('strategies');
+
+        strategies.get().then(function(response) {
+          $scope.strategies = response.strategies;
+          $scope.selectedIndicator = $scope.strategies[0];
+          console.log(JSON.stringify($scope.strategies));
+        });
+
+        // $scope.strategies = [
+        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
+        // ];
 
         $scope.options = {
             chart: {
@@ -127,50 +152,32 @@ angular.module('atacamaApp')
 
             // TODO when subscribing to a feed, the server acknowledgement should contain a list of key/value indicator tuples
 
-            $scope.data = [
-                  {
+            var closeSeries =  {
                       values: [],
                       key: "close",
                       position: 0,
                       color: "#bdc42d",
                       strokeWidth: 2,
-                  },
+                  };
                   // {
                   //     values: [],
-                  //     key: "indicators.sma12",
+                  //     key: "indicators.bollingerBandsUpperIndicator",
                   //     position: 1,
-                  //     color: "#6090c7",
+                  //     color: "#9f442c",
                   //     strokeWidth: 1,
-                  // },
-                  {
-                      values: [],
-                      key: "indicators.bollingerBandsUpperIndicator",
-                      position: 1,
-                      color: "#9f442c",
-                      strokeWidth: 1,
-                      classed: 'dashed'
-                  },
-                  {
-                      values: [],
-                      key: "indicators.bollingerBandsLowerIndicator",
-                      position: 2,
-                      color: "#9f442c",
-                      strokeWidth: 1,
-                      classed: 'dashed'
-                  }
-                  // {
-                  //     values: [],
-                  //     key: "bollingerBandsMiddleIndicator",
-                  //     position: 3,
-                  //     color: "#2c649f"
                   //     classed: 'dashed'
-                  // }
-                ];
+                  // },
+                  // ];
 
             var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, 'BollingerBands', sod);
 
             promise.then(function (response) {
               var results = elasticsearchService.parseResults(response);
+              // based on the first indicator tick, generate the chart series...
+              $scope.data = chartService.generateChartSeries(results[0]);
+              // add the always present close series to the front of the chart series array...
+              $scope.data.unshift(closeSeries);
+              // convert the indicator ticks into chart data values...
               chartService.convertData($scope.data, results);
             }, function (err) {
               console.trace(err.message);

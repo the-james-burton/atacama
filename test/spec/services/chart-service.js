@@ -46,5 +46,18 @@ describe('Service: chartService', function () {
     expect(series[2].values).toEqual(expected2);
   });
 
+  // {"date":1449734099942,"close":97.20246150811069,"indicators":{"sma12":97.65283855250777},"symbol":"ABC","market":"FTSE100","name":"SMA12","timestamp":"2015-12-10T07:54:59.942Z"}, headers: {"rabbitmq.EXCHANGE_NAME":"turbine.test1.market.ticks","rabbitmq.DELIVERY_TAG":19,"breadcrumbId":"ID-x220t-34259-1449734079305-0-73","rabbitmq.ROUTING_KEY":"","objectType":"org.jimsey.projects.turbine.fuel.domain.IndicatorJson","spring.simple.messaging.DESTINATION_SUFFIX":".FTSE100.ABC.SMA12"}]
+  it('given an indicator, it should generate the chart series boilerplate ', function() {
+    var data = {
+      date: 1449734099942, close: 97, indicators:{testone: 96, testtwo: 98 },
+      symbol: "ABC", market: "FTSE100", name: "testname", timestamp: "2015-12-10T07:54:59.942Z"};
+    var expected = [
+      { values: [], key: "indicators.testone", position: 1, color: "#9f442c", strokeWidth: 1, classed: "dashed" },
+      { values :[], key: "indicators.testtwo", position: 2, color: "#9f442c", strokeWidth: 1, classed: "dashed" }];
+    console.log(JSON.stringify(data));
+    //var series = chartService.generateChartSeriesAlt('indicators', 'indicator', data);
+    var series = chartService.generateChartSeries(data);
+    expect(series).toEqual(expected);
+  });
 
 });
