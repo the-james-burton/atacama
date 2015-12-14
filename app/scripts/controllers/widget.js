@@ -8,7 +8,8 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('CustomWidgetCtrl', function($scope, $uibModal, ngstomp, $resource, $log, elasticsearchService, chartService, Restangular) {
+    .controller('CustomWidgetCtrl', function(
+      $scope, $uibModal, ngstomp, $resource, $log, elasticsearchService, chartService, turbineService, Restangular) {
 
         var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");
@@ -24,33 +25,24 @@ angular.module('atacamaApp')
 
         var topic = '';
 
-        // TODO why do these rest calls get executed twice?
+        // TODO centralise the rest calls more so widgets can share the results...
 
-        // REST call to get list of symbols from the server...
-        var symbolList = Restangular.one('turbine').one('stocks').one(market);
-
-        symbolList.get().then(function(response) {
+        turbineService.symbols(market).then(function(response) {
           // console.log(JSON.stringify(response.stocks));
           $scope.symbols = _.pluck(response.stocks, 'symbol');
           $scope.selectedSymbol = $scope.symbols[0];
         });
 
-        // REST call to get list of indicators from the server...
-        var indicators = Restangular.one('turbine').one('indicators');
-
-        indicators.get().then(function(response) {
-          $scope.indicators = response.indicators;
-          $scope.selectedIndicator = $scope.indicators[0];
-          console.log(JSON.stringify($scope.indicators));
+        turbineService.indicators().then(function(response) {
+            $scope.indicators = response.indicators;
+            $scope.selectedIndicator = $scope.indicators[0];
+            console.log(JSON.stringify($scope.indicators));
         });
 
-        // REST call to get list of indicators from the server...
-        var strategies = Restangular.one('turbine').one('strategies');
-
-        strategies.get().then(function(response) {
-          $scope.strategies = response.strategies;
-          $scope.selectedIndicator = $scope.strategies[0];
-          console.log(JSON.stringify($scope.strategies));
+        turbineService.strategies().then(function(response) {
+            $scope.strategies = response.strategies;
+            $scope.selectedStrategy = $scope.strategies[0];
+            console.log(JSON.stringify($scope.strategies));
         });
 
         // $scope.strategies = [
