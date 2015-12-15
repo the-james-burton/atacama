@@ -102,16 +102,19 @@ angular.module('atacamaApp')
             });
         };
 
-        $scope.selectSymbol = function() {
+        $scope.selectSymbol = function(selectedSymbol) {
+          $scope.selectedSymbol = selectedSymbol;
           $log.log('select symbol: ', $scope.selectedSymbol);
         };
 
-        $scope.selectIndicator = function() {
+        $scope.selectIndicator = function(selectedIndicator) {
+          $scope.selectedIndicator = selectedIndicator;
           $log.log('select indicator: ', $scope.selectedIndicator);
         };
 
-        $scope.selectStrategy = function() {
-          $log.log('select strategy: ', $scope.selectedStrategy);
+        $scope.selectStrategy = function(selectedStrategy) {
+          $scope.selectedStrategy = selectedStrategy;
+          $log.log('selected strategy: ', $scope.selectedStrategy);
         };
 
         $scope.remove = function(widget) {
