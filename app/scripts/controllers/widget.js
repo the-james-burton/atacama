@@ -16,7 +16,7 @@ angular.module('atacamaApp')
         var subscription;
 
         // TODO how to properly size the chart?
-        var firstHeight = 150;
+        var firstHeight = 140;
         var firstWidth = 210;
         var nextHeight = 238;
         var nextWidth = 238;
@@ -25,7 +25,7 @@ angular.module('atacamaApp')
 
         var topic = '';
 
-        // TODO centralise the rest calls more so widgets can share the results...
+        // TODO centralise the rest call data more so widgets can share the results...
 
         turbineService.symbols(market).then(function(response) {
           // console.log(JSON.stringify(response.stocks));
@@ -106,6 +106,14 @@ angular.module('atacamaApp')
           $log.log('select symbol: ', $scope.selectedSymbol);
         };
 
+        $scope.selectIndicator = function() {
+          $log.log('select indicator: ', $scope.selectedIndicator);
+        };
+
+        $scope.selectStrategy = function() {
+          $log.log('select strategy: ', $scope.selectedStrategy);
+        };
+
         $scope.remove = function(widget) {
             $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
         };
@@ -117,7 +125,7 @@ angular.module('atacamaApp')
             $scope.typeIndicators = true;
             unsubscribeTopic();
 
-            var topic = '/topic/indicators' + '.' + market + '.' + $scope.selectedSymbol + '.' + 'BollingerBands';
+            var topic = '/topic/indicators' + '.' + market + '.' + $scope.selectedSymbol + '.' + $scope.selectedIndicator;
 
             console.log(topic);
 
@@ -161,7 +169,7 @@ angular.module('atacamaApp')
                   // },
                   // ];
 
-            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, 'BollingerBands', sod);
+            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, $scope.selectedIndicator, sod);
 
             promise.then(function (response) {
               var results = elasticsearchService.parseResults(response);
@@ -197,13 +205,13 @@ angular.module('atacamaApp')
                 showLegend: false,
                 transitionDuration: 500,
                 xAxis: {
-                  axisLabel: 'Dates',
+                  // axisLabel: 'Dates',
                   tickFormat: function (d) {
                     return d3.time.format('%X')(new Date(d));
                   },
                 },
                 yAxis: {
-                  axisLabel: 'Stock Price',
+                  // axisLabel: 'Stock Price',
                   tickFormat: function (d, i) {
                     return '$' + d3.format(',.1f')(d);
                   }
@@ -306,7 +314,7 @@ angular.module('atacamaApp')
 
           // {"date":1401174943825,"symbol":"ABC","market":"FTSE100","close":100.0,"action":"enter","amount":1,"position":6,"cost":11.0,"value":14.0,"timestamp":"2015-11-06T18:21:47.263Z"}
 
-          var topic = '/topic/strategies' + '.' + market + '.' + $scope.selectedSymbol + '.' + 'SMAStrategy';
+          var topic = '/topic/strategies' + '.' + market + '.' + $scope.selectedSymbol + '.' + $scope.selectedStrategy;
 
           console.log(topic);
 
@@ -353,7 +361,7 @@ angular.module('atacamaApp')
                 }
               ];
 
-          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, 'SMAStrategy', sod);
+          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, $scope.selectedStrategy, sod);
 
           promise.then(function (response) {
             var results = elasticsearchService.parseResults(response);
@@ -377,13 +385,13 @@ angular.module('atacamaApp')
               showLegend: false,
               transitionDuration: 500,
               xAxis: {
-                axisLabel: 'Dates',
+                // axisLabel: 'Dates',
                 tickFormat: function (d) {
                   return d3.time.format('%X')(new Date(d));
                 },
               },
               yAxis: {
-                axisLabel: 'Value',
+                // axisLabel: 'Value',
                 tickFormat: function (d, i) {
                   return '$' + d3.format(',.1f')(d);
                 }

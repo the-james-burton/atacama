@@ -13,8 +13,6 @@
 				<div class="box-header">
 					<h3>{{ widget.name }}</h3>
 					<div class="box-header-btns pull-right">
-						<select class="dropdown-menu" style="width: 150px; margin-bottom: 20px; display:inline-block;"
-							ng-change="selectSymbol()" ng-model="selectedSymbol" ng-options="symbol for symbol in symbols"></select>
 						<a title="OHLC"       ng-click="addOHLC(widget)"><i class="glyphicon glyphicon-pencil"></i></a>
 						<a title="indicators" ng-click="addIndicators(widget)"><i class="glyphicon glyphicon-random"></i></a>
 						<a title="strategies" ng-click="addStrategies(widget)"><i class="glyphicon glyphicon-file"></i></a>
@@ -23,6 +21,12 @@
 						<a title="Remove widget" ng-click="remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>
 					</div>
 				</div>
+				<select class="dropdown" style="width: 32%; margin-bottom: 10px; display:inline-block;"
+					ng-change="selectSymbol()" ng-model="selectedSymbol" ng-options="symbol for symbol in symbols"></select>
+				<select class="dropdown" style="width: 32%; margin-bottom: 10px; display:inline-block;"
+					ng-change="selectIndicator()" ng-model="selectedIndicator" ng-options="indicator for indicator in indicators"></select>
+				<select class="dropdown" style="width: 32%; margin-bottom: 10px; display:inline-block;"
+					ng-change="selectStrategy()" ng-model="selectedStrategy" ng-options="strategy for strategy in strategies"></select>
 
 				<!-- TODO is there a better way of switching widget content than ng-if? -->
 				<div ng-if="typeOHLC" class="box-content">
