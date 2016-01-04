@@ -17,7 +17,7 @@ angular.module('atacamaApp')
 
         // TODO how to properly size the chart?
         var firstHeight = 140;
-        var firstWidth = 200;
+        var firstWidth = 185;
         var nextHeight = 228;
         var nextWidth = 228;
 
@@ -158,6 +158,8 @@ angular.module('atacamaApp')
             var closeSeries =  {
                       values: [],
                       key: "close",
+                      type: "line",
+                      yAxis: 1,
                       position: 0,
                       color: "#bdc42d",
                       strokeWidth: 2,
@@ -189,7 +191,7 @@ angular.module('atacamaApp')
 
             $scope.options = {
               chart: {
-                type: 'lineChart',
+                type: 'multiChart',
                 height: firstHeight + ((widget.sizeY - 1) * nextHeight),
                 width: firstWidth + ((widget.sizeX - 1) * nextWidth),
                 margin: {
@@ -213,10 +215,16 @@ angular.module('atacamaApp')
                     return d3.time.format('%X')(new Date(d));
                   },
                 },
-                yAxis: {
+                yAxis1: {
                   // axisLabel: 'Stock Price',
                   tickFormat: function (d, i) {
                     return '$' + d3.format(',.1f')(d);
+                  }
+                },
+                yAxis2: {
+                  // axisLabel: 'Stock Price',
+                  tickFormat: function (d, i) {
+                    return d3.format(',.1f')(d);
                   }
                 }
               }

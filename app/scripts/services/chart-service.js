@@ -14,24 +14,23 @@ angular.module('atacamaApp')
 
         // TODO convert these functions to return values instead of modifying the parameters...
 
-        this.generateChartSeriesAlt = function(name, prefix, results) {
-          console.log(JSON.stringify(results));
-          var i = 1;
-          // var series = _.map(_.keys(results.indicators, 'indicators'), convertIndicators);
-          var series = _(results).property(name)
-            .keys()
-            .map(function(item){
-                return { values: [],
-                key: prefix + '.' + item,
-                position: i++,
-                color: "#9f442c",
-                strokeWidth: 1,
-                classed: 'dashed'
-            };})
-            .value();
-          console.log(JSON.stringify(series));
-          return series;
-        };
+        // this.generateChartSeriesAlt = function(name, prefix, results) {
+        //   console.log(JSON.stringify(results));
+        //   var i = 1;
+        //   var series = _(results).property(name)
+        //     .keys()
+        //     .map(function(item){
+        //         return { values: [],
+        //         key: prefix + '.' + item,
+        //         position: i++,
+        //         color: "#9f442c",
+        //         strokeWidth: 1,
+        //         classed: 'dashed'
+        //     };})
+        //     .value();
+        //   console.log(JSON.stringify(series));
+        //   return series;
+        // };
 
         this.generateChartSeries = function(results) {
           console.log(JSON.stringify(_(results).property('indicators').value()));
@@ -43,6 +42,8 @@ angular.module('atacamaApp')
             .map(function(indicator){
                 return { values: [],
                 key: 'indicators.' + indicator,
+                type: 'line',
+                yAxis: 2,
                 position: i++,
                 color: "#9f442c",
                 strokeWidth: 1,
