@@ -12,7 +12,8 @@ angular.module('atacamaApp')
 
         $scope.gridsterOptions = {
             margins: [20, 20],
-            columns: 4,
+            columns: 5,
+            width: 'auto',
             draggable: {
                 handle: 'h3'
             }

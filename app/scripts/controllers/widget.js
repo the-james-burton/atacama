@@ -17,9 +17,9 @@ angular.module('atacamaApp')
 
         // TODO how to properly size the chart?
         var firstHeight = 140;
-        var firstWidth = 210;
-        var nextHeight = 238;
-        var nextWidth = 238;
+        var firstWidth = 200;
+        var nextHeight = 228;
+        var nextWidth = 228;
 
         var market = 'FTSE100';
 
