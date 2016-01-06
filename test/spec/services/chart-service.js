@@ -52,8 +52,8 @@ describe('Service: chartService', function () {
       date: 1449734099942, close: 97, indicators:{testone: 96, testtwo: 98 },
       symbol: "ABC", market: "FTSE100", name: "testname", timestamp: "2015-12-10T07:54:59.942Z"};
     var expected = [
-      { values: [], key: "indicators.testone", position: 1, color: "#9f442c", strokeWidth: 1, classed: "dashed" },
-      { values :[], key: "indicators.testtwo", position: 2, color: "#9f442c", strokeWidth: 1, classed: "dashed" }];
+      { values: [], key: "indicators.testone", type: 'line', yAxis: 2, position: 1, color: "#9f442c", strokeWidth: 1, classed: "dashed" },
+      { values :[], key: "indicators.testtwo", type: 'line', yAxis: 2, position: 2, color: "#9f442c", strokeWidth: 1, classed: "dashed" }];
     console.log(JSON.stringify(data));
     //var series = chartService.generateChartSeriesAlt('indicators', 'indicator', data);
     var series = chartService.generateChartSeries(data);

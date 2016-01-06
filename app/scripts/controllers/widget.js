@@ -265,6 +265,7 @@ angular.module('atacamaApp')
             $scope.options = {
                 chart: {
                     type: 'candlestickBarChart',
+                    // type: 'ohlcBarChart',
                     height: firstHeight + ((widget.sizeY - 1) * nextHeight),
                     width: firstWidth + ((widget.sizeX - 1) * nextWidth),
                     margin: {
