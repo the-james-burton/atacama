@@ -108,12 +108,12 @@ angular.module('atacamaApp')
         };
 
         $scope.selectIndicator = function(selectedIndicator) {
-          $scope.selectedIndicator = selectedIndicator;
+          $scope.selectedIndicator = JSON.parse(selectedIndicator);
           $log.log('select indicator: ', $scope.selectedIndicator);
         };
 
         $scope.selectStrategy = function(selectedStrategy) {
-          $scope.selectedStrategy = selectedStrategy;
+          $scope.selectedStrategy = JSON.parse(selectedStrategy);
           $log.log('selected strategy: ', $scope.selectedStrategy);
         };
 
@@ -128,66 +128,12 @@ angular.module('atacamaApp')
             $scope.typeIndicators = true;
             unsubscribeTopic();
 
-            var topic = '/topic/indicators' + '.' + market + '.' + $scope.selectedSymbol + '.' + $scope.selectedIndicator;
-
-            console.log(topic);
-
-            ngstomp
-              .subscribe(topic, onMessage, {}, $scope);
-
-            function onMessage(message) {
-              // TODO add proper selection of indicators and strategies...
-              // TODO publish different indicators and strategies on their own topics...
-              var payload = JSON.parse(message.body);
-              // if (payload.name !== 'BollingerBands') {
-              //  return;
-              //}
-              chartService.addData($scope.data, payload);
-              $scope.$apply();
-            }
-
             $scope.config = {
               deepWatchData: true,
               // deepWatchDataDepth: 1,
               refreshDataOnly: false,
               disabled: false
             };
-
-            // TODO when subscribing to a feed, the server acknowledgement should contain a list of key/value indicator tuples
-
-            var closeSeries =  {
-                      values: [],
-                      key: "close",
-                      type: "line",
-                      yAxis: 1,
-                      position: 0,
-                      color: "#bdc42d",
-                      strokeWidth: 2,
-                  };
-                  // {
-                  //     values: [],
-                  //     key: "indicators.bollingerBandsUpperIndicator",
-                  //     position: 1,
-                  //     color: "#9f442c",
-                  //     strokeWidth: 1,
-                  //     classed: 'dashed'
-                  // },
-                  // ];
-
-            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, $scope.selectedIndicator, sod);
-
-            promise.then(function (response) {
-              var results = elasticsearchService.parseResults(response);
-              // based on the first indicator tick, generate the chart series...
-              $scope.data = chartService.generateChartSeries(results[0]);
-              // add the always present close series to the front of the chart series array...
-              $scope.data.unshift(closeSeries);
-              // convert the indicator ticks into chart data values...
-              chartService.convertData($scope.data, results);
-            }, function (err) {
-              console.trace(err.message);
-            });
-
 
             $scope.options = {
               chart: {
@@ -229,6 +175,49 @@ angular.module('atacamaApp')
                 }
               }
             };
+
+            var closeSeries =  {
+                      values: [],
+                      key: "close",
+                      type: "line",
+                      yAxis: 1,
+                      position: 0,
+                      color: "#bdc42d",
+                      strokeWidth: 2,
+                  };
+
+            var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, $scope.selectedIndicator.name, sod);
+
+            promise.then(function (response) {
+              var results = elasticsearchService.parseResults(response);
+              // based on the first indicator tick, generate the chart series...
+              $scope.data = chartService.generateChartSeries(results[0]);
+              // add the always present close series to the front of the chart series array...
+              $scope.data.unshift(closeSeries);
+              // convert the indicator ticks into chart data values...
+              chartService.convertData($scope.data, results);
+            }, function (err) {
+              console.trace(err.message);
+            });
+
+            var topic = '/topic/indicators' + '.' + market + '.' + $scope.selectedSymbol + '.' + $scope.selectedIndicator.name;
+
+            console.log(topic);
+
+            ngstomp
+              .subscribe(topic, onMessage, {}, $scope);
+
+            function onMessage(message) {
+              // TODO add proper selection of indicators and strategies...
+              // TODO publish different indicators and strategies on their own topics...
+              var payload = JSON.parse(message.body);
+              // if (payload.name !== 'BollingerBands') {
+              //  return;
+              //}
+              chartService.addData($scope.data, payload);
+              $scope.$apply();
+            }
+
 
         };
 
@@ -324,63 +313,12 @@ angular.module('atacamaApp')
           $scope.typeStrategies = true;
           unsubscribeTopic();
 
-          // {"date":1401174943825,"symbol":"ABC","market":"FTSE100","close":100.0,"action":"enter","amount":1,"position":6,"cost":11.0,"value":14.0,"timestamp":"2015-11-06T18:21:47.263Z"}
-
-          var topic = '/topic/strategies' + '.' + market + '.' + $scope.selectedSymbol + '.' + $scope.selectedStrategy;
-
-          console.log(topic);
-
-          ngstomp
-            .subscribe(topic, onMessage, {}, $scope);
-
-          function onMessage(message) {
-            var payload = JSON.parse(message.body);
-            // if (payload.name !== 'SMAStrategy') {
-            //  return;
-            // }
-            chartService.addData($scope.data, payload);
-            $scope.$apply();
-          }
-
           $scope.config = {
             deepWatchData: true,
             // deepWatchDataDepth: 1,
             refreshDataOnly: false,
             disabled: false
           };
-
-          $scope.data = [
-                {
-                    values: [],
-                    key: "position",
-                    position: 0,
-                    color: "#d3da41",
-                    strokeWidth: 2,
-                },
-                {
-                    values: [],
-                    key: "value",
-                    position: 1,
-                    color: "#4b9f51",
-                    strokeWidth: 3
-                },
-                {
-                    values: [],
-                    key: "cash",
-                    position: 2,
-                    color: "#af2727",
-                    strokeWidth: 2
-                }
-              ];
-
-          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, $scope.selectedStrategy, sod);
-
-          promise.then(function (response) {
-            var results = elasticsearchService.parseResults(response);
-            chartService.convertData($scope.data, results);
-          }, function (err) {
-            console.trace(err.message);
-          });
 
           $scope.options = {
             chart: {
@@ -410,6 +348,57 @@ angular.module('atacamaApp')
               },
             }
           };
+
+          $scope.data = [
+                {
+                    values: [],
+                    key: "position",
+                    position: 0,
+                    color: "#d3da41",
+                    strokeWidth: 2,
+                },
+                {
+                    values: [],
+                    key: "value",
+                    position: 1,
+                    color: "#4b9f51",
+                    strokeWidth: 3
+                },
+                {
+                    values: [],
+                    key: "cash",
+                    position: 2,
+                    color: "#af2727",
+                    strokeWidth: 2
+                }
+              ];
+
+          var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, $scope.selectedStrategy.name, sod);
+
+          promise.then(function (response) {
+            var results = elasticsearchService.parseResults(response);
+            chartService.convertData($scope.data, results);
+          }, function (err) {
+            console.trace(err.message);
+          });
+
+          // {"date":1401174943825,"symbol":"ABC","market":"FTSE100","close":100.0,"action":"enter","amount":1,"position":6,"cost":11.0,"value":14.0,"timestamp":"2015-11-06T18:21:47.263Z"}
+
+          var topic = '/topic/strategies' + '.' + market + '.' + $scope.selectedSymbol + '.' + $scope.selectedStrategy.name;
+
+          console.log(topic);
+
+          ngstomp
+            .subscribe(topic, onMessage, {}, $scope);
+
+          function onMessage(message) {
+            var payload = JSON.parse(message.body);
+            // if (payload.name !== 'SMAStrategy') {
+            //  return;
+            // }
+            chartService.addData($scope.data, payload);
+            $scope.$apply();
+          }
 
         };
 
