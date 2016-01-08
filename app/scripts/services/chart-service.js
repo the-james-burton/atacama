@@ -55,7 +55,7 @@ angular.module('atacamaApp')
         };
 
         this.convertData = function(data, results) {
-          $log.debug(data + ',' + results);
+          // $log.debug(JSON.stringify(data) + ',' + JSON.stringify(results));
           _.forEach(data, function(item) {
             data[item.position].values = _.sortBy(_.map(results, _.curry(convertMessages)(item.key)), 'x');
           });
@@ -68,7 +68,7 @@ angular.module('atacamaApp')
         };
 
         var convertMessages = function(property, messages) {
-          $log.debug(property + '.' + messages);
+          // $log.debug(property + '.' + JSON.stringify(messages));
           return _.mapKeys({'date' : _.get(messages, 'date'), property: _.get(messages, property)}, renameProperties);
          // return _(messages).pick([property, 'date']).mapKeys(renameProperties).value();
        };

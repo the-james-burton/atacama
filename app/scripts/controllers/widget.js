@@ -25,23 +25,34 @@ angular.module('atacamaApp')
 
         var topic = '';
 
+        $scope.selectedIndicator = {};
+        $scope.selectedStrategy = {};
+
+        $scope.selectedIndicator.name = "...";
+        $scope.selectedStrategy.name = "...";
+
         // TODO centralise the rest call data more so widgets can share the results...
+
+        // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
+        // {"indicators":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
+        // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
         turbineService.symbols(market).then(function(response) {
           // console.log(JSON.stringify(response.stocks));
           $scope.symbols = _.pluck(response.stocks, 'symbol');
-          $scope.selectedSymbol = $scope.symbols[0];
+          // $scope.selectedSymbol = $scope.symbols[0];
+          $scope.selectedSymbol = "...";
         });
 
         turbineService.indicators().then(function(response) {
             $scope.indicators = response.indicators;
-            $scope.selectedIndicator = $scope.indicators[0];
+            // $scope.selectedIndicator = $scope.indicators[0];
             console.log(JSON.stringify($scope.indicators));
         });
 
         turbineService.strategies().then(function(response) {
             $scope.strategies = response.strategies;
-            $scope.selectedStrategy = $scope.strategies[0];
+            // $scope.selectedStrategy = $scope.strategies[0];
             console.log(JSON.stringify($scope.strategies));
         });
 
@@ -78,12 +89,14 @@ angular.module('atacamaApp')
 
         // set the size of the chart as the widget is resized...
         $scope.$on('gridster-item-resized', function(item) {
-            $scope.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
-            $scope.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
-            $scope.api.update();
+          $log.debug('gridster-item-resized');
+          $scope.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
+          $scope.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
+          $scope.api.update();
         });
 
         function reset() {
+          $log.debug('reset()');
           $scope.typeOHLC = false;
           $scope.typeIndicators = false;
           $scope.typeStrategies = false;
@@ -105,16 +118,19 @@ angular.module('atacamaApp')
         $scope.selectSymbol = function(selectedSymbol) {
           $scope.selectedSymbol = selectedSymbol;
           $log.log('select symbol: ', $scope.selectedSymbol);
+          $scope.addOHLC($scope.widget);
         };
 
         $scope.selectIndicator = function(selectedIndicator) {
           $scope.selectedIndicator = JSON.parse(selectedIndicator);
           $log.log('select indicator: ', $scope.selectedIndicator);
+          $scope.addIndicators($scope.widget);
         };
 
         $scope.selectStrategy = function(selectedStrategy) {
           $scope.selectedStrategy = JSON.parse(selectedStrategy);
           $log.log('selected strategy: ', $scope.selectedStrategy);
+          $scope.addStrategies($scope.widget);
         };
 
         $scope.remove = function(widget) {
@@ -123,6 +139,7 @@ angular.module('atacamaApp')
 
         $scope.addIndicators = function(widget) {
             console.log("widget.js::addIndicators");
+            $scope.widget = widget;
             widget.name = $scope.selectedSymbol;
             reset();
             $scope.typeIndicators = true;
@@ -189,6 +206,7 @@ angular.module('atacamaApp')
             var promise = elasticsearchService.getIndicatorsAfter($scope.selectedSymbol, $scope.selectedIndicator.name, sod);
 
             promise.then(function (response) {
+              traceLog("elasticsearch");
               var results = elasticsearchService.parseResults(response);
               // based on the first indicator tick, generate the chart series...
               $scope.data = chartService.generateChartSeries(results[0]);
@@ -208,6 +226,7 @@ angular.module('atacamaApp')
               .subscribe(topic, onMessage, {}, $scope);
 
             function onMessage(message) {
+              traceLog("rabbit");
               // TODO add proper selection of indicators and strategies...
               // TODO publish different indicators and strategies on their own topics...
               var payload = JSON.parse(message.body);
@@ -223,26 +242,11 @@ angular.module('atacamaApp')
 
         $scope.addOHLC = function(widget) {
             console.log("widget.js::addOHLC");
+            $scope.widget = widget;
             widget.name = $scope.selectedSymbol;
             reset();
             $scope.typeOHLC = true;
             unsubscribeTopic();
-
-            // $scope.message = moment();
-
-            // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
-
-            // ticks.get().then(function(response) {
-            //     $scope.data[0].values = response.ticks;
-            // });
-
-            var promise = elasticsearchService.getTicksAfter($scope.selectedSymbol, sod);
-
-            promise.then(function (response) {
-              $scope.data[0].values = elasticsearchService.parseResults(response);
-            }, function (err) {
-              console.trace(err.message);
-            });
 
             $scope.config = {
               deepWatchData: true,
@@ -286,14 +290,32 @@ angular.module('atacamaApp')
                 }
             };
 
-            function onTick(message) {
+            // $scope.message = moment();
+
+            // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
+
+            // ticks.get().then(function(response) {
+            //     $scope.data[0].values = response.ticks;
+            // });
+
+            var promise = elasticsearchService.getTicksAfter($scope.selectedSymbol, sod);
+
+            promise.then(function (response) {
+              traceLog("elasticsearch");
+              $scope.data[0].values = elasticsearchService.parseResults(response);
+            }, function (err) {
+              console.trace(err.message);
+            });
+
+            function onMessage(message) {
+              traceLog("rabbit");
               $scope.data[0].values.push(JSON.parse(message.body));
               $scope.$apply();
             }
 
             // TODO disconnect if alrady connected
             topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
-            ngstomp.subscribe(topic, onTick, {}, $scope);
+            ngstomp.subscribe(topic, onMessage, {}, $scope);
 
         };
 
@@ -308,6 +330,7 @@ angular.module('atacamaApp')
         // for chart...
         $scope.addStrategies = function(widget) {
           console.log("widget.js::addStrategies");
+          $scope.widget = widget;
           widget.name = $scope.selectedSymbol;
           reset();
           $scope.typeStrategies = true;
@@ -376,6 +399,7 @@ angular.module('atacamaApp')
           var promise = elasticsearchService.getStrategiesAfter($scope.selectedSymbol, $scope.selectedStrategy.name, sod);
 
           promise.then(function (response) {
+            traceLog("elasticsearch");
             var results = elasticsearchService.parseResults(response);
             chartService.convertData($scope.data, results);
           }, function (err) {
@@ -392,6 +416,7 @@ angular.module('atacamaApp')
             .subscribe(topic, onMessage, {}, $scope);
 
           function onMessage(message) {
+            traceLog("rabbit");
             var payload = JSON.parse(message.body);
             // if (payload.name !== 'SMAStrategy') {
             //  return;
@@ -406,6 +431,13 @@ angular.module('atacamaApp')
         $scope.$on('$destroy', function() {
           unsubscribeTopic();
         });
+
+        function traceLog(text) {
+          $log.debug("{0}.{1}.{2} i:{3} s:{4} {5}".format(
+            $scope.widget.name, $scope.widget.row, $scope.widget.col,
+            $scope.selectedIndicator.name, $scope.selectedStrategy.name,
+            text));
+        }
 
         function unsubscribeTopic() {
           if (topic.length > 0) {
