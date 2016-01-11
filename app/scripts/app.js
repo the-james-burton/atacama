@@ -88,6 +88,7 @@ angular
                 redirectTo: '/'
             });
 
+            // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
             String.prototype.format = function () {
               var args = arguments;
               return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });

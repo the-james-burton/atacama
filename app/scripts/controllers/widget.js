@@ -209,7 +209,9 @@ angular.module('atacamaApp')
               traceLog("elasticsearch");
               var results = elasticsearchService.parseResults(response);
               // based on the first indicator tick, generate the chart series...
-              $scope.data = chartService.generateChartSeries(results[0]);
+              var overlay = _.result(_.find($scope.indicators, { 'name': results[0].name }), 'overlay');
+              // console.log("{0} is overlay:{1}".format(results[0].name, overlay));
+              $scope.data = chartService.generateChartSeries(results[0], overlay);
               // add the always present close series to the front of the chart series array...
               $scope.data.unshift(closeSeries);
               // convert the indicator ticks into chart data values...

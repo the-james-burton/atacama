@@ -32,7 +32,7 @@ angular.module('atacamaApp')
         //   return series;
         // };
 
-        this.generateChartSeries = function(results) {
+        this.generateChartSeries = function(results, overlay) {
           console.log(JSON.stringify(_(results).property('indicators').value()));
           var i = 1;
           // var series = _.map(_.keys(results.indicators, 'indicators'), convertIndicators);
@@ -43,7 +43,7 @@ angular.module('atacamaApp')
                 return { values: [],
                 key: 'indicators.' + indicator,
                 type: 'line',
-                yAxis: 2,
+                yAxis: overlay ? 2 : 1,
                 position: i++,
                 color: "#9f442c",
                 strokeWidth: 1,
