@@ -60,7 +60,11 @@
 					<select class="dropdown-menu" style="display: inline-block;"
 						ng-change="selectStrategy()" ng-model="selectedStrategy" ng-options="strategy for strategy in strategies"></select> -->
 
+					<nvd3 options='options' data='data' api="api" config='config'></nvd3>
+
 					<!-- TODO is there a better way of switching widget content than ng-if? -->
+
+					<!--
 					<div ng-if="typeOHLC">
 						<nvd3 options='options' data='data' api="api" config='config'></nvd3>
 					</div>
@@ -71,6 +75,7 @@
 						<nvd3 options='options' data='data' api="api" config='config'></nvd3>
 					</div>
 				</div>
+			-->
 
 				<!--
 					<table st-table="rowCollection" class="table table-condensed table-responsive">

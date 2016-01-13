@@ -56,6 +56,8 @@ angular.module('atacamaApp')
             console.log(JSON.stringify($scope.strategies));
         });
 
+        reset();
+
         // $scope.strategies = [
         //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
         //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
@@ -69,24 +71,6 @@ angular.module('atacamaApp')
         //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
         // ];
 
-        $scope.options = {
-            chart: {
-                // TODO error message appears in console...
-            }
-        };
-
-        $scope.config = {
-            deepWatchData: true,
-            // deepWatchDataDepth: 1,
-            refreshDataOnly: false,
-            disabled: true
-        };
-
-        $scope.data = [{
-            key: $scope.selectedSymbol
-                //values: [{}]
-        }];
-
         // set the size of the chart as the widget is resized...
         $scope.$on('gridster-item-resized', function(item) {
           $log.debug('gridster-item-resized');
@@ -97,6 +81,24 @@ angular.module('atacamaApp')
 
         function reset() {
           $log.debug('reset()');
+          $scope.options = {
+              chart: {
+                  // TODO error message appears in console...
+              }
+          };
+
+          $scope.config = {
+              deepWatchData: true,
+              // deepWatchDataDepth: 1,
+              refreshDataOnly: false,
+              disabled: true
+          };
+
+          $scope.data = [{
+              key: $scope.selectedSymbol
+                  //values: [{}]
+          }];
+          // TODO nasty, nasty, nasty - must split this file into three angular directives...
           $scope.typeOHLC = false;
           $scope.typeIndicators = false;
           $scope.typeStrategies = false;
@@ -144,6 +146,10 @@ angular.module('atacamaApp')
             reset();
             $scope.typeIndicators = true;
             unsubscribeTopic();
+
+            if ( $scope.selectedSymbol === "..." || $scope.selectedIndicator === "...") {
+              return;
+            }
 
             $scope.config = {
               deepWatchData: true,
@@ -207,8 +213,9 @@ angular.module('atacamaApp')
 
             promise.then(function (response) {
               traceLog("elasticsearch");
-              var results = elasticsearchService.parseResults(response);
               // based on the first indicator tick, generate the chart series...
+              var results = elasticsearchService.parseResults(response);
+              // if our indicator is an overlay, then that will affect the series generation...
               var overlay = _.result(_.find($scope.indicators, { 'name': results[0].name }), 'overlay');
               // console.log("{0} is overlay:{1}".format(results[0].name, overlay));
               $scope.data = chartService.generateChartSeries(results[0], overlay);
@@ -249,6 +256,10 @@ angular.module('atacamaApp')
             reset();
             $scope.typeOHLC = true;
             unsubscribeTopic();
+
+            if ( $scope.selectedSymbol === "..." ) {
+              return;
+            }
 
             $scope.config = {
               deepWatchData: true,
@@ -337,6 +348,10 @@ angular.module('atacamaApp')
           reset();
           $scope.typeStrategies = true;
           unsubscribeTopic();
+
+          if ( $scope.selectedSymbol === "..." || $scope.selectedStrategy === "...") {
+            return;
+          }
 
           $scope.config = {
             deepWatchData: true,

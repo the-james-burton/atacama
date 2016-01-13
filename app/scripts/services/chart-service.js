@@ -43,7 +43,7 @@ angular.module('atacamaApp')
                 return { values: [],
                 key: 'indicators.' + indicator,
                 type: 'line',
-                yAxis: overlay ? 2 : 1,
+                yAxis: overlay ? 1 : 2,
                 position: i++,
                 color: "#9f442c",
                 strokeWidth: 1,
