@@ -95,8 +95,8 @@ angular.module('atacamaApp')
           };
 
           $scope.data = [{
-              key: $scope.selectedSymbol
-                  //values: [{}]
+              key: $scope.selectedSymbol,
+              values: [{}]
           }];
           // TODO nasty, nasty, nasty - must split this file into three angular directives...
           $scope.typeOHLC = false;
