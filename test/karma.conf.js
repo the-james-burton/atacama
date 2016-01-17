@@ -41,7 +41,7 @@ module.exports = function(config) {
       'bower_components/javascript-detect-element-resize/detect-element-resize.js',
       'bower_components/angular-gridster/src/angular-gridster.js',
       'bower_components/stomp-websocket/lib/stomp.min.js',
-      'bower_components/AngularStompDK/dist/angular-stomp.min.js',
+      'bower_components/AngularStompDK/dist/angular-stomp.js',
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/elasticsearch/elasticsearch.angular.js',
       'bower_components/lodash/lodash.js',

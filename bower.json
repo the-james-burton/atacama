@@ -15,7 +15,7 @@
     "angular-smart-table": "~2.1.4",
     "angular-touch": "^1.4.7",
     "angular-gridster": "~0.13.5",
-    "AngularStompDK": "~0.3.2",
+    "AngularStompDK": "~0.8.0",
     "bootstrap-sass-official": "^3.2.0",
     "d3": "~3.5.6",
     "elasticsearch": "~10.0.1",
