@@ -14,8 +14,11 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/psDashboard.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
     <!-- endbuild -->
   </head>
+
   <body ng-app="atacamaApp">
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -46,6 +49,7 @@
               <li><a ng-href="#/chart">chart</a></li>
               <li><a ng-href="#/test">test</a></li>
               <li><a ng-href="#/grid">grid</a></li>
+              <li><a ng-href="#/gridnew">gridnew</a></li>
               <li><a ng-href="#/about">About</a></li>
               <li><a ng-href="#/">Contact</a></li>
             </ul>
@@ -105,6 +109,7 @@
     <script src="bower_components/restangular/dist/restangular.js"></script>
     <script src="bower_components/sockjs/sockjs.js"></script>
     <script src="bower_components/streamjs/stream.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.js"></script>
     <!-- endbower -->
 
     <!-- TODO need to get bower to use this one instead -->
@@ -126,6 +131,8 @@
         <script src="scripts/controllers/widget.js"></script>
         <script src="scripts/controllers/widgetsettings.js"></script>
         <script src="scripts/services/turbine-service.js"></script>
+        <script src="scripts/directives/wwaDashboardDirective.js"></script>
+        <script src="scripts/directives/psDashboardDirective.js"></script>
         <!-- endbuild -->
 </body>
 </html>

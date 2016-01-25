@@ -18,6 +18,7 @@ angular
         'ngRoute',
         'ngSanitize',
         'ngTouch',
+        'ngStorage',        
         'nvd3',
         'angularMoment',
         'restangular',
@@ -83,6 +84,13 @@ angular
                 templateUrl: 'views/grid.html',
                 controller: 'GridCtrl',
                 controllerAs: 'grid'
+            })
+            .when('/gridnew', {
+                // templateUrl: 'views/gridnew.html',
+                // controller: 'GridCtrlNew',
+                // controllerAs: 'gridnew'
+                template: '<wwa-dashboard></wwa-dashboard>'
+
             })
             .otherwise({
                 redirectTo: '/'
