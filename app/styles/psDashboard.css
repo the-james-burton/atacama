@@ -5,11 +5,11 @@ ps-dashboard {
     width: 100%;
 }
 
-/*.gridster .gridster-item {
+.gridster .gridster-item {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     background-color: white;
     overflow: hidden;
-}*/
+}
 
 .ps-widget-header {
     position: relative;

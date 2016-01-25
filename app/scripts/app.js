@@ -18,7 +18,7 @@ angular
         'ngRoute',
         'ngSanitize',
         'ngTouch',
-        'ngStorage',        
+        'ngStorage',
         'nvd3',
         'angularMoment',
         'restangular',
