@@ -7,7 +7,7 @@ angular.module('atacamaApp').directive('wwaDashboard', ['$localStorage', functio
         template: '<ps-dashboard></ps-dashboard>',
         link: function (scope) {
 
-            scope.title = 'WWA Dashboard';
+            scope.title = 'Dashboard';
 
             scope.gridsterOpts = {
                 columns: 12,
@@ -30,7 +30,7 @@ angular.module('atacamaApp').directive('wwaDashboard', ['$localStorage', functio
                         template: '<wwa-temperature></wwa-temperature>',
                         widgetSettings: {
                             id: 1000,
-                            templateUrl: 'views/wwaSelectLocationTemplate.html',
+                            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
                             controller: 'wwaSelectLocationController'
                         }
                     }
@@ -45,7 +45,7 @@ angular.module('atacamaApp').directive('wwaDashboard', ['$localStorage', functio
                         template: '<wwa-inventory></wwa-inventory>',
                         widgetSettings: {
                             id: 1002,
-                            templateUrl: 'views/wwaSelectLocationTemplate.html',
+                            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
                             controller: 'wwaSelectLocationController'
                         }
                     }
@@ -60,7 +60,7 @@ angular.module('atacamaApp').directive('wwaDashboard', ['$localStorage', functio
                         template: '<wwa-employee></wwa-employee>',
                         widgetSettings: {
                             id: 5000,
-                            templateUrl: 'views/wwaSelectEmployeeTemplate.html',
+                            templateUrl: 'views/partials/wwaSelectEmployeeTemplate.html',
                             controller: 'wwaSelectEmployeeController'
                         }
                     }
