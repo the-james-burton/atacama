@@ -36,13 +36,28 @@ angular.module('atacamaApp').directive('wwaDashboard', ['$localStorage', functio
                     }
                 },
                 {
-                    title: 'Inventory',
+                    title: 'OHLC',
+                    settings: {
+                        sizeX: 3,
+                        sizeY: 3,
+                        minSizeX: 2,
+                        minSizeY: 2,
+                        template: '<atacama-ohlc></atacama-ohlc>',
+                        widgetSettings: {
+                            id: 1000,
+                            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
+                            controller: 'wwaSelectLocationController'
+                        }
+                    }
+                },
+                {
+                    title: 'Indicator',
                     settings: {
                         sizeX: 5,
                         sizeY: 3,
                         minSizeX: 2,
                         minSizeY: 2,
-                        template: '<wwa-inventory></wwa-inventory>',
+                        template: '<atacama-indicator></atacama-indicator>',
                         widgetSettings: {
                             id: 1002,
                             templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
@@ -51,17 +66,17 @@ angular.module('atacamaApp').directive('wwaDashboard', ['$localStorage', functio
                     }
                 },
                 {
-                    title: 'Employee',
+                    title: 'Strategy',
                     settings: {
                         sizeX: 5,
                         sizeY: 3,
                         minSizeX: 2,
                         minSizeY: 2,
-                        template: '<wwa-employee></wwa-employee>',
+                        template: '<atacama-strategy></atacama-strategy>',
                         widgetSettings: {
                             id: 5000,
-                            templateUrl: 'views/partials/wwaSelectEmployeeTemplate.html',
-                            controller: 'wwaSelectEmployeeController'
+                            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
+                            controller: 'wwaSelectLocationController'
                         }
                     }
                 }

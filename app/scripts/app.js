@@ -60,11 +60,6 @@ angular
                 controller: 'OhlcCtrl',
                 controllerAs: 'ohlc'
             })
-            .when('/ohlc', {
-                templateUrl: 'views/ohlc.html',
-                controller: 'OhlcCtrl',
-                controllerAs: 'ohlc'
-            })
             .when('/direct', {
                 templateUrl: 'views/direct.html',
                 controller: 'DirectCtrl',
@@ -86,11 +81,7 @@ angular
                 controllerAs: 'grid'
             })
             .when('/gridnew', {
-                // templateUrl: 'views/gridnew.html',
-                // controller: 'GridCtrlNew',
-                // controllerAs: 'gridnew'
                 template: '<wwa-dashboard></wwa-dashboard>'
-
             })
             .otherwise({
                 redirectTo: '/'
