@@ -18,12 +18,6 @@ angular.module('atacamaApp')
         var sod = moment(0, "HH").format("x");
         var subscription;
 
-        // TODO how to properly size the chart?
-        var firstHeight = 50;
-        var firstWidth = 50;
-        var nextHeight = 60;
-        var nextWidth = 60;
-
         var market = 'FTSE100';
 
         var topic = '';
@@ -59,8 +53,13 @@ angular.module('atacamaApp')
         // set the size of the chart as the widget is resized...
         $scope.$on('gridster-item-resized', function(item) {
           $log.debug('gridster-item-resized');
-          $scope.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
-          $scope.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
+          //$scope.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
+          //$scope.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
+          //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
+          //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
+
+          $scope.options.chart.height = $scope.offsetParent.prop('offsetHeight');
+          $scope.options.chart.width = $scope.offsetParent.prop('offsetWidth')
           $scope.api.update();
         });
 
@@ -114,8 +113,8 @@ angular.module('atacamaApp')
                 chart: {
                     type: 'candlestickBarChart',
                     // type: 'ohlcBarChart',
-                    height: firstHeight + ((item.sizeY - 1) * nextHeight),
-                    width: firstWidth + ((item.sizeX - 1) * nextWidth),
+                    height: $scope.offsetParent.prop('offsetHeight'),
+                    width: $scope.offsetParent.prop('offsetWidth'),
                     margin: {
                         top: 20,
                         right: 40,
