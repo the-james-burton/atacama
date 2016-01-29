@@ -2,28 +2,32 @@
 <div class="wwa-temperature-widget" ng-controller="OhlcWidgetCtrl">
 
     <div class="wwa-temperature-heading">
-        <img class="wwa-temperature-icon" ng-src="images/therm-icon.png" alt="thermometer" />
-        <span class="www-temperature-title">OLC {{blah1.name}}</span>
+      <!-- <h3>{{ widget.name }}</h3> -->
+      <div class="btn-group" uib-dropdown>
+        <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>{{selectedSymbol}}<span class="caret"></span></button>
+        <ul class="dropdown-menu" aria-labelledby="single-button">
+          <li ng-repeat="symbol in symbols">
+            <a href ng-click="selectSymbol('{{symbol}}')">{{symbol}}</a>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <!--<div class="wwa-temperature-body" style="background-image: url(/images/{{selectedLocation.image}});">-->
     <!-- This fixes the image error because it tries to bind the source before selectedLocation is set -->
-    <div class="wwa-temperature-body" ng-style="selectedLocation != null && {'background-image': 'url(/images/' + selectedLocation.image + ')'};">
-        <div ng-if="!isLoaded && !hasError">
+    <div class="wwa-temperature-body">
+        <!-- <div ng-if="!isLoaded && !hasError">
             <i class="fa fa-refresh fa-2x fa-spin"></i>
-        </div>
-        <div ng-if="isLoaded" class="wwa-temperature-view">
-            <div class="wwa-temperature-river-name">
-                {{ selectedLocation.name }}
-            </div>
-            <div class="wwa-temperature-degrees">
-                {{ selectedLocation.temperature }}º
-            </div>
-        </div>
-        <div ng-if="hasError">
+        </div> -->
+        <!-- <div ng-if="isLoaded" class="wwa-temperature-view">
+        </div> -->
+
+        <nvd3 options='options' data='data' api="api" config='config'></nvd3>
+
+        <!-- <div ng-if="hasError">
             <h4>Error loading widget.</h4>
             <button class="btn btn-primary" ng-click="loadLocation()">Reload</button>
-        </div>
+        </div> -->
     </div>
 
 </div>
