@@ -58,6 +58,7 @@ angular.module('atacamaApp')
           //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
           //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
 
+          // TODO this is inconsistent... needs work!
           $scope.options.chart.height = $scope.offsetParent.prop('offsetHeight');
           $scope.options.chart.width = $scope.offsetParent.prop('offsetWidth')
           $scope.api.update();
@@ -192,13 +193,13 @@ angular.module('atacamaApp')
 
         function unsubscribeTopic() {
           if (topic.length > 0) {
-            ngstomp.unsubscribe(topic, unsubscribeCallback);
+            ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
           }
         }
 
-        function unsubscribeCallback() {
-          console.log("Unsubscribed from " + topic);
-        }
+        // function unsubscribeCallback() {
+        //   console.log("Unsubscribed from " + topic);
+        // }
 
 
     });
