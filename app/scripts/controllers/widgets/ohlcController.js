@@ -9,7 +9,8 @@
  */
 angular.module('atacamaApp')
     .controller('OhlcWidgetCtrl', function(
-      $scope, $uibModal, ngstomp, $resource, $log, elasticsearchService, chartService, turbineService, Restangular) {
+      $scope, $uibModal, ngstomp, $resource, $log, Restangular,
+      elasticsearchService, chartService, turbineService, utilService) {
         $scope.blah1 = {
             name: "woo! yay!"
         }
@@ -97,7 +98,7 @@ angular.module('atacamaApp')
             item.name = $scope.selectedSymbol;
             reset();
             $scope.typeOHLC = true;
-            unsubscribeTopic();
+            utilService.unsubscribeTopic(topic);
 
             if ( $scope.selectedSymbol === "..." ) {
               return;
@@ -156,14 +157,14 @@ angular.module('atacamaApp')
             var promise = elasticsearchService.getTicksAfter($scope.selectedSymbol, sod);
 
             promise.then(function (response) {
-              traceLog("elasticsearch");
+              utilService.traceLog(item, "elasticsearch");
               $scope.data[0].values = elasticsearchService.parseResults(response);
             }, function (err) {
               console.trace(err.message);
             });
 
             function onMessage(message) {
-              traceLog("rabbit");
+              utilService.traceLog(item, "rabbit");
               $scope.data[0].values.push(JSON.parse(message.body));
               $scope.$apply();
             }
@@ -183,19 +184,19 @@ angular.module('atacamaApp')
         //  };
 
         $scope.$on('$destroy', function() {
-          unsubscribeTopic();
+          utilService.unsubscribeTopic(topic);
         });
 
-        function traceLog(text) {
-          $log.debug("{0}.{1}.{2} {5}".format(
-            $scope.item.name, $scope.item.row, $scope.item.col, text));
-        }
-
-        function unsubscribeTopic() {
-          if (topic.length > 0) {
-            ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
-          }
-        }
+        // function traceLog(text) {
+        //   $log.debug("{0}.{1}.{2} {5}".format(
+        //     $scope.item.name, $scope.item.row, $scope.item.col, text));
+        // }
+        //
+        // function unsubscribeTopic() {
+        //   if (topic.length > 0) {
+        //     ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
+        //   }
+        // }
 
         // function unsubscribeCallback() {
         //   console.log("Unsubscribed from " + topic);
