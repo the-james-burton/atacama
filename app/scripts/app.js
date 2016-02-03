@@ -37,10 +37,15 @@ angular
         // var url = 'http://localhost:48002/ticks';
         var url = 'http://localhost:15674/stomp';
 
+        // https://www.rabbitmq.com/web-stomp.html
+        // Missing features
+        // RabbitMQ-Web-Stomp is fully compatible with the RabbitMQ-STOMP plugin, with the exception of STOMP heartbeats.
+        // STOMP heartbeats won't work with SockJS.
         ngstompProvider
             .url(url)
             .credential('guest', 'guest')
             .debug(true)
+            .heartbeat(0, 0)
             .vhost('/')
             .class(SockJS);
 

@@ -11,14 +11,12 @@ angular.module('atacamaApp')
     .controller('OhlcWidgetCtrl', function(
       $scope, $uibModal, ngstomp, $resource, $log, Restangular,
       elasticsearchService, chartService, turbineService, utilService) {
-        $scope.blah1 = {
-            name: "woo! yay!"
-        }
 
-        var url = 'http://localhost:48002';
+        // var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");
-        var subscription;
+        // var subscription;
 
+        // TODO select market in UI
         var market = 'FTSE100';
 
         var topic = '';
@@ -169,7 +167,7 @@ angular.module('atacamaApp')
               $scope.$apply();
             }
 
-            // TODO disconnect if alrady connected
+            // TODO rewrite this using the fluent API
             topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
             ngstomp.subscribe(topic, onMessage, {}, $scope);
 
@@ -186,21 +184,5 @@ angular.module('atacamaApp')
         $scope.$on('$destroy', function() {
           utilService.unsubscribeTopic(topic);
         });
-
-        // function traceLog(text) {
-        //   $log.debug("{0}.{1}.{2} {5}".format(
-        //     $scope.item.name, $scope.item.row, $scope.item.col, text));
-        // }
-        //
-        // function unsubscribeTopic() {
-        //   if (topic.length > 0) {
-        //     ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
-        //   }
-        // }
-
-        // function unsubscribeCallback() {
-        //   console.log("Unsubscribed from " + topic);
-        // }
-
 
     });
