@@ -174,6 +174,7 @@ angular.module('atacamaApp')
             topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
             ngstomp.subscribe(topic, onMessage, {}, $scope);
 
+            // TODO catch all errors and set the property and message as required
             $scope.isLoaded = true;
             $scope.hasError = false;
 

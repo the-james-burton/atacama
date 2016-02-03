@@ -11,21 +11,6 @@ angular.module('atacamaApp').directive('atacamaOhlc',
                 scope.isLoaded = false;
                 scope.hasError = false;
                 scope.offsetParent = element.offsetParent();
-
-                scope.loadLocation = function () {
-                    scope.hasError = false;
-                    dataService.getLocation(scope.item.widgetSettings.id)
-                    .then(function (data) {
-                        scope.selectedLocation = data;
-                        scope.isLoaded = true;
-                        scope.isError = false;
-                    }, function (data) {
-                        //error
-                        scope.hasError = true;
-                    });
-                };
-
-                scope.loadLocation();
             }
         };
     }]);
