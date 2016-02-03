@@ -164,15 +164,19 @@ angular.module('atacamaApp')
               console.trace(err.message);
             });
 
+            topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
+            //ngstomp.subscribe(topic, onMessage, {}, $scope);
+            ngstomp
+              .subscribeTo(topic)
+              .callback(onMessage)
+              .bindTo($scope)
+              .connect();
+
             function onMessage(message) {
               utilService.traceLog(item, "rabbit");
               $scope.data[0].values.push(JSON.parse(message.body));
               $scope.$apply();
             }
-
-            // TODO rewrite this using the fluent API
-            topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
-            ngstomp.subscribe(topic, onMessage, {}, $scope);
 
             // TODO catch all errors and set the property and message as required
             $scope.isLoaded = true;
