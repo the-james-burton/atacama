@@ -16,18 +16,17 @@
     <!--<div class="wwa-temperature-body" style="background-image: url(/images/{{selectedLocation.image}});">-->
     <!-- This fixes the image error because it tries to bind the source before selectedLocation is set -->
     <div class="wwa-temperature-body">
-        <!-- <div ng-if="!isLoaded && !hasError">
+        <div ng-if="!isLoaded && !hasError">
             <i class="fa fa-refresh fa-2x fa-spin"></i>
-        </div> -->
-        <!-- <div ng-if="isLoaded" class="wwa-temperature-view">
-        </div> -->
+        </div>
+        <div ng-if="isLoaded" class="wwa-temperature-view">
+          <nvd3 options='options' data='data' api="api" config='config'></nvd3>
+        </div>
 
-        <nvd3 options='options' data='data' api="api" config='config'></nvd3>
-
-        <!-- <div ng-if="hasError">
+        <div ng-if="hasError">
             <h4>Error loading widget.</h4>
             <button class="btn btn-primary" ng-click="loadLocation()">Reload</button>
-        </div> -->
+        </div>
     </div>
 
 </div>

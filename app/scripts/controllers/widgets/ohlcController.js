@@ -65,6 +65,9 @@ angular.module('atacamaApp')
 
         function reset() {
           $log.debug('reset()');
+          $scope.isLoaded = false;
+          $scope.hasError = false;
+
           $scope.options = {
               chart: {
                   // TODO error message appears in console...
@@ -170,6 +173,9 @@ angular.module('atacamaApp')
             // TODO rewrite this using the fluent API
             topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
             ngstomp.subscribe(topic, onMessage, {}, $scope);
+
+            $scope.isLoaded = true;
+            $scope.hasError = false;
 
         };
 
