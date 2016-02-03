@@ -169,12 +169,14 @@ angular.module('atacamaApp')
             ngstomp
               .subscribeTo(topic)
               .callback(onMessage)
+              .withBodyInJson()
               .bindTo($scope)
               .connect();
 
             function onMessage(message) {
               utilService.traceLog(item, "rabbit");
-              $scope.data[0].values.push(JSON.parse(message.body));
+              // $scope.data[0].values.push(JSON.parse(message.body));
+              $scope.data[0].values.push(message.body);
               $scope.$apply();
             }
 
@@ -192,8 +194,9 @@ angular.module('atacamaApp')
         //    unsubscribeTopic();
         //  };
 
-        $scope.$on('$destroy', function() {
-          utilService.unsubscribeTopic(topic);
-        });
+        // I don't think this is necessary anymore...
+        // $scope.$on('$destroy', function() {
+        //   utilService.unsubscribeTopic(topic);
+        // });
 
     });
