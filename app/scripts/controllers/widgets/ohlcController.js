@@ -184,7 +184,7 @@ angular.module('atacamaApp')
                 .withBodyInJson()
                 .bindTo($scope)
                 .connect();
-              throw new Error("unable to subscribe to topic: " + topic);
+              // throw new Error("unable to subscribe to topic: " + topic);
             } catch (err) {
               stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
               console.trace(stompError);
