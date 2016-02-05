@@ -12,6 +12,9 @@ angular.module('atacamaApp')
       $scope, $uibModal, ngstomp, $resource, $log, Restangular,
       elasticsearchService, chartService, turbineService, utilService) {
 
+        $scope.isLoaded = false;
+        $scope.hasError = false;
+
         // var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");
         // var subscription;
@@ -21,18 +24,24 @@ angular.module('atacamaApp')
 
         var topic = '';
 
+        var esError = '';
+        var stompError = '';
+
         // TODO centralise the rest call data more so widgets can share the results...
 
         // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
         // {"indicators":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
         // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
-        turbineService.symbols(market).then(function(response) {
-          // console.log(JSON.stringify(response.stocks));
-          $scope.symbols = _.pluck(response.stocks, 'symbol');
-          // $scope.selectedSymbol = $scope.symbols[0];
-          $scope.selectedSymbol = "...";
-        });
+          turbineService.symbols(market).then(function(response) {
+            // console.log(JSON.stringify(response.stocks));
+            $scope.symbols = _.pluck(response.stocks, 'symbol');
+            // $scope.selectedSymbol = $scope.symbols[0];
+            $scope.selectedSymbol = "...";
+          }, function (err) {
+            esError = 'unable to load symbols: {0}'.format(err.message);
+            console.trace(esError);
+          });
 
         reset();
 
@@ -161,17 +170,25 @@ angular.module('atacamaApp')
               utilService.traceLog(item, "elasticsearch");
               $scope.data[0].values = elasticsearchService.parseResults(response);
             }, function (err) {
-              console.trace(err.message);
+              esError = 'unable to load data: {0}:{1}'.format($scope.selectedSymbol, err.message);
+              console.trace(esError);
             });
 
             topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
             //ngstomp.subscribe(topic, onMessage, {}, $scope);
-            ngstomp
-              .subscribeTo(topic)
-              .callback(onMessage)
-              .withBodyInJson()
-              .bindTo($scope)
-              .connect();
+
+            try {
+              ngstomp
+                .subscribeTo(topic)
+                .callback(onMessage)
+                .withBodyInJson()
+                .bindTo($scope)
+                .connect();
+              throw new Error("unable to subscribe to topic: " + topic);
+            } catch (err) {
+              stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
+              console.trace(stompError);
+            }
 
             function onMessage(message) {
               utilService.traceLog(item, "rabbit");
@@ -180,9 +197,12 @@ angular.module('atacamaApp')
               $scope.$apply();
             }
 
-            // TODO catch all errors and set the property and message as required
             $scope.isLoaded = true;
-            $scope.hasError = false;
+
+            // TODO catch all errors and set the property and message as required
+            if (esError !== '' || stompError !== '') {
+              $scope.hasError = true;
+            }
 
         };
 
