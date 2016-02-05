@@ -69,7 +69,8 @@ angular.module('atacamaApp')
           // TODO this is inconsistent... needs work!
           $scope.options.chart.height = $scope.offsetParent.prop('offsetHeight');
           $scope.options.chart.width = $scope.offsetParent.prop('offsetWidth')
-          $scope.api.update();
+          // TODO now causes an error... is this needed?
+          // $scope.api.update();
         });
 
         function reset() {

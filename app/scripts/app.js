@@ -97,37 +97,4 @@ angular
               var args = arguments;
               return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
             };
-    })
-
-
-.directive('integer', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, ele, attr, ctrl) {
-            ctrl.$parsers.unshift(function(viewValue) {
-                if (viewValue === '' || viewValue === null || typeof viewValue === 'undefined') {
-                    return null;
-                }
-                return parseInt(viewValue, 10);
-            });
-        }
-    };
-})
-
-.service('es', function (esFactory) {
-  return esFactory({
-    host: 'localhost:9200',
-    apiVersion: '1.7'
-  });
-})
-
-// helper code
-.filter('object2Array', function() {
-    return function(input) {
-        var out = [];
-        for (var i in input) {
-            out.push(input[i]);
-        }
-        return out;
-    }
-});
+    });
