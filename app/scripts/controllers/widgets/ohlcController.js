@@ -8,218 +8,220 @@
  * Controller of the atacamaApp
  */
 angular.module('atacamaApp')
-    .controller('OhlcWidgetCtrl', function(
-      $scope, $uibModal, ngstomp, $resource, $log, Restangular,
-      elasticsearchService, chartService, turbineService, utilService) {
-        var vm = this;
+    .controller('OhlcWidgetCtrl', OhlcWidgetController);
 
-        vm.isLoaded = false;
-        vm.hasError = false;
+function OhlcWidgetController(
+  $scope, $uibModal, ngstomp, $resource, $log, Restangular,
+  elasticsearchService, chartService, turbineService, utilService) {
+    var vm = this;
 
-        // var url = 'http://localhost:48002';
-        var sod = moment(0, "HH").format("x");
-        // var subscription;
+    vm.isLoaded = false;
+    vm.hasError = false;
 
-        // TODO select market in UI
-        var market = 'FTSE100';
+    // var url = 'http://localhost:48002';
+    var sod = moment(0, "HH").format("x");
+    // var subscription;
 
-        var topic = '';
+    // TODO select market in UI
+    var market = 'FTSE100';
 
-        var esError = '';
-        var stompError = '';
+    var topic = '';
 
-        // TODO centralise the rest call data more so widgets can share the results...
+    var esError = '';
+    var stompError = '';
 
-        // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
-        // {"indicators":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
-        // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
+    // TODO centralise the rest call data more so widgets can share the results...
 
-          turbineService.symbols(market).then(function(response) {
-            // console.log(JSON.stringify(response.stocks));
-            vm.symbols = _.pluck(response.stocks, 'symbol');
-            // $scope.selectedSymbol = $scope.symbols[0];
-            vm.selectedSymbol = "...";
-          }, function (err) {
-            esError = 'unable to load symbols: {0}'.format(err.message);
-            console.trace(esError);
-          });
+    // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
+    // {"indicators":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
+    // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
+      turbineService.symbols(market).then(function(response) {
+        // console.log(JSON.stringify(response.stocks));
+        vm.symbols = _.pluck(response.stocks, 'symbol');
+        // $scope.selectedSymbol = $scope.symbols[0];
+        vm.selectedSymbol = "...";
+      }, function (err) {
+        esError = 'unable to load symbols: {0}'.format(err.message);
+        console.trace(esError);
+      });
+
+    reset();
+
+    // $scope.strategies = [
+    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
+    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
+    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
+    // ];
+
+    // set the size of the chart as the widget is resized...
+    $scope.$on('gridster-item-resized', function(item) {
+      $log.debug('gridster-item-resized');
+      //vm.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
+      //vm.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
+      //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
+      //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
+
+      // TODO this is inconsistent... needs work!
+      vm.options.chart.height = $scope.offsetParent.prop('offsetHeight');
+      vm.options.chart.width = $scope.offsetParent.prop('offsetWidth')
+      // TODO now causes an error... is this needed?
+      // $scope.api.update();
+    });
+
+    function reset() {
+      $log.debug('reset()');
+      vm.isLoaded = false;
+      vm.hasError = false;
+
+      vm.options = {
+          chart: {
+              // TODO error message appears in console...
+          }
+      };
+
+      vm.config = {
+          deepWatchData: true,
+          // deepWatchDataDepth: 1,
+          refreshDataOnly: false,
+          disabled: true
+      };
+
+      vm.data = [{
+          key: vm.selectedSymbol,
+          values: [{}]
+      }];
+    }
+
+    var addOHLC = function(item) {
+        console.log("ohlcController.js::addOHLC");
+        // $scope.item = item;
+        item.name = vm.selectedSymbol;
         reset();
+        vm.typeOHLC = true;
+        utilService.unsubscribeTopic(topic);
 
-        // $scope.strategies = [
-        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-        //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-        //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
-        // ];
-
-        // set the size of the chart as the widget is resized...
-        $scope.$on('gridster-item-resized', function(item) {
-          $log.debug('gridster-item-resized');
-          //vm.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
-          //vm.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
-          //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
-          //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
-
-          // TODO this is inconsistent... needs work!
-          vm.options.chart.height = $scope.offsetParent.prop('offsetHeight');
-          vm.options.chart.width = $scope.offsetParent.prop('offsetWidth')
-          // TODO now causes an error... is this needed?
-          // $scope.api.update();
-        });
-
-        function reset() {
-          $log.debug('reset()');
-          vm.isLoaded = false;
-          vm.hasError = false;
-
-          vm.options = {
-              chart: {
-                  // TODO error message appears in console...
-              }
-          };
-
-          vm.config = {
-              deepWatchData: true,
-              // deepWatchDataDepth: 1,
-              refreshDataOnly: false,
-              disabled: true
-          };
-
-          vm.data = [{
-              key: vm.selectedSymbol,
-              values: [{}]
-          }];
+        if ( vm.selectedSymbol === "..." ) {
+          return;
         }
 
-        var addOHLC = function(item) {
-            console.log("ohlcController.js::addOHLC");
-            // $scope.item = item;
-            item.name = vm.selectedSymbol;
-            reset();
-            vm.typeOHLC = true;
-            utilService.unsubscribeTopic(topic);
+        vm.config = {
+          deepWatchData: true,
+          // deepWatchDataDepth: 1,
+          refreshDataOnly: false,
+          disabled: false
+        };
 
-            if ( vm.selectedSymbol === "..." ) {
-              return;
-            }
-
-            vm.config = {
-              deepWatchData: true,
-              // deepWatchDataDepth: 1,
-              refreshDataOnly: false,
-              disabled: false
-            };
-
-            vm.options = {
-                chart: {
-                    type: 'candlestickBarChart',
-                    // type: 'ohlcBarChart',
-                    height: $scope.offsetParent.prop('offsetHeight'),
-                    width: $scope.offsetParent.prop('offsetWidth'),
-                    margin: {
-                        top: 20,
-                        right: 40,
-                        bottom: 40,
-                        left: 40
+        vm.options = {
+            chart: {
+                type: 'candlestickBarChart',
+                // type: 'ohlcBarChart',
+                height: $scope.offsetParent.prop('offsetHeight'),
+                width: $scope.offsetParent.prop('offsetWidth'),
+                margin: {
+                    top: 20,
+                    right: 40,
+                    bottom: 40,
+                    left: 40
+                },
+                x: function(d) {
+                    return d['date'];
+                },
+                y: function(d) {
+                    return d['close'];
+                },
+                showValues: true,
+                transitionDuration: 500,
+                xAxis: {
+                    // axisLabel: 'Dates',
+                    tickFormat: function(d) {
+                        return d3.time.format('%X')(new Date(d));
                     },
-                    x: function(d) {
-                        return d['date'];
-                    },
-                    y: function(d) {
-                        return d['close'];
-                    },
-                    showValues: true,
-                    transitionDuration: 500,
-                    xAxis: {
-                        // axisLabel: 'Dates',
-                        tickFormat: function(d) {
-                            return d3.time.format('%X')(new Date(d));
-                        },
-                    },
-                    yAxis: {
-                        // axisLabel: 'Stock Price',
-                        tickFormat: function(d, i) {
-                            return '$' + d3.format(',.1f')(d);
-                        }
+                },
+                yAxis: {
+                    // axisLabel: 'Stock Price',
+                    tickFormat: function(d, i) {
+                        return '$' + d3.format(',.1f')(d);
                     }
                 }
-            };
-
-            // $scope.message = moment();
-
-            // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
-
-            // ticks.get().then(function(response) {
-            //     vm.data[0].values = response.ticks;
-            // });
-
-            var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
-
-            promise.then(function (response) {
-              utilService.traceLog(item, "elasticsearch");
-              vm.data[0].values = elasticsearchService.parseResults(response);
-            }, function (err) {
-              esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
-              console.trace(esError);
-            });
-
-            topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
-            //ngstomp.subscribe(topic, onMessage, {}, $scope);
-
-            try {
-              ngstomp
-                .subscribeTo(topic)
-                .callback(onMessage)
-                .withBodyInJson()
-                .bindTo($scope)
-                .connect();
-              // throw new Error("unable to subscribe to topic: " + topic);
-            } catch (err) {
-              stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
-              console.trace(stompError);
             }
-
-            function onMessage(message) {
-              utilService.traceLog(item, "rabbit");
-              // vm.data[0].values.push(JSON.parse(message.body));
-              vm.data[0].values.push(message.body);
-              $scope.$apply();
-            }
-
-            vm.isLoaded = true;
-
-            // TODO catch all errors and set the property and message as required
-            if (esError !== '' || stompError !== '') {
-              vm.hasError = true;
-            }
-
         };
 
+        // $scope.message = moment();
 
-        vm.selectSymbol = function(selectedSymbol) {
-          vm.selectedSymbol = selectedSymbol;
-          $log.log('select symbol: ', vm.selectedSymbol);
-          addOHLC($scope.item);
-        };
+        // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
 
-        // for smart-table...
-        // $scope.addStrategies = function(widget) {
-        //    console.log("widget.js::addStrategies");
-        //    reset();
-        //    $scope.typeStrategies = true;
-        //    unsubscribeTopic();
-        //  };
-
-        // I don't think this is necessary anymore...
-        // $scope.$on('$destroy', function() {
-        //   utilService.unsubscribeTopic(topic);
+        // ticks.get().then(function(response) {
+        //     vm.data[0].values = response.ticks;
         // });
 
-    });
+        var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
+
+        promise.then(function (response) {
+          utilService.traceLog(item, "elasticsearch");
+          vm.data[0].values = elasticsearchService.parseResults(response);
+        }, function (err) {
+          esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
+          console.trace(esError);
+        });
+
+        topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
+        //ngstomp.subscribe(topic, onMessage, {}, $scope);
+
+        try {
+          ngstomp
+            .subscribeTo(topic)
+            .callback(onMessage)
+            .withBodyInJson()
+            .bindTo($scope)
+            .connect();
+          // throw new Error("unable to subscribe to topic: " + topic);
+        } catch (err) {
+          stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
+          console.trace(stompError);
+        }
+
+        function onMessage(message) {
+          utilService.traceLog(item, "rabbit");
+          // vm.data[0].values.push(JSON.parse(message.body));
+          vm.data[0].values.push(message.body);
+          $scope.$apply();
+        }
+
+        vm.isLoaded = true;
+
+        // TODO catch all errors and set the property and message as required
+        if (esError !== '' || stompError !== '') {
+          vm.hasError = true;
+        }
+
+    };
+
+
+    vm.selectSymbol = function(selectedSymbol) {
+      vm.selectedSymbol = selectedSymbol;
+      $log.log('select symbol: ', vm.selectedSymbol);
+      addOHLC($scope.item);
+    };
+
+    // for smart-table...
+    // $scope.addStrategies = function(widget) {
+    //    console.log("widget.js::addStrategies");
+    //    reset();
+    //    $scope.typeStrategies = true;
+    //    unsubscribeTopic();
+    //  };
+
+    // I don't think this is necessary anymore...
+    // $scope.$on('$destroy', function() {
+    //   utilService.unsubscribeTopic(topic);
+    // });
+
+}
