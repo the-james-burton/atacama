@@ -19,6 +19,7 @@
 
       vm.isLoaded = false;
       vm.hasError = false;
+      vm.selectedSymbol = "...";
 
       // var url = 'http://localhost:48002';
       var sod = moment(0, "HH").format("x");
@@ -33,22 +34,13 @@
       var stompError = '';
 
       // TODO centralise the rest call data more so widgets can share the results...
-
       // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
       // {"indicators":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
       // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
-        turbineService.symbols(market).then(function(response) {
-          // console.log(JSON.stringify(response.stocks));
-          vm.symbols = _.pluck(response.stocks, 'symbol');
-          // $scope.selectedSymbol = $scope.symbols[0];
-          vm.selectedSymbol = "...";
-        }, function (err) {
-          esError = 'unable to load symbols: {0}'.format(err.message);
-          console.trace(esError);
-        });
-
       reset();
+
+      fetchStocks();
 
       // $scope.strategies = [
       //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
@@ -102,110 +94,49 @@
         }];
       }
 
-      var addOHLC = function(item) {
-          console.log("ohlcController.js::addOHLC");
-          // $scope.item = item;
-          item.name = vm.selectedSymbol;
-          reset();
-          vm.typeOHLC = true;
-          utilService.unsubscribeTopic(topic);
+      function initialise() {
+        vm.config = {
+          deepWatchData: true,
+          // deepWatchDataDepth: 1,
+          refreshDataOnly: false,
+          disabled: false
+        };
 
-          if ( vm.selectedSymbol === "..." ) {
-            return;
-          }
-
-          vm.config = {
-            deepWatchData: true,
-            // deepWatchDataDepth: 1,
-            refreshDataOnly: false,
-            disabled: false
-          };
-
-          vm.options = {
-              chart: {
-                  type: 'candlestickBarChart',
-                  // type: 'ohlcBarChart',
-                  height: $scope.offsetParent.prop('offsetHeight'),
-                  width: $scope.offsetParent.prop('offsetWidth'),
-                  margin: {
-                      top: 20,
-                      right: 40,
-                      bottom: 40,
-                      left: 40
-                  },
-                  x: function(d) {
-                      return d['date'];
-                  },
-                  y: function(d) {
-                      return d['close'];
-                  },
-                  showValues: true,
-                  transitionDuration: 500,
-                  xAxis: {
-                      // axisLabel: 'Dates',
-                      tickFormat: function(d) {
-                          return d3.time.format('%X')(new Date(d));
-                      },
-                  },
-                  yAxis: {
-                      // axisLabel: 'Stock Price',
-                      tickFormat: function(d, i) {
-                          return '$' + d3.format(',.1f')(d);
-                      }
-                  }
-              }
-          };
-
-          // $scope.message = moment();
-
-          // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
-
-          // ticks.get().then(function(response) {
-          //     vm.data[0].values = response.ticks;
-          // });
-
-          var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
-
-          promise.then(function (response) {
-            utilService.traceLog(item, "elasticsearch");
-            vm.data[0].values = elasticsearchService.parseResults(response);
-          }, function (err) {
-            esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
-            console.trace(esError);
-          });
-
-          topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
-          //ngstomp.subscribe(topic, onMessage, {}, $scope);
-
-          try {
-            ngstomp
-              .subscribeTo(topic)
-              .callback(onMessage)
-              .withBodyInJson()
-              .bindTo($scope)
-              .connect();
-            // throw new Error("unable to subscribe to topic: " + topic);
-          } catch (err) {
-            stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
-            console.trace(stompError);
-          }
-
-          function onMessage(message) {
-            utilService.traceLog(item, "rabbit");
-            // vm.data[0].values.push(JSON.parse(message.body));
-            vm.data[0].values.push(message.body);
-            $scope.$apply();
-          }
-
-          vm.isLoaded = true;
-
-          // TODO catch all errors and set the property and message as required
-          if (esError !== '' || stompError !== '') {
-            vm.hasError = true;
-          }
-
-      };
-
+        vm.options = {
+            chart: {
+                type: 'candlestickBarChart',
+                // type: 'ohlcBarChart',
+                height: $scope.offsetParent.prop('offsetHeight'),
+                width: $scope.offsetParent.prop('offsetWidth'),
+                margin: {
+                    top: 20,
+                    right: 40,
+                    bottom: 40,
+                    left: 40
+                },
+                x: function(d) {
+                    return d['date'];
+                },
+                y: function(d) {
+                    return d['close'];
+                },
+                showValues: true,
+                transitionDuration: 500,
+                xAxis: {
+                    // axisLabel: 'Dates',
+                    tickFormat: function(d) {
+                        return d3.time.format('%X')(new Date(d));
+                    },
+                },
+                yAxis: {
+                    // axisLabel: 'Stock Price',
+                    tickFormat: function(d, i) {
+                        return '$' + d3.format(',.1f')(d);
+                    }
+                }
+            }
+        };
+      }
 
       vm.selectSymbol = function(selectedSymbol) {
         vm.selectedSymbol = selectedSymbol;
@@ -226,6 +157,92 @@
       //   utilService.unsubscribeTopic(topic);
       // });
 
+      function fetchStocks() {
+        turbineService.symbols(market).then(function(response) {
+        // console.log(JSON.stringify(response.stocks));
+        vm.symbols = _.pluck(response.stocks, 'symbol');
+        // $scope.selectedSymbol = $scope.symbols[0];
+        }, function (err) {
+          esError = 'unable to load symbols: {0}'.format(err.message);
+          console.trace(esError);
+        });
+      }
+
+      function fetchHistoricDataFromES() {
+        var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
+
+        promise.then(function (response) {
+          vm.data[0].values = elasticsearchService.parseResults(response);
+        }, function (err) {
+          esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
+          console.trace(esError);
+        });
+      }
+
+      function subscribeToStompUpdates() {
+        topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
+        //ngstomp.subscribe(topic, onMessage, {}, $scope);
+
+        try {
+          ngstomp
+            .subscribeTo(topic)
+            .callback(onMessage)
+            .withBodyInJson()
+            .bindTo($scope)
+            .connect();
+          // throw new Error("unable to subscribe to topic: " + topic);
+        } catch (err) {
+          stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
+          console.trace(stompError);
+        }
+      }
+
+      function onMessage(message) {
+        utilService.traceLog(item, "rabbit");
+        // vm.data[0].values.push(JSON.parse(message.body));
+        vm.data[0].values.push(message.body);
+        $scope.$apply();
+      }
+
+
+      function addOHLC(item) {
+          console.log("ohlcController.js::addOHLC");
+          // $scope.item = item;
+          item.name = vm.selectedSymbol;
+          reset();
+          vm.typeOHLC = true;
+          utilService.unsubscribeTopic(topic);
+
+          if ( vm.selectedSymbol === "..." ) {
+            return;
+          }
+
+          initialise();
+
+          // $scope.message = moment();
+
+          // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
+
+          // ticks.get().then(function(response) {
+          //     vm.data[0].values = response.ticks;
+          // });
+
+          utilService.traceLog(item, "elasticsearch");
+          fetchHistoricDataFromES();
+
+          subscribeToStompUpdates();
+
+          vm.isLoaded = true;
+
+          // TODO catch all errors and set the property and message as required
+          if (esError !== '' || stompError !== '') {
+            vm.hasError = true;
+          }
+
+      };
+
+
   }
+
 
 })();
