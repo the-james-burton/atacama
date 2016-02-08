@@ -11,9 +11,10 @@ angular.module('atacamaApp')
     .controller('OhlcWidgetCtrl', function(
       $scope, $uibModal, ngstomp, $resource, $log, Restangular,
       elasticsearchService, chartService, turbineService, utilService) {
+        var vm = this;
 
-        $scope.isLoaded = false;
-        $scope.hasError = false;
+        vm.isLoaded = false;
+        vm.hasError = false;
 
         // var url = 'http://localhost:48002';
         var sod = moment(0, "HH").format("x");
@@ -35,9 +36,9 @@ angular.module('atacamaApp')
 
           turbineService.symbols(market).then(function(response) {
             // console.log(JSON.stringify(response.stocks));
-            $scope.symbols = _.pluck(response.stocks, 'symbol');
+            vm.symbols = _.pluck(response.stocks, 'symbol');
             // $scope.selectedSymbol = $scope.symbols[0];
-            $scope.selectedSymbol = "...";
+            vm.selectedSymbol = "...";
           }, function (err) {
             esError = 'unable to load symbols: {0}'.format(err.message);
             console.trace(esError);
@@ -61,68 +62,62 @@ angular.module('atacamaApp')
         // set the size of the chart as the widget is resized...
         $scope.$on('gridster-item-resized', function(item) {
           $log.debug('gridster-item-resized');
-          //$scope.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
-          //$scope.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
+          //vm.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
+          //vm.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
           //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
           //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
 
           // TODO this is inconsistent... needs work!
-          $scope.options.chart.height = $scope.offsetParent.prop('offsetHeight');
-          $scope.options.chart.width = $scope.offsetParent.prop('offsetWidth')
+          vm.options.chart.height = $scope.offsetParent.prop('offsetHeight');
+          vm.options.chart.width = $scope.offsetParent.prop('offsetWidth')
           // TODO now causes an error... is this needed?
           // $scope.api.update();
         });
 
         function reset() {
           $log.debug('reset()');
-          $scope.isLoaded = false;
-          $scope.hasError = false;
+          vm.isLoaded = false;
+          vm.hasError = false;
 
-          $scope.options = {
+          vm.options = {
               chart: {
                   // TODO error message appears in console...
               }
           };
 
-          $scope.config = {
+          vm.config = {
               deepWatchData: true,
               // deepWatchDataDepth: 1,
               refreshDataOnly: false,
               disabled: true
           };
 
-          $scope.data = [{
-              key: $scope.selectedSymbol,
+          vm.data = [{
+              key: vm.selectedSymbol,
               values: [{}]
           }];
         }
 
-        $scope.selectSymbol = function(selectedSymbol) {
-          $scope.selectedSymbol = selectedSymbol;
-          $log.log('select symbol: ', $scope.selectedSymbol);
-          $scope.addOHLC($scope.item);
-        };
-
-        $scope.addOHLC = function(item) {
+        var addOHLC = function(item) {
             console.log("ohlcController.js::addOHLC");
             // $scope.item = item;
-            item.name = $scope.selectedSymbol;
+            item.name = vm.selectedSymbol;
             reset();
-            $scope.typeOHLC = true;
+            vm.typeOHLC = true;
             utilService.unsubscribeTopic(topic);
 
-            if ( $scope.selectedSymbol === "..." ) {
+            if ( vm.selectedSymbol === "..." ) {
               return;
             }
 
-            $scope.config = {
+            vm.config = {
               deepWatchData: true,
               // deepWatchDataDepth: 1,
               refreshDataOnly: false,
               disabled: false
             };
 
-            $scope.options = {
+            vm.options = {
                 chart: {
                     type: 'candlestickBarChart',
                     // type: 'ohlcBarChart',
@@ -162,20 +157,20 @@ angular.module('atacamaApp')
             // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
 
             // ticks.get().then(function(response) {
-            //     $scope.data[0].values = response.ticks;
+            //     vm.data[0].values = response.ticks;
             // });
 
-            var promise = elasticsearchService.getTicksAfter($scope.selectedSymbol, sod);
+            var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
 
             promise.then(function (response) {
               utilService.traceLog(item, "elasticsearch");
-              $scope.data[0].values = elasticsearchService.parseResults(response);
+              vm.data[0].values = elasticsearchService.parseResults(response);
             }, function (err) {
-              esError = 'unable to load data: {0}:{1}'.format($scope.selectedSymbol, err.message);
+              esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
               console.trace(esError);
             });
 
-            topic = '/topic/ticks.' + market + '.' + $scope.selectedSymbol;
+            topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
             //ngstomp.subscribe(topic, onMessage, {}, $scope);
 
             try {
@@ -193,18 +188,25 @@ angular.module('atacamaApp')
 
             function onMessage(message) {
               utilService.traceLog(item, "rabbit");
-              // $scope.data[0].values.push(JSON.parse(message.body));
-              $scope.data[0].values.push(message.body);
+              // vm.data[0].values.push(JSON.parse(message.body));
+              vm.data[0].values.push(message.body);
               $scope.$apply();
             }
 
-            $scope.isLoaded = true;
+            vm.isLoaded = true;
 
             // TODO catch all errors and set the property and message as required
             if (esError !== '' || stompError !== '') {
-              $scope.hasError = true;
+              vm.hasError = true;
             }
 
+        };
+
+
+        vm.selectSymbol = function(selectedSymbol) {
+          vm.selectedSymbol = selectedSymbol;
+          $log.log('select symbol: ', vm.selectedSymbol);
+          addOHLC($scope.item);
         };
 
         // for smart-table...
