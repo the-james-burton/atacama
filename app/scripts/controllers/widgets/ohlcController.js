@@ -21,6 +21,12 @@
       vm.hasError = false;
       vm.selectedSymbol = "...";
 
+      vm.selectSymbol = function(selectedSymbol) {
+        vm.selectedSymbol = selectedSymbol;
+        $log.log('select symbol: ', vm.selectedSymbol);
+        addOHLC($scope.item);
+      };
+
       // var url = 'http://localhost:48002';
       var sod = moment(0, "HH").format("x");
       // var subscription;
@@ -138,11 +144,6 @@
         };
       }
 
-      vm.selectSymbol = function(selectedSymbol) {
-        vm.selectedSymbol = selectedSymbol;
-        $log.log('select symbol: ', vm.selectedSymbol);
-        addOHLC($scope.item);
-      };
 
       // for smart-table...
       // $scope.addStrategies = function(widget) {
