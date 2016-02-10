@@ -1,28 +1,38 @@
-'use strict';
+(function() {
 
-/**
- * @ngdoc service
- * @name atacamaApp.turbineService
- * @description
- * # turbineService
- * Service in the atacamaApp.
- */
-angular.module('atacamaApp')
-  .service('turbineService', turbineService);
+  'use strict';
 
-  function turbineService(Restangular) {
-    // AngularJS will instantiate a singleton by calling "new" on this function
+  /**
+   * @ngdoc service
+   * @name atacamaApp.turbineService
+   * @description
+   * # turbineService
+   * Service in the atacamaApp.
+   */
+  angular.module('atacamaApp')
+    .factory('turbineService', turbineService);
 
-    this.symbols = function(market) {
-      return Restangular.one('turbine').one('stocks').one(market).get();
-    };
+    function turbineService(Restangular) {
+      var service = {
+          symbols: symbols,
+          indicators: indicators,
+          strategies: strategies
+      };
+      console.log('turbineService has been created');
+      return service;
 
-    this.indicators = function() {
-      return Restangular.one('turbine').one('indicators').get();
-    };
+      function symbols(market) {
+        return Restangular.one('turbine').one('stocks').one(market).get();
+      };
 
-    this.strategies = function() {
-      return Restangular.one('turbine').one('strategies').get();
-    };
+      function indicators() {
+        return Restangular.one('turbine').one('indicators').get();
+      };
 
-  }
+      function strategies() {
+        return Restangular.one('turbine').one('strategies').get();
+      };
+
+    }
+
+})();

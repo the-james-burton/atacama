@@ -1,26 +1,36 @@
-'use strict';
+(function() {
 
-/**
- * @ngdoc service
- * @name atacamaApp.utilService
- * @description
- * # utilService
- * Service in the atacamaApp.
- */
-angular.module('atacamaApp')
-  .service('utilService', utilService);
+  'use strict';
 
-function utilService($log, ngstomp) {
+  /**
+   * @ngdoc service
+   * @name atacamaApp.utilService
+   * @description
+   * # utilService
+   * Service in the atacamaApp.
+   */
+  angular.module('atacamaApp')
+    .factory('utilService', utilService);
 
-  this.traceLog = function(item, text) {
-    $log.debug("{0}.{1}.{2} {3}".format(
-      item.name, item.row, item.col, text));
-  };
+  function utilService($log, ngstomp) {
+    var service = {
+        traceLog: traceLog,
+        unsubscribeTopic: unsubscribeTopic
+    };
+    console.log('utilService has been created');
+    return service;
 
-  this.unsubscribeTopic = function(topic) {
-    if (topic.length > 0) {
-      ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
-    }
-  };
+    function traceLog(item, text) {
+      $log.debug("{0}.{1}.{2} {3}".format(
+        item.name, item.row, item.col, text));
+    };
 
-}
+    function unsubscribeTopic(topic) {
+      if (topic.length > 0) {
+        ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
+      }
+    };
+
+  }
+
+})();

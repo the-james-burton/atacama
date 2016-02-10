@@ -1,29 +1,43 @@
-'use strict';
+(function() {
 
-/**
- * @ngdoc service
- * @name atacamaApp.elasticsearchService
- * @description
- * # elasticsearchService
- * Service in the atacamaApp.
- */
-angular.module('atacamaApp')
+  'use strict';
 
-  .service('es', function (esFactory) {
-    return esFactory({
-      host: 'localhost:9200',
-      apiVersion: '1.7'
-    });
-  })
+  /**
+   * @ngdoc service
+   * @name atacamaApp.elasticsearchService
+   * @description
+   * # elasticsearchService
+   * Service in the atacamaApp.
+   */
+  angular.module('atacamaApp')
 
-  .service('elasticsearchService', elasticsearchService);
+    .service('es', function (esFactory) {
+      return esFactory({
+        host: 'localhost:9200',
+        apiVersion: '1.7'
+      });
+    })
+
+    .factory('elasticsearchService', elasticsearchService);
 
   function elasticsearchService($rootScope, $resource, $log, es) {
-        // AngularJS will instantiate a singleton by calling "new" on this function
+        var service = {
+            createQueryString: createQueryString,
+            createQueryStrings: createQueryStrings,
+            createQueries: createQueries,
+            createESQuery: createESQuery,
+            ping: ping,
+            getTicksAfter: getTicksAfter,
+            getIndicatorsAfter: getIndicatorsAfter,
+            getStrategiesAfter: getStrategiesAfter,
+            parseResults: parseResults,
+            testReply: testReply
+        };
         console.log('elasticsearchService has been created');
+        return service;
 
         // http://stackoverflow.com/questions/19842669/calling-a-function-in-angularjs-service-from-the-same-service
-        var self = this;
+        // var self = this;
 
         // TODO 1. return from resource to passed-in variable $scope.data[0].values does not work
         // TODO 2. cannot access $scope.data[0].values from websocket callback in here
@@ -34,20 +48,20 @@ angular.module('atacamaApp')
         //   $scope.data[0].values = response.ticks;
         // });
 
-        this.createQueryString = function(key, value) {
+        function createQueryString(key, value) {
           return {query_string: {query: value, fields: [key]}};
         };
 
-        var createQueryStringTuple = function(tuple) {
+        function createQueryStringTuple(tuple) {
           // return {query_string: {query: tuple[0], fields: [tuple[1]]}};
-          return self.createQueryString(tuple[0], tuple[1]);
+          return createQueryString(tuple[0], tuple[1]);
         };
 
-        this.createQueryStrings = function(arrayOfKeyValueTuples) {
+        function createQueryStrings(arrayOfKeyValueTuples) {
           return _.map(arrayOfKeyValueTuples, createQueryStringTuple);
         };
 
-        this.createQueries = function(arrayOfQueryStrings, date) {
+        function createQueries(arrayOfQueryStrings, date) {
           return arrayOfQueryStrings.concat(
                 {range: {
                     date: {
@@ -58,10 +72,10 @@ angular.module('atacamaApp')
         };
 
         // TODO improve templating by using lodash to insert a list of tuples as query strings...
-        this.createESQuery = function(arrayOfKeyValueTuples, date) {
+        function createESQuery(arrayOfKeyValueTuples, date) {
           // TODO perhaps a little more functional style..?
-          var queryStrings = self.createQueryStrings(arrayOfKeyValueTuples);
-          var queries = self.createQueries(queryStrings, date);
+          var queryStrings = createQueryStrings(arrayOfKeyValueTuples);
+          var queries = createQueries(queryStrings, date);
           return {
             size: 5000,
             query: {
@@ -91,7 +105,7 @@ angular.module('atacamaApp')
         //   };
         // };
 
-        this.ping = function() {
+        function ping() {
           es.ping({
             requestTimeout: 3000,
           // undocumented params are appended to the query string
@@ -105,9 +119,9 @@ angular.module('atacamaApp')
           });
         };
 
-        this.getTicksAfter = function(symbol, date) {
+        function getTicksAfter(symbol, date) {
           //  [2015-09-21 08:09:30,744][INFO ][index.search.slowlog.query] [Fault Zone] [test-tick][4] took[14.8ms], took_millis[14], types[tick], stats[], search_type[DFS_QUERY_THEN_FETCH], total_shards[5], source[{"from":0,"size":17,"query":{"bool":{"must":[{"query_string":{"query":"ABC","fields":["symbol"],"default_operator":"and"}},{"range":{"date":{"from":1442790000000,"to":null,"include_lower":true,"include_upper":true}}}]}}}], extra_source[],
-          var query = self.createESQuery([ ['symbol', symbol] ], date);
+          var query = createESQuery([ ['symbol', symbol] ], date);
           $log.debug(JSON.stringify(query));
           return es.search({
             index: 'turbine-ticks',
@@ -116,8 +130,8 @@ angular.module('atacamaApp')
           });
         };
 
-        this.getIndicatorsAfter = function(symbol, name, date) {
-          var query = self.createESQuery([ ['symbol', symbol], ['name', name] ], date);
+        function getIndicatorsAfter(symbol, name, date) {
+          var query = createESQuery([ ['symbol', symbol], ['name', name] ], date);
           $log.debug(JSON.stringify(query));
           return es.search({
             index: 'turbine-indicators',
@@ -126,8 +140,8 @@ angular.module('atacamaApp')
           });
         };
 
-        this.getStrategiesAfter = function(symbol, name, date) {
-          var query = self.createESQuery([ ['symbol', symbol], ['name', name] ], date);
+        function getStrategiesAfter(symbol, name, date) {
+          var query = createESQuery([ ['symbol', symbol], ['name', name] ], date);
           $log.debug(JSON.stringify(query));
           return es.search({
             index: 'turbine-strategies',
@@ -136,11 +150,11 @@ angular.module('atacamaApp')
           });
         };
 
-        this.parseResults = function(response) {
+        function parseResults(response) {
           return _.sortBy(_.map(response.hits.hits, '_source'), 'date');
         };
 
-        this.testReply = function(message) {
+        function testReply(message) {
           return "hello " + message;
         }
 
@@ -167,3 +181,5 @@ angular.module('atacamaApp')
         //};
 
     }
+
+})();
