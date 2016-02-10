@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('atacamaApp').directive('psWidgetBody',
+angular.module('psDashboard').directive('psWidgetBody',
     ['$compile', '$uibModal',
     function ($compile, $uibModal) {
         return {

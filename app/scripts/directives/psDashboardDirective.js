@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('atacamaApp').directive('psDashboard', function () {
+angular.module('psDashboard').directive('psDashboard', function () {
     return {
         templateUrl: 'views/gridnew.html',
         link: function (scope, element, attrs) {

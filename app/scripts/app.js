@@ -26,7 +26,8 @@ angular
         'ui.bootstrap',
         'elasticsearch',
         'AngularStompDK',
-        'smart-table'
+        'smart-table',
+        'psDashboard'
     ])
     .config(function($routeProvider, $logProvider, RestangularProvider, ngstompProvider) {
 
