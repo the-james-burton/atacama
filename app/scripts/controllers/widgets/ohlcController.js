@@ -199,7 +199,8 @@
       }
 
       function onMessage(message) {
-        utilService.traceLog(item, "rabbit");
+        // TODO avoid $scope?
+        utilService.traceLog($scope.item, "rabbit");
         // vm.data[0].values.push(JSON.parse(message.body));
         vm.data[0].values.push(message.body);
         $scope.$apply();
