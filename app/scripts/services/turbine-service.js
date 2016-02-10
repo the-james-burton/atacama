@@ -8,7 +8,9 @@
  * Service in the atacamaApp.
  */
 angular.module('atacamaApp')
-  .service('turbineService', function (Restangular) {
+  .service('turbineService', turbineService);
+
+  function turbineService(Restangular) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     this.symbols = function(market) {
@@ -23,4 +25,4 @@ angular.module('atacamaApp')
       return Restangular.one('turbine').one('strategies').get();
     };
 
-  });
+  }
