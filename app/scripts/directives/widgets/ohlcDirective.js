@@ -7,7 +7,11 @@
   function ohlcDirective(dataService) {
     return {
       templateUrl: 'views/widgets/ohlc.html',
-      link: linkFunc
+      link: linkFunc,
+      controller: 'OhlcWidgetCtrl',
+      controllerAs: 'vm',
+      bindToController: true // because the scope is isolated
+
     };
   }
 
