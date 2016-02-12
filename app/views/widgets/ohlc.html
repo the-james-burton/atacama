@@ -1,13 +1,13 @@
 ﻿
-<div class="wwa-temperature-widget" ng-controller="OhlcWidgetCtrl as ohlc">
+<div class="wwa-temperature-widget" ng-controller="OhlcWidgetCtrl as vm">
 
     <div class="wwa-temperature-heading">
       <!-- <h3>{{ widget.name }}</h3> -->
       <div class="btn-group" uib-dropdown>
-        <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>{{ ohlc.selectedSymbol }}<span class="caret"></span></button>
+        <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>{{ vm.selectedSymbol }}<span class="caret"></span></button>
         <ul class="dropdown-menu" aria-labelledby="single-button">
-          <li ng-repeat="symbol in ohlc.symbols">
-            <a href ng-click="ohlc.selectSymbol('{{ symbol }}')">{{ symbol }}</a>
+          <li ng-repeat="symbol in vm.symbols">
+            <a href ng-click="vm.selectSymbol('{{ symbol }}')">{{ symbol }}</a>
           </li>
         </ul>
       </div>
@@ -16,13 +16,13 @@
     <!--<div class="wwa-temperature-body" style="background-image: url(/images/{{selectedLocation.image}});">-->
     <!-- This fixes the image error because it tries to bind the source before selectedLocation is set -->
     <div class="wwa-temperature-body">
-        <div ng-if="!ohlc.isLoaded && !ohlc.hasError">
+        <div ng-if="!vm.isLoaded && !vm.hasError">
             <i class="fa fa-refresh fa-2x fa-spin"></i>
         </div>
-        <div ng-if="ohlc.isLoaded && !ohlc.hasError" class="wwa-temperature-view">
-          <nvd3 options='ohlc.options' data='ohlc.data' api="ohlc.api" config='ohlc.config'></nvd3>
+        <div ng-if="vm.isLoaded && !vm.hasError" class="wwa-temperature-view">
+          <nvd3 options='vm.options' data='vm.data' api="vm.api" config='vm.config'></nvd3>
         </div>
-        <div ng-if="ohlc.hasError">
+        <div ng-if="vm.hasError">
             <h4>Error loading widget.</h4>
             <button class="btn btn-primary" ng-click="loadLocation()">Reload</button>
         </div>
