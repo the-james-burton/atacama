@@ -20,7 +20,7 @@
     scope.selectedLocation = null;
     scope.isLoaded = false;
     scope.hasError = false;
-    scope.offsetParent = element.offsetParent();
+    // scope.offsetParent = element.offsetParent();
   }
 
 })();

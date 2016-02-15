@@ -39,7 +39,7 @@ angular.module('atacamaApp')
 
         turbineService.symbols(market).then(function(response) {
           // console.log(JSON.stringify(response.stocks));
-          $scope.symbols = _.pluck(response.stocks, 'symbol');
+          $scope.symbols = _.map(response.stocks, 'symbol');
           // $scope.selectedSymbol = $scope.symbols[0];
           $scope.selectedSymbol = "...";
         });

@@ -20,6 +20,7 @@
       vm.isLoaded = false;
       vm.hasError = false;
       vm.selectedSymbol = "...";
+      vm.values = {};
 
       vm.selectSymbol = function(selectedSymbol) {
         vm.selectedSymbol = selectedSymbol;
@@ -31,11 +32,14 @@
       var sod = moment(0, "HH").format("x");
       // var subscription;
 
+      // adjustments to make the chart fit better in the widget...
+      var adjustX = -35;
+      var adjustY = -65;
+
       // TODO select market in UI
       var market = 'FTSE100';
 
       var topic = '';
-
       var esError = '';
       var stompError = '';
 
@@ -62,19 +66,27 @@
       // ];
 
       // set the size of the chart as the widget is resized...
-      $scope.$on('gridster-item-resized', function(item) {
-        $log.debug('gridster-item-resized');
+      $scope.$on('gridster-item-resized', function(item, gridsterWidget) {
+        // $log.debug('gridster-item-resized offset {0}x{1}'.format($scope.offsetParent.prop('offsetWidth'), $scope.offsetParent.prop('offsetHeight')));
+        // $log.debug('gridster-item-resized dimensions {0}x{1}'.format(gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
         //vm.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
         //vm.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
         //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
         //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
 
-        // TODO this is inconsistent... needs work!
-        vm.options.chart.height = $scope.offsetParent.prop('offsetHeight');
-        vm.options.chart.width = $scope.offsetParent.prop('offsetWidth')
+        vm.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
+        vm.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
         // TODO now causes an error... is this needed?
         // $scope.api.update();
       });
+
+      $scope.$watch('vm.values', function(newValues) {
+          if(newValues) {
+            vm.data = [
+              {key: vm.selectedSymbol, values: newValues}
+            ];
+          }
+      }, true);
 
       function reset() {
         $log.debug('reset()');
@@ -94,10 +106,10 @@
             disabled: true
         };
 
-        vm.data = [{
-            key: vm.selectedSymbol,
-            values: [{}]
-        }];
+        vm.data = [];
+        // vm.data = {key: vm.selectedSymbol, values: [{}]};
+        // vm.data = {key: '', values: [{}]};
+
       }
 
       function initialise() {
@@ -112,8 +124,10 @@
             chart: {
                 type: 'candlestickBarChart',
                 // type: 'ohlcBarChart',
-                height: $scope.offsetParent.prop('offsetHeight'),
-                width: $scope.offsetParent.prop('offsetWidth'),
+                // width: $scope.offsetParent.prop('offsetWidth') + adjustX,
+                // height: $scope.offsetParent.prop('offsetHeight') + adjustY,
+                width: $scope.gridsterItem.getElementSizeX() + adjustX,
+                height: $scope.gridsterItem.getElementSizeY() + adjustY,
                 margin: {
                     top: 20,
                     right: 40,
@@ -161,7 +175,7 @@
       function fetchStocks() {
         turbineService.symbols(market).then(function(response) {
         // console.log(JSON.stringify(response.stocks));
-        vm.symbols = _.pluck(response.stocks, 'symbol');
+        vm.symbols = _.map(response.stocks, 'symbol');
         // $scope.selectedSymbol = $scope.symbols[0];
         }, function (err) {
           esError = 'unable to load symbols: {0}'.format(err.message);
@@ -173,7 +187,7 @@
         var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
 
         promise.then(function (response) {
-          vm.data[0].values = elasticsearchService.parseResults(response);
+          vm.values = elasticsearchService.parseResults(response);
         }, function (err) {
           esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
           console.trace(esError);
