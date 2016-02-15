@@ -22,7 +22,7 @@
     "lodash": "~4.3.0",
     "moment": "^2.10",
     "nvd3": "~1.8.1",
-    "restangular": "~1.5.1",
+    "restangular": "~1.5.2",
     "sockjs": "~0.3.4",
     "stomp-websocket": "~2.3.4",
     "streamjs": "~1.6.2",
