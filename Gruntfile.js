@@ -36,6 +36,22 @@ module.exports = function (grunt) {
     // Project settings
     yeoman: appConfig,
 
+    // -----------------------------------------------------------------------------------
+    // IMPORTANT!! post-yeoman addition to automatically add app js source to index.html
+    includeSource: {
+        options: {
+            basePath: '<%= yeoman.app %>',
+            baseUrl: 'scripts',
+            ordering: 'top-down'
+        },
+        app: {
+            files: {
+                '<%= yeoman.app %>/index.html': '<%= yeoman.app %>/index.html'
+            }
+        }
+    },
+    // -----------------------------------------------------------------------------------
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -447,6 +463,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'includeSource',
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
@@ -462,6 +479,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'wiredep',
+    'includeSource',
     'concurrent:test',
     'autoprefixer',
     'connect:test',

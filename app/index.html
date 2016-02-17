@@ -119,32 +119,40 @@
 
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/modules/psDashboardModule.js"></script>
-        <script src="scripts/app.js"></script>
-        <script src="scripts/functions.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/ohlc.js"></script>
-        <script src="scripts/controllers/direct.js"></script>
-        <script src="scripts/controllers/chart.js"></script>
-        <script src="scripts/controllers/test.js"></script>
-        <script src="scripts/services/elasticsearch-service.js"></script>
-        <script src="scripts/services/chart-service.js"></script>
-        <script src="scripts/controllers/grid.js"></script>
-        <script src="scripts/controllers/widget.js"></script>
-        <script src="scripts/controllers/widgetsettings.js"></script>
-        <script src="scripts/controllers/wwaSelectLocationController.js"></script>
-        <script src="scripts/controllers/widgets/ohlcController.js"></script>
-        <script src="scripts/services/turbine-service.js"></script>
-        <script src="scripts/directives/dashboardDirective.js"></script>
-        <script src="scripts/directives/psDashboardDirective.js"></script>
-        <script src="scripts/directives/psWidgetBodyDirective.js"></script>
-        <script src="scripts/directives/wwaTemperatureDirective.js"></script>
-        <script src="scripts/directives/widgets/ohlcDirective.js"></script>
-        <script src="scripts/services/dataService.js"></script>
-        <script src="scripts/services/util-service.js"></script>
-        <script src="scripts/filters/object2arrayfilter.js"></script>
-        <!-- endbuild -->
+    <!-- include: "type": "js", "files": "scripts/**/*.js" -->
+
+   <script src="scripts/app.module.js"></script>
+    <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/controllers/chart.js"></script>
+    <script src="scripts/controllers/chart.old.js"></script>
+    <script src="scripts/controllers/direct.js"></script>
+    <script src="scripts/controllers/grid.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/ohlc.js"></script>
+    <script src="scripts/controllers/test.js"></script>
+    <script src="scripts/controllers/widget-test.js"></script>
+    <script src="scripts/controllers/widget.js"></script>
+    <script src="scripts/controllers/widgets/ohlcController.js"></script>
+    <script src="scripts/controllers/widgetsettings.js"></script>
+    <script src="scripts/controllers/wwaSelectLocationController.js"></script>
+    <script src="scripts/dashboard.module.js"></script>
+    <script src="scripts/directives/dashboardDirective.js"></script>
+    <script src="scripts/directives/psDashboardDirective.js"></script>
+    <script src="scripts/directives/psWidgetBodyDirective.js"></script>
+    <script src="scripts/directives/widgets/ohlcDirective.js"></script>
+    <script src="scripts/directives/wwaTemperatureDirective.js"></script>
+    <script src="scripts/filters/object2arrayfilter.js"></script>
+    <script src="scripts/functions.js"></script>
+    <script src="scripts/services/chart-service.js"></script>
+    <script src="scripts/services/dataService.js"></script>
+    <script src="scripts/services/elasticsearch-service.js"></script>
+    <script src="scripts/services/turbine-service.js"></script>
+    <script src="scripts/services/util-service.js"></script>
+    <!-- /include -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <!-- whatever yeoman is supposed to do in here, if anything it isn't doing it,
+      hence the grunt-include-source template above -->
+    <!-- endbuild -->
 </body>
 </html>

@@ -18,7 +18,8 @@
     <!-- This fixes the image error because it tries to bind the source before selectedLocation is set -->
     <div class="widget-temperature-body">
         <div ng-if="!vm.isLoaded && !vm.hasError">
-            <i class="fa fa-refresh fa-2x fa-spin"></i>
+            <!-- fa-spin -->
+            <i class="fa fa-refresh fa-2x"></i>
         </div>
         <div ng-if="vm.isLoaded && !vm.hasError" class="widget-temperature-view">
           <nvd3 options='vm.options' data='vm.data' api="vm.api" config='vm.config'></nvd3>
