@@ -2,7 +2,7 @@
 
   'use strict';
 
-  angular.module('atacamaApp').directive('wwaDashboard', function($localStorage) {
+  angular.module('atacamaApp').directive('atacamaDashboard', function($localStorage) {
     return {
       scope: {},
       template: '<ps-dashboard></ps-dashboard>',

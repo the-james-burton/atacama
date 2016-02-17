@@ -74,6 +74,9 @@
         //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
         //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
 
+        $log.debug('gridster-item-resized {0}x{1}'.format(
+          gridsterWidget.getElementSizeX(),gridsterWidget.getElementSizeY())
+        );
         vm.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
         vm.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
         // TODO now causes an error... is this needed?

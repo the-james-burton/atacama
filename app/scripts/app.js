@@ -87,7 +87,7 @@ angular
                 controllerAs: 'grid'
             })
             .when('/gridnew', {
-                template: '<wwa-dashboard></wwa-dashboard>'
+                template: '<atacama-dashboard></atacama-dashboard>'
             })
             .otherwise({
                 redirectTo: '/'
