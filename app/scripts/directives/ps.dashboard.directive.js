@@ -4,7 +4,7 @@
 
   angular.module('psDashboard').directive('psDashboard', function() {
     return {
-      templateUrl: 'views/gridnew.html',
+      templateUrl: 'views/grid.new.html',
       link: linkFunc
     };
 

@@ -51,7 +51,7 @@ module.exports = function(config) {
       'bower_components/ngstorage/ngStorage.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
-      "app/scripts/modules/psDashboardModule.js",
+      // "app/scripts/modules/psDashboardModule.js",
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
       "test/spec/**/*.js"

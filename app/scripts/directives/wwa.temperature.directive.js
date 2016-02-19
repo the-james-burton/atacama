@@ -5,7 +5,7 @@
   angular.module('atacamaApp').directive('wwaTemperature',
     function(dataService) {
       return {
-        templateUrl: 'views/partials/wwaTemperatureTemplate.html',
+        templateUrl: 'views/partials/wwa.temperature.template.html',
         link: linkFunc
       };
 

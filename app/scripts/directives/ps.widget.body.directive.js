@@ -5,7 +5,7 @@
   angular.module('psDashboard').directive('psWidgetBody',
     function($compile, $uibModal) {
       return {
-        templateUrl: 'views/partials/psWidgetBodyTemplate.html',
+        templateUrl: 'views/partials/ps.widget.body.template.html',
         link: linkFunc
       };
 

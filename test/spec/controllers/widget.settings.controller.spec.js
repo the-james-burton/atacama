@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: WidgetsettingsCtrl', function () {
+describe('Controller: WidgetSettingsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('atacamaApp'));
@@ -11,7 +11,7 @@ describe('Controller: WidgetsettingsCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    WidgetsettingsCtrl = $controller('WidgetsettingsCtrl', {
+    WidgetsettingsCtrl = $controller('WidgetSettingsCtrl', {
       $scope: scope
       // place here mocked dependencies
     });

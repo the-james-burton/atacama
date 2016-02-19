@@ -33,7 +33,7 @@
           template: '<wwa-temperature></wwa-temperature>',
           widgetSettings: {
             id: 1000,
-            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
+            templateUrl: 'views/partials/wwa.select.location.template.html',
             controller: 'wwaSelectLocationController'
           }
         }
@@ -47,7 +47,7 @@
           template: '<atacama-ohlc></atacama-ohlc>',
           widgetSettings: {
             id: 1000,
-            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
+            templateUrl: 'views/partials/wwa.select.location.template.html',
             controller: 'wwaSelectLocationController'
           }
         }
@@ -61,7 +61,7 @@
           template: '<atacama-indicator></atacama-indicator>',
           widgetSettings: {
             id: 1002,
-            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
+            templateUrl: 'views/partials/wwa.select.location.template.html',
             controller: 'wwaSelectLocationController'
           }
         }
@@ -75,7 +75,7 @@
           template: '<atacama-strategy></atacama-strategy>',
           widgetSettings: {
             id: 5000,
-            templateUrl: 'views/partials/wwaSelectLocationTemplate.html',
+            templateUrl: 'views/partials/wwa.select.location.template.html',
             controller: 'wwaSelectLocationController'
           }
         }

@@ -225,7 +225,7 @@
 
 
       function addOHLC(item) {
-          console.log("ohlcController.js::addOHLC");
+          console.log("ohlc.controller.js::addOHLC");
           // $scope.item = item;
           item.name = vm.selectedSymbol;
           reset();

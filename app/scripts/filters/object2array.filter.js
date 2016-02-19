@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc filter
- * @name atacamaApp.filter:object2ArrayFilter
+ * @name atacamaApp.filter:object2arrayFilter
  * @function
  * @description
- * # object2ArrayFilter
+ * # object2arrayFilter
  * Filter in the atacamaApp.
  */
 angular.module('atacamaApp')
-  .filter('object2Array', function () {
+  .filter('object2array', function () {
     return function (input) {
       var out = [];
       for (var i in input) {

@@ -7,7 +7,7 @@
 var A = (function () {
 
     var testUtils = function () {
-      console.log("utils.js working");
+      console.log("functions.js working");
     };
 
     var unsubscribeCallback = function(topic) {

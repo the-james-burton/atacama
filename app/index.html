@@ -14,11 +14,15 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/psDashboard.css">
-    <link rel="stylesheet" href="styles/widgets.css">
-    <link rel="stylesheet" href="styles/wwaTemperature.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
     <!-- endbuild -->
+
+    <!-- include: "type": "css", "files": "styles/**/*.css" -->
+    <link href="styles/ps.dashboard.css" rel="stylesheet" type="text/css">
+    <link href="styles/widgets.css" rel="stylesheet" type="text/css">
+    <link href="styles/wwa.temperature.css" rel="stylesheet" type="text/css">
+    <!-- /include -->
+
   </head>
 
   <body ng-app="atacamaApp">
@@ -122,37 +126,37 @@
     <!-- include: "type": "js", "files": "scripts/**/*.js" -->
 
    <script src="scripts/app.module.js"></script>
-    <script src="scripts/controllers/about.js"></script>
-    <script src="scripts/controllers/chart.js"></script>
-    <script src="scripts/controllers/chart.old.js"></script>
-    <script src="scripts/controllers/direct.js"></script>
-    <script src="scripts/controllers/grid.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/ohlc.js"></script>
-    <script src="scripts/controllers/test.js"></script>
-    <script src="scripts/controllers/widget-test.js"></script>
-    <script src="scripts/controllers/widget.js"></script>
-    <script src="scripts/controllers/widgets/ohlcController.js"></script>
-    <script src="scripts/controllers/widgetsettings.js"></script>
-    <script src="scripts/controllers/wwaSelectLocationController.js"></script>
+    <script src="scripts/controllers/about.controller.js"></script>
+    <script src="scripts/controllers/chart.controller.js"></script>
+    <script src="scripts/controllers/chart.old.controller.js"></script>
+    <script src="scripts/controllers/direct.controller.js"></script>
+    <script src="scripts/controllers/grid.controller.js"></script>
+    <script src="scripts/controllers/main.controller.js"></script>
+    <script src="scripts/controllers/ohlc.controller.js"></script>
+    <script src="scripts/controllers/test.controller.js"></script>
+    <script src="scripts/controllers/widget.controller.js"></script>
+    <script src="scripts/controllers/widget.settings.controller.js"></script>
+    <script src="scripts/controllers/widget.test.controller.js"></script>
+    <script src="scripts/controllers/widgets/ohlc.controller.js"></script>
+    <script src="scripts/controllers/wwa.select.location.controller.js"></script>
     <script src="scripts/dashboard.module.js"></script>
-    <script src="scripts/directives/dashboardDirective.js"></script>
-    <script src="scripts/directives/psDashboardDirective.js"></script>
-    <script src="scripts/directives/psWidgetBodyDirective.js"></script>
-    <script src="scripts/directives/widgets/ohlcDirective.js"></script>
-    <script src="scripts/directives/wwaTemperatureDirective.js"></script>
-    <script src="scripts/filters/object2arrayfilter.js"></script>
+    <script src="scripts/directives/dashboard.directive.js"></script>
+    <script src="scripts/directives/ps.dashboard.directive.js"></script>
+    <script src="scripts/directives/ps.widget.body.directive.js"></script>
+    <script src="scripts/directives/widgets/ohlc.directive.js"></script>
+    <script src="scripts/directives/wwa.temperature.directive.js"></script>
+    <script src="scripts/filters/object2array.filter.js"></script>
     <script src="scripts/functions.js"></script>
-    <script src="scripts/services/chart-service.js"></script>
-    <script src="scripts/services/dataService.js"></script>
-    <script src="scripts/services/elasticsearch-service.js"></script>
-    <script src="scripts/services/turbine-service.js"></script>
-    <script src="scripts/services/util-service.js"></script>
+    <script src="scripts/services/chart.service.js"></script>
+    <script src="scripts/services/data.service.js"></script>
+    <script src="scripts/services/elasticsearch.service.js"></script>
+    <script src="scripts/services/turbine.service.js"></script>
+    <script src="scripts/services/util.service.js"></script>
     <!-- /include -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <!-- whatever yeoman is supposed to do in here, if anything it isn't doing it,
-      hence the grunt-include-source template above -->
+    <!-- yeoman only adds things here when using the 'yo command'
+        prefer the grunt-include-source populated block above-->
     <!-- endbuild -->
 </body>
 </html>
