@@ -12,16 +12,16 @@
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
+
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
-    <!-- endbuild -->
-
     <!-- include: "type": "css", "files": "styles/**/*.css" -->
     <link href="styles/ps.dashboard.css" rel="stylesheet" type="text/css">
     <link href="styles/widgets.css" rel="stylesheet" type="text/css">
     <link href="styles/wwa.temperature.css" rel="stylesheet" type="text/css">
     <!-- /include -->
+    <!-- endbuild -->
 
   </head>
 
@@ -123,9 +123,12 @@
 
     <!-- endbuild -->
 
-    <!-- include: "type": "js", "files": "scripts/**/*.js" -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <!-- yeoman only adds things here when using the 'yo command'
+        the grunt-include-source plugin will populate the below... -->
 
-   <script src="scripts/app.module.js"></script>
+    <!-- include: "type": "js", "files": "scripts/**/*.js" -->
+    <script src="scripts/app.module.js"></script>
     <script src="scripts/controllers/about.controller.js"></script>
     <script src="scripts/controllers/chart.controller.js"></script>
     <script src="scripts/controllers/chart.old.controller.js"></script>
@@ -154,9 +157,6 @@
     <script src="scripts/services/util.service.js"></script>
     <!-- /include -->
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <!-- yeoman only adds things here when using the 'yo command'
-        prefer the grunt-include-source populated block above-->
     <!-- endbuild -->
 </body>
 </html>
