@@ -1,12 +1,12 @@
 sudo: false
 language: node_js
 before_install:
-  - 'gem install sass --version "=3.4.16"'
+  - 'gem install sass --version "=3.4.19"'
   - 'gem install compass --version "=1.0.3"'
 node_js:
   - '4.1'
 before_script:
   - 'npm install -g bower gulp'
   - 'bower install'
-  - 'gem install sass --version "=3.4.16"'
+  - 'gem install sass --version "=3.4.19"'
   - 'gem install compass --version "=1.0.3"'
