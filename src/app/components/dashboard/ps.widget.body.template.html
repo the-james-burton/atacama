@@ -1,0 +1,22 @@
+﻿<div class="ps-widget-body">
+
+  <div class="ps-widget-menu-area btn-group" uib-dropdown>
+
+    <button id="btnWidgetActions" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+      <i class="fa fa-bars" ng-click="iconClicked()"></i><span class="caret"></span>
+    </button>
+
+    <ul uib-dropdown-menu role="menu" aria-labelledby="btnWidgetActions">
+      <li role="menuitem" ng-click="close()">
+        <a ng-click="iconClicked()"><i class="fa fa-2x fa-close" ng-click="iconClicked()"></i></a>
+      </li>
+      <li role="menuitem" ng-click="settings()">
+        <a ng-click="iconClicked()"><i class="fa fa-2x fa-gear" ng-click="iconClicked()"></i></a>
+      </li>
+      <!-- <li ng-click="close()"><i class="fa fa-2x fa-close" ng-click="iconClicked()" /></li> -->
+      <!-- <li ng-click="settings()"><i class="fa fa-2x fa-gear" ng-click="iconClicked()" /></li> -->
+    </ul>
+
+  </div>
+
+</div>

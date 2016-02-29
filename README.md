@@ -26,19 +26,21 @@ It is a HTML5/Angular-JS single-page application that runs in a web browser. It 
 
 ## How do I use it?
 
-The easiest way to get it up and running is to clone this repo and then build it. Make sure you have git, node, bower and grunt-cli installed then run something like the following...
+> Please note that this app was recently re-scaffolded from [angular-generator](https://github.com/yeoman/generator-angular) to [generator-gulp-angular](https://github.com/swiip/generator-gulp-angular). This was done because the latter scaffold appears to more closely align with the [angular-styleguide](https://github.com/johnpapa/angular-styleguide).
+
+The easiest way to get it up and running is to clone this repo and then build it. Make sure you have git, node, bower and gulp installed then run something like the following...
 
 ```bash
 git clone https://github.com/the-james-burton//atacama/atacama.git atacama
 cd atacama
 npm install
 bower install
-grunt serve
+gulp serve
 ```
 
-Then browse to http://localhost:9000 and you should see the app. For it to actually work and show something, you will also need to get *the-turbine* working.
+Then browse to http://localhost:3000 and you should see the app. For it to actually work and show something, you will also need to get *the-turbine* working.
 
-You can also run `grunt` for building a distributable for nginx, `grunt test` to run the tests and `grunt serve` for preview. When development reaches a sensible point, I will provide a distributable via github 'releases' tab which can be deployed into nginx.
+You can also run `gulp build` for building a distributable for nginx, `gulp test` to run the tests and `gulp serve` for preview. When development reaches a sensible point, I will provide a distributable via github 'releases' tab which can be deployed into nginx.
 
 ## What is it built on?
 
@@ -75,10 +77,8 @@ I am, of course, standing very much on the shoulders of giants. Indeed, part of 
 ## What is unlikely to be done?
 
 * **angular2** Typescript and various other things in angular2 look awesome, but this project is going to stay as angular-js. When I do decide to make the jump to angular2 it will be when that it is a little more mature. I will also create a brand new project instead of refactoring this one. For now, I want to concentrate on angular-js and get better at it.
-* **gulp** Grunt is fine and I don't mind the declarative approach over coded streams. Having said that, gulp does look cool but I want to concentrate on other things just now.
-* **alternative scaffolding** Yeoman has and is working very well for me. In theory I should be able to easily migrate into another scaffold tool in the future, such as the Google web framework if I want to, but it is not the priority just now.
 * **zurb foundation** So I have bootstrap from Yeoman. That will do just fine for now.
 
 ## Where did the name come from?
 
-The Atacama desert is a barren, near waterless place. I believe it has a 'flowering desert' phenomenon whereby vast areas of seemingly lifeless land burst into flower upon receiving rainfall. Of course, you have to be in the right place to see it. This metaphor holds true, I think, for technical (and fundamental) stock market analysis. The analysis alerts you as to where you need to be to see the flowering hapen. Plus, the name Atacama didn't already seem to be taken by any other software project. Pushing it a bit, Atacama could also be a backronym such as *Automated technical analysis, combined and made available*.
+The Atacama desert is a barren, near waterless place. I believe it has a 'flowering desert' phenomenon whereby vast areas of seemingly lifeless land burst into flower upon receiving rainfall. Of course, you have to be in the right place to see it. This metaphor holds true, I think, for technical (and fundamental) stock market analysis. The analysis alerts you as to where you need to be to see the flowering happen. Plus, the name Atacama didn't already seem to be taken by any other software project. Pushing it a bit, Atacama could also be a backronym such as *Automated technical analysis, combined and made available*.
