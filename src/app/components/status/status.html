@@ -1,0 +1,20 @@
+<div class="container">
+
+  <div>
+    <acme-navbar creation-date="main.creationDate"></acme-navbar>
+  </div>
+
+  <p>This is the status view.</p>
+
+  <div>
+      <p>greeting.text: <span ng-bind="vm.greeting.text"></span></p>
+      <p>greeting.time: <span ng-bind="vm.greeting.time"></span></p>
+      <p>greeting.ping: <span ng-bind="vm.greeting.ping"></span></p>
+      <p>greeting.sod: <span ng-bind="vm.greeting.sod"></span></p>
+      <p>greeting.milli: <span ng-bind="vm.greeting.milli"></span></p>
+      <p>log: <span id="vm.log"></span></p>
+      <p>Page loaded <span am-time-ago="vm.greeting.time"></span></p>
+      <p>reply: <span ng-bind="vm.statusReply"></span></p>
+  </div>
+
+</div>

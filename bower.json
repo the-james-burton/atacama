@@ -7,6 +7,7 @@
     "angular-touch": "~1.4.2",
     "angular-sanitize": "~1.4.2",
     "angular-messages": "~1.4.2",
+    "angular-moment": "~0.10.3",
     "angular-aria": "~1.4.2",
     "restangular": "~1.5.1",
     "angular-route": "~1.4.2",

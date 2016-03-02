@@ -13,6 +13,7 @@
       'ngResource',
       'restangular',
       'ngRoute',
+      'angularMoment',
       'ui.bootstrap',
       'toastr',
       'nvd3',
