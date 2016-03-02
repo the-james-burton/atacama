@@ -19,7 +19,8 @@
     function activate() {
       getWebDevTec();
       $timeout(function() {
-        vm.classAnimation = 'rubberBand';
+        // vm.classAnimation = 'rubberBand';
+        vm.classAnimation = '';
       }, 4000);
     }
 
