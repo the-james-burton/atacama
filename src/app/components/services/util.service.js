@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
   'use strict';
 
@@ -14,8 +14,8 @@
 
   function utilService($log, ngstomp) {
     var service = {
-        traceLog: traceLog,
-        unsubscribeTopic: unsubscribeTopic
+      traceLog: traceLog,
+      unsubscribeTopic: unsubscribeTopic
     };
     console.log('utilService has been created');
     return service;

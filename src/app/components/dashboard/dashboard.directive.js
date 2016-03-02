@@ -1,9 +1,9 @@
-(function() {﻿
+(function () {﻿
 
   'use strict';
 
   /** @ngInject */
-  angular.module('atacamaApp').directive('atacamaDashboard', function($localStorage) {
+  angular.module('atacamaApp').directive('atacamaDashboard', function ($localStorage) {
     return {
       scope: {},
       template: '<ps-dashboard></ps-dashboard>',
@@ -86,7 +86,7 @@
       //check localstorage for saved widgets
       scope.widgets = $localStorage.widgets || [];
 
-      scope.$watch('widgets', function() {
+      scope.$watch('widgets', function () {
         $localStorage.widgets = scope.widgets;
       }, true);
     }

@@ -18,7 +18,7 @@
       controllerAs: 'vm'
     })
     .when('/dashboard', {
-      templateUrl: 'app/components/dashboard/dashboard.html',
+      templateUrl: 'app/components/dashboard/dashboard.html'
       // template: '<atacama-dashboard></atacama-dashboard>'
     })
     .otherwise({
