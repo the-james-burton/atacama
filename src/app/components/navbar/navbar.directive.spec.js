@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   /**
@@ -6,14 +6,14 @@
    * This example is not perfect.
    * Test should check if MomentJS have been called
    */
-  describe('directive navbar', function() {
+  describe('directive navbar', function () {
     // var $window;
     var vm;
     var el;
     var timeInMs;
 
     beforeEach(module('atacamaApp'));
-    beforeEach(inject(function($compile, $rootScope) {
+    beforeEach(inject(function ($compile, $rootScope) {
       // spyOn(_$window_, 'moment').and.callThrough();
       // $window = _$window_;
 
@@ -28,11 +28,11 @@
       // ctrl = el.controller('acmeNavbar');
     }));
 
-    it('should be compiled', function() {
+    it('should be compiled', function () {
       expect(el.html()).not.toEqual(null);
     });
 
-    it('should have isolate scope object with instanciate members', function() {
+    it('should have isolate scope object with instanciate members', function () {
       expect(vm).toEqual(jasmine.any(Object));
 
       expect(vm.creationDate).toEqual(jasmine.any(Number));

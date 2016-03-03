@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -32,12 +32,12 @@
 
       el.addClass('acme-malarkey');
 
-      angular.forEach(scope.extraValues, function(value) {
+      angular.forEach(scope.extraValues, function (value) {
         typist.type(value).pause().delete();
       });
 
-      watcher = scope.$watch('vm.contributors', function() {
-        angular.forEach(vm.contributors, function(contributor) {
+      watcher = scope.$watch('vm.contributors', function () {
+        angular.forEach(vm.contributors, function (contributor) {
           typist.type(contributor.login).pause().delete();
         });
       });
@@ -56,13 +56,13 @@
       activate();
 
       function activate() {
-        return getContributors().then(function() {
+        return getContributors().then(function () {
           $log.info('Activated Contributors View');
         });
       }
 
       function getContributors() {
-        return githubContributor.getContributors(10).then(function(data) {
+        return githubContributor.getContributors(10).then(function (data) {
           vm.contributors = data;
 
           return vm.contributors;

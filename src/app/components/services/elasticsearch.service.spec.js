@@ -1,15 +1,15 @@
-(function() {
+(function () {
   'use strict';
 
-  describe('service webDevTec', function() {
+  describe('service webDevTec', function () {
     var elasticsearchService;
 
     beforeEach(module('atacamaApp'));
-    beforeEach(inject(function(_elasticsearchService_) {
+    beforeEach(inject(function (_elasticsearchService_) {
       elasticsearchService = _elasticsearchService_;
     }));
 
-    it('should be registered', function() {
+    it('should be registered', function () {
       expect(elasticsearchService).not.toEqual(null);
     });
 
@@ -23,14 +23,14 @@
     var keyValueTuple1 = [key1, value1];
     var keyValueTuple2 = [key2, value2];
 
-    var requiredQueries = function() {
+    var requiredQueries = function () {
       var arrayOfKeyValueTuples = [];
       arrayOfKeyValueTuples.push(keyValueTuple1);
       arrayOfKeyValueTuples.push(keyValueTuple2);
       return arrayOfKeyValueTuples;
     };
 
-    var checkQueryString = function(result) {
+    var checkQueryString = function (result) {
       expect(result[0].query_string.query).toEqual(keyValueTuple1[1]);
       expect(result[0].query_string.fields).toContain(keyValueTuple1[0]);
       expect(result[1].query_string.query).toEqual(keyValueTuple2[1]);
@@ -43,7 +43,12 @@
     });
 
     it('should create an elasticsearch query string', function () {
-      var expected = {query_string: {query: value1, fields: [key1]}};
+      var expected = {
+        query_string: {
+          query: value1,
+          fields: [key1]
+        }
+      };
       expect(elasticsearchService.createQueryString(key1, value1)).toEqual(expected);
       console.log(JSON.stringify(expected));
     });

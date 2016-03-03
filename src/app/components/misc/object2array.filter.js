@@ -13,7 +13,7 @@ angular.module('atacamaApp')
     return function (input) {
       var out = [];
       for (var i in input) {
-          out.push(input[i]);
+        out.push(input[i]);
       }
       return out;
     };

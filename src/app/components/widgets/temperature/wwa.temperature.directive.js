@@ -1,9 +1,9 @@
-(function() {
+(function () {
 
   'use strict';
 
   angular.module('atacamaApp').directive('wwaTemperature',
-    function(dataService) {
+    function (dataService) {
       return {
         templateUrl: 'app/components/widgets/temperature/wwa.temperature.template.html',
         link: linkFunc
@@ -15,14 +15,14 @@
         scope.isLoaded = false;
         scope.hasError = false;
 
-        scope.loadLocation = function() {
+        scope.loadLocation = function () {
           scope.hasError = false;
           dataService.getLocation(scope.item.widgetSettings.id)
-            .then(function(data) {
+            .then(function (data) {
               scope.selectedLocation = data;
               scope.isLoaded = true;
               scope.isError = false;
-            }, function(data) {
+            }, function (data) {
               //error
               scope.hasError = true;
             });
