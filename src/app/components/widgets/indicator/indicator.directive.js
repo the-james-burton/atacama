@@ -2,13 +2,13 @@
 
   'use strict';
 
-  angular.module('atacamaApp').directive('atacamaOhlc', ohlcDirective);
+  angular.module('atacamaApp').directive('atacamaIndicator', indicatorDirective);
 
-  function ohlcDirective(dataService) {
+  function indicatorDirective(dataService) {
     return {
-      templateUrl: 'app/components/widgets/ohlc/ohlc.html',
+      templateUrl: 'app/components/widgets/indicator/indicator.html',
       link: linkFunc,
-      controller: 'OhlcWidgetController',
+      controller: 'IndicatorWidgetController',
       controllerAs: 'vm',
       bindToController: true // because the scope is isolated
 

@@ -3,9 +3,9 @@
 
   /**
    * @ngdoc function
-   * @name atacamaApp.controller:StatusCtrl
+   * @name atacamaApp.controller:StatusController
    * @description
-   * # StatusCtrl controller of the atacamaApp
+   * # StatusController controller of the atacamaApp
    */
   angular.module('atacamaApp')
     .controller('StatusController', function ($scope, ngstomp, Restangular) {

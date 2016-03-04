@@ -10,9 +10,9 @@
    * Controller of the atacamaApp
    */
   angular.module('atacamaApp')
-    .controller('OhlcWidgetController', OhlcWidgetController);
+    .controller('IndicatorWidgetController', IndicatorWidgetController);
 
-  function OhlcWidgetController(
+  function IndicatorWidgetController(
     $scope, ngstomp, $resource, $log, Restangular,
     elasticsearchService, chartService, turbineService, utilService) {
     var vm = this;
@@ -20,11 +20,17 @@
     vm.isLoaded = false;
     vm.hasError = false;
     vm.selectedSymbol = "...";
+    vm.selectedIndicator = "...";
     vm.values = {};
 
     vm.selectSymbol = function (selectedSymbol) {
       vm.selectedSymbol = selectedSymbol;
       $log.log('select symbol: ', vm.selectedSymbol);
+    };
+
+    vm.selectIndicator = function (selectedIndicator) {
+      vm.selectedIndicator = JSON.parse(selectedIndicator);
+      $log.log('select indicator: ', vm.selectedIndicator);
       doChart($scope.item);
     };
 
@@ -49,31 +55,11 @@
     // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
     reset();
-
     fetchStocks();
-
-    // $scope.strategies = [
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
-    // ];
+    fetchIndicators();
 
     // set the size of the chart as the widget is resized...
     $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
-      // $log.debug('gridster-item-resized offset {0}x{1}'.format($scope.offsetParent.prop('offsetWidth'), $scope.offsetParent.prop('offsetHeight')));
-      // $log.debug('gridster-item-resized dimensions {0}x{1}'.format(gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
-      //vm.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
-      //vm.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
-      //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
-      //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
-
       $log.debug('gridster-item-resized {0}x{1}'.format(
         gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
       vm.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
@@ -125,10 +111,7 @@
 
       vm.options = {
         chart: {
-          type: 'candlestickBarChart',
-          // type: 'ohlcBarChart',
-          // width: $scope.offsetParent.prop('offsetWidth') + adjustX,
-          // height: $scope.offsetParent.prop('offsetHeight') + adjustY,
+          type: 'multiChart',
           width: $scope.gridsterItem.getElementSizeX() + adjustX,
           height: $scope.gridsterItem.getElementSizeY() + adjustY,
           margin: {
@@ -137,13 +120,14 @@
             bottom: 40,
             left: 40
           },
-          x: function (d) {
-            return d['date'];
-          },
-          y: function (d) {
-            return d['close'];
-          },
+          //x: function (d) {
+          //   return d['date'];
+          // },
+          // y: function (d) {
+          //  return d['closePriceIndicator'];
+          // },
           showValues: true,
+          showLegend: false,
           transitionDuration: 500,
           xAxis: {
             // axisLabel: 'Dates',
@@ -151,29 +135,23 @@
               return d3.time.format('%X')(new Date(d));
             },
           },
-          yAxis: {
+          yAxis1: {
             // axisLabel: 'Stock Price',
             tickFormat: function (d, i) {
               return '$' + d3.format(',.1f')(d);
+            }
+          },
+          yAxis2: {
+            // axisLabel: 'Stock Price',
+            tickFormat: function (d, i) {
+              return d3.format(',.1f')(d);
             }
           }
         }
       };
     }
 
-
-    // for smart-table...
-    // $scope.addStrategies = function(widget) {
-    //    console.log("widget.js::addStrategies");
-    //    reset();
-    //    $scope.typeStrategies = true;
-    //    unsubscribeTopic();
-    //  };
-
-    // I don't think this is necessary anymore...
-    // $scope.$on('$destroy', function() {
-    //   utilService.unsubscribeTopic(topic);
-    // });
+    // TODO make these fetch functions more functional in style...
 
     function fetchStocks() {
       turbineService.symbols(market).then(function (response) {
@@ -181,25 +159,56 @@
         vm.symbols = _.map(response.stocks, 'symbol');
         // $scope.selectedSymbol = $scope.symbols[0];
       }, function (err) {
-        esError = 'unable to load symbols: {0}'.format(err.message);
+        esError = 'unable to load symbols({0}): {1}'.format(market, err.message);
+        console.trace(esError);
+      });
+    }
+
+    function fetchIndicators() {
+      turbineService.indicators().then(function (response) {
+        vm.indicators = response.indicators;
+      }, function (err) {
+        esError = 'unable to load indicators: {0}'.format(err.message);
         console.trace(esError);
       });
     }
 
     function fetchHistoricDataFromES() {
-      var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
+      var promise = elasticsearchService.getIndicatorsAfter(vm.selectedSymbol, vm.selectedIndicator.name, sod);
+      utilService.traceLog($scope.item, "elasticsearch");
 
       promise.then(function (response) {
-        utilService.traceLog($scope.item, "elasticsearch");
-        vm.values = elasticsearchService.parseResults(response);
+        var closeSeries = {
+          values: [],
+          key: "close",
+          type: "line",
+          yAxis: 1,
+          position: 0,
+          color: "#bdc42d",
+          strokeWidth: 2,
+        };
+        // based on the first indicator tick, generate the chart series...
+        var results = elasticsearchService.parseResults(response);
+        // if our indicator is an overlay, then that will affect the series generation...
+        var overlay = _.result(_.find(vm.indicators, {
+          'name': results[0].name
+        }), 'overlay');
+        // console.log("{0} is overlay:{1}".format(results[0].name, overlay));
+        var data = chartService.generateChartSeries(results[0], overlay);
+        // add the always present close series to the front of the chart series array...
+        data.unshift(closeSeries);
+        // convert the indicator ticks into chart data values...
+        chartService.convertData(data, results);
+        // export the results...
+        vm.data = data;
       }, function (err) {
-        esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
+        esError = 'unable to load data: {0}:{1}:{2}'.format(vm.selectedSymbol, vm.selectedIndicator, err.message);
         console.trace(esError);
       });
     }
 
     function subscribeToStompUpdates() {
-      topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
+      topic = '/topic/indicators.' + market + '.' + vm.selectedSymbol + '.' + vm.selectedIndicator.name;
       //ngstomp.subscribe(topic, onMessage, {}, $scope);
 
       try {
@@ -220,13 +229,13 @@
       // TODO avoid $scope?
       utilService.traceLog($scope.item, "rabbit");
       // vm.data[0].values.push(JSON.parse(message.body));
-      vm.data[0].values.push(message.body);
+      chartService.addData(vm.data, message.body);
       $scope.$apply();
     }
 
 
     function doChart(item) {
-      console.log("ohlc.controller.js::doChart");
+      console.log("indicator.controller.js::doChart");
       // $scope.item = item;
       item.name = vm.selectedSymbol;
       reset();
@@ -238,14 +247,6 @@
       }
 
       initialise();
-
-      // $scope.message = moment();
-
-      // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
-
-      // ticks.get().then(function(response) {
-      //     vm.data[0].values = response.ticks;
-      // });
 
       utilService.traceLog(item, "elasticsearch");
       fetchHistoricDataFromES();
