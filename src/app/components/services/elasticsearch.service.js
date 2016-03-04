@@ -33,8 +33,6 @@
       parseResults: parseResults,
       testReply: testReply
     };
-    console.log('elasticsearchService has been created');
-    return service;
 
     // http://stackoverflow.com/questions/19842669/calling-a-function-in-angularjs-service-from-the-same-service
     // var self = this;
@@ -55,16 +53,16 @@
           fields: [key]
         }
       };
-    };
+    }
 
     function createQueryStringTuple(tuple) {
       // return {query_string: {query: tuple[0], fields: [tuple[1]]}};
       return createQueryString(tuple[0], tuple[1]);
-    };
+    }
 
     function createQueryStrings(arrayOfKeyValueTuples) {
       return _.map(arrayOfKeyValueTuples, createQueryStringTuple);
-    };
+    }
 
     function createQueries(arrayOfQueryStrings, date) {
       return arrayOfQueryStrings.concat({
@@ -77,7 +75,7 @@
           }
         }
       });
-    };
+    }
 
     // TODO improve templating by using lodash to insert a list of tuples as query strings...
     function createESQuery(arrayOfKeyValueTuples, date) {
@@ -92,7 +90,7 @@
           }
         }
       };
-    };
+    }
 
     // // TODO improve templating by using lodash to insert a list of tuples as query strings...
     // var template = function(symbol, name, date) {
@@ -125,7 +123,7 @@
           console.log('elasticsearch cluster returned ping');
         }
       });
-    };
+    }
 
     function getTicksAfter(symbol, date) {
       //  [2015-09-21 08:09:30,744][INFO ][index.search.slowlog.query] [Fault Zone] [test-tick][4] took[14.8ms], took_millis[14], types[tick], stats[], search_type[DFS_QUERY_THEN_FETCH], total_shards[5], source[{"from":0,"size":17,"query":{"bool":{"must":[{"query_string":{"query":"ABC","fields":["symbol"],"default_operator":"and"}},{"range":{"date":{"from":1442790000000,"to":null,"include_lower":true,"include_upper":true}}}]}}}], extra_source[],
@@ -138,7 +136,7 @@
         type: 'turbine-tick',
         body: query
       });
-    };
+    }
 
     function getIndicatorsAfter(symbol, name, date) {
       var query = createESQuery([
@@ -151,7 +149,7 @@
         type: 'turbine-indicator',
         body: query
       });
-    };
+    }
 
     function getStrategiesAfter(symbol, name, date) {
       var query = createESQuery([
@@ -164,11 +162,11 @@
         type: 'turbine-strategy',
         body: query
       });
-    };
+    }
 
     function parseResults(response) {
       return _.sortBy(_.map(response.hits.hits, '_source'), 'date');
-    };
+    }
 
     function testReply(message) {
       return "hello " + message;
@@ -195,6 +193,9 @@
     // this.add = function(tick) {
     //    ticks.push(tick);
     //};
+
+    console.log('elasticsearchService has been created');
+    return service;
 
   }
 

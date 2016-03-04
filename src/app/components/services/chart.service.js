@@ -18,8 +18,6 @@
       convertData: convertData,
       addData: addData
     };
-    console.log('chartService has been created');
-    return service;
 
     // TODO convert these functions to return values instead of modifying the parameters...
 
@@ -45,20 +43,20 @@
         .value();
       console.log(JSON.stringify(series));
       return series;
-    };
+    }
 
     function convertData(data, results) {
       // $log.debug(JSON.stringify(data) + ',' + JSON.stringify(results));
       _.forEach(data, function (item) {
         data[item.position].values = _.sortBy(_.map(results, _.curry(convertMessages)(item.key)), 'x');
       });
-    };
+    }
 
     function addData(data, target) {
       _.forEach(data, function (item) {
         Array.prototype.push.apply(data[item.position].values, _.map([target], _.curry(convertMessages)(item.key)));
       });
-    };
+    }
 
     function convertMessages(property, messages) {
       // $log.debug(property + '.' + JSON.stringify(messages));
@@ -67,22 +65,25 @@
         property: _.get(messages, property)
       }, renameProperties);
       // return _(messages).pick([property, 'date']).mapKeys(renameProperties).value();
-    };
+    }
 
     function renameProperties(value, key) {
       switch (key) {
       case 'date':
-        return 'x'
+        return 'x';
       default:
         return 'y';
       }
       return key;
-    };
+    }
 
     // this.ohlcChart = function(symbol, date) {
     //    return {
     //    }
     //  };
+
+    console.log('chartService has been created');
+    return service;
 
   }
 

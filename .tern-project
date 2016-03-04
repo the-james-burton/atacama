@@ -4,7 +4,8 @@
   "loadEagerly": [
     "bower_components/moment/moment.js",
     "bower_components/lodash/lodash.js",
-    "app/scipts/utils.js"
+    "app/scipts/utils.js",
+    "bower_components/sockjs/sockjs.js"
   ],
   "plugins": {
     "angular": {}
