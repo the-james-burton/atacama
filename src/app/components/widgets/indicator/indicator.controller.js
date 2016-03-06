@@ -29,7 +29,7 @@
     };
 
     vm.selectIndicator = function (selectedIndicator) {
-      vm.selectedIndicator = JSON.parse(selectedIndicator);
+      vm.selectedIndicator = selectedIndicator;
       $log.log('select indicator: ', vm.selectedIndicator);
       doChart($scope.item);
     };
