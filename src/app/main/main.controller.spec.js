@@ -20,10 +20,10 @@
       expect(vm.creationDate).toEqual(jasmine.any(Number));
     });
 
-    it('should define animate class after delaying timeout ', function() {
-      $timeout.flush();
-      expect(vm.classAnimation).toEqual('rubberBand');
-    });
+    // it('should define animate class after delaying timeout ', function() {
+    //   $timeout.flush();
+    //   expect(vm.classAnimation).toEqual('rubberBand');
+    // });
 
     it('should show a Toastr info and stop animation when invoke showToastr()', function() {
       vm.showToastr();
