@@ -53,7 +53,7 @@
       "main": [
         "scss/font-awesome.scss",
         "fonts/fontawesome-webfont.eot",
-        "fonts/fontawesome-webfont.esvg",
+        "fonts/fontawesome-webfont.svg",
         "fonts/fontawesome-webfont.ttf",
         "fonts/fontawesome-webfont.woff",
         "fonts/fontawesome-webfont.woff2"
