@@ -4,7 +4,7 @@
 
   angular.module('atacamaApp').directive('atacamaIndicator', indicatorDirective);
 
-  function indicatorDirective(dataService) {
+  function indicatorDirective() {
     return {
       templateUrl: 'app/components/widgets/indicator/indicator.html',
       link: linkFunc,

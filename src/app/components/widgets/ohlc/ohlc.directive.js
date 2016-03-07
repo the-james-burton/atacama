@@ -4,7 +4,7 @@
 
   angular.module('atacamaApp').directive('atacamaOhlc', ohlcDirective);
 
-  function ohlcDirective(dataService) {
+  function ohlcDirective() {
     return {
       templateUrl: 'app/components/widgets/ohlc/ohlc.html',
       link: linkFunc,

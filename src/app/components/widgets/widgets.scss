@@ -1,6 +1,6 @@
 ﻿
 
-.widget-temperature {
+.widget-gridster {
     height: 100%;
     width: 100%;
     min-height: 180px;
@@ -8,7 +8,7 @@
     color: black;
 }
 
-.widget-temperature-heading {
+.widget-gridster-heading {
     background-color: rgb(184, 202, 247);
     color: white;
     height: 37px;
@@ -17,13 +17,13 @@
     line-height: 32px;
 }
 
-.widget-temperature-icon {
+.widget-gridster-icon {
     height: 24px;
     width: 24px;
     margin-top: -2px;
 }
 
-.widget-temperature-body {
+.widget-gridster-body {
     position: relative;
     text-align: center;
     background-size: cover;
@@ -34,13 +34,13 @@
     min-height: 180px;
 }
 
-.widget-temperature-body  .fa-spin {
+.widget-gridster-body  .fa-spin {
     position: absolute;
     left: 10px;
     top: 10px;
 }
 
-.widget-temperature-view {
+.widget-gridster-view {
     background-color: rgba(255,255,255,.7);
     position: absolute;
     right: 5px;
@@ -49,14 +49,14 @@
     border: 1px solid black;
 }
 
-.widget-temperature-river-name {
+.widget-gridster-river-name {
     height: 30px;
     font-size: 14px;
     font-weight: bold;
     margin-top: 8px;
 }
 
-.widget-temperature-degrees {
+.widget-gridster-degrees {
     font-size: 64px;
     margin-top: -20px;
 }

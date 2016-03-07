@@ -1,11 +1,11 @@
 ﻿
 <!-- <div class="wwa-temperature-widget" ng-controller="OhlcWidgetController as vm"> -->
-<div class="widget-temperature">
+<div class="widget-gridster">
 
     <!-- TODO perhaps consolidate ohlc, strategys and strategies
           into a single 'chart.html' -->
 
-    <div class="widget-temperature-heading">
+    <div class="widget-gridster-heading">
       <!-- <h3>{{ widget.name }}</h3> -->
       <div class="btn-group" uib-dropdown>
         <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>{{ vm.selectedSymbol }}<span class="caret"></span></button>
@@ -27,12 +27,12 @@
 
     <!--<div class="wwa-temperature-body" style="background-image: url(/images/{{selectedLocation.image}});">-->
     <!-- This fixes the image error because it tries to bind the source before selectedLocation is set -->
-    <div class="widget-temperature-body">
+    <div class="widget-gridster-body">
         <div ng-if="!vm.isLoaded && !vm.hasError">
             <!-- fa-spin -->
             <i class="fa fa-refresh fa-2x"></i>
         </div>
-        <div ng-if="vm.isLoaded && !vm.hasError" class="widget-temperature-view">
+        <div ng-if="vm.isLoaded && !vm.hasError" class="widget-gridster-view">
           <nvd3 options='vm.options' data='vm.data' api="vm.api" config='vm.config'></nvd3>
         </div>
         <div ng-if="vm.hasError">

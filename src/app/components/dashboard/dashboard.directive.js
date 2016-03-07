@@ -25,20 +25,6 @@
       };
 
       scope.widgetDefinitions = [{
-        title: 'Temperature',
-        settings: {
-          sizeX: 3,
-          sizeY: 3,
-          minSizeX: 2,
-          minSizeY: 2,
-          template: '<wwa-temperature></wwa-temperature>',
-          widgetSettings: {
-            id: 1000,
-            templateUrl: 'app/components/widgets/temperature/wwa.select.location.template.html',
-            controller: 'wwaSelectLocationController'
-          }
-        }
-      }, {
         title: 'OHLC',
         settings: {
           sizeX: 3,

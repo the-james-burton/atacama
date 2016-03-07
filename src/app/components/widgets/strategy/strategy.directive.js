@@ -4,7 +4,7 @@
 
   angular.module('atacamaApp').directive('atacamaStrategy', strategyDirective);
 
-  function strategyDirective(dataService) {
+  function strategyDirective() {
     return {
       templateUrl: 'app/components/widgets/strategy/strategy.html',
       link: linkFunc,
