@@ -47,9 +47,9 @@
           minSizeY: 2,
           template: '<atacama-ohlc></atacama-ohlc>',
           widgetSettings: {
-            id: 1000,
-            templateUrl: 'app/components/widgets/temperature/wwa.select.location.template.html',
-            controller: 'wwaSelectLocationController'
+            id: 1001,
+            templateUrl: 'app/components/widgets/widget.settings.html',
+            controller: 'WidgetSettingsController'
           }
         }
       }, {
@@ -62,8 +62,8 @@
           template: '<atacama-indicator></atacama-indicator>',
           widgetSettings: {
             id: 1002,
-            templateUrl: 'app/components/widgets/temperature/wwa.select.location.template.html',
-            controller: 'wwaSelectLocationController'
+            templateUrl: 'app/components/widgets/widget.settings.html',
+            controller: 'WidgetSettingsController'
           }
         }
       }, {
@@ -75,9 +75,9 @@
           minSizeY: 2,
           template: '<atacama-strategy></atacama-strategy>',
           widgetSettings: {
-            id: 5000,
-            templateUrl: 'app/components/widgets/temperature/wwa.select.location.template.html',
-            controller: 'wwaSelectLocationController'
+            id: 1003,
+            templateUrl: 'app/components/widgets/widget.settings.html',
+            controller: 'WidgetSettingsController'
           }
         }
       }];
