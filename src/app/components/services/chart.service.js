@@ -62,7 +62,7 @@
     function convertMessages(property, messages) {
       // $log.debug(property + '.' + angular.toJson(messages));
       return _.mapKeys({
-        'date': _.get(messages, 'date'),
+        date: _.get(messages, 'date'),
         property: _.get(messages, property)
       }, renameProperties);
       // return _(messages).pick([property, 'date']).mapKeys(renameProperties).value();

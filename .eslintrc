@@ -8,6 +8,7 @@
   "globals": {
     "A": true,
     "_": true,
+    "d3": true,
     "SockJS": true,
     "angular": true,
     "module": true,

@@ -138,10 +138,10 @@
             left: 40
           },
           x: function (d) {
-            return d['date'];
+            return d.date;
           },
           y: function (d) {
-            return d['close'];
+            return d.close;
           },
           showValues: true,
           transitionDuration: 500,

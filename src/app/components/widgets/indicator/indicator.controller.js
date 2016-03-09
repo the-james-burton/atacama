@@ -191,7 +191,7 @@
         var results = elasticsearchService.parseResults(response);
         // if our indicator is an overlay, then that will affect the series generation...
         var overlay = _.result(_.find(vm.indicators, {
-          'name': results[0].name
+          name: results[0].name
         }), 'overlay');
         // console.log("{0} is overlay:{1}".format(results[0].name, overlay));
         var data = chartService.generateChartSeries(results[0], overlay);

@@ -58,6 +58,7 @@
         "angular": false,
         "$": false,
         "_": false,
+        "d3": false,
         "A": false,
         "SockJS": false,
         "moment": false
