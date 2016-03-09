@@ -17,6 +17,22 @@
     elasticsearchService, chartService, turbineService, utilService) {
     var vm = this;
 
+    // var url = 'http://localhost:48002';
+    var sod = moment(0, "HH").format("x");
+    // var subscription;
+
+    // adjustments to make the chart fit better in the widget...
+    var adjustX = -35;
+    var adjustY = -65;
+
+    // TODO select market in UI
+    var market = 'FTSE100';
+
+    var topic = '';
+    var esError = '';
+    var stompError = '';
+
+
     vm.isLoaded = false;
     vm.hasError = false;
     vm.selectedSymbol = "...";
@@ -33,21 +49,6 @@
       $log.log('select strategy: ', vm.selectedStrategy);
       doChart($scope.item);
     };
-
-    // var url = 'http://localhost:48002';
-    var sod = moment(0, "HH").format("x");
-    // var subscription;
-
-    // adjustments to make the chart fit better in the widget...
-    var adjustX = -35;
-    var adjustY = -65;
-
-    // TODO select market in UI
-    var market = 'FTSE100';
-
-    var topic = '';
-    var esError = '';
-    var stompError = '';
 
     // TODO centralise the rest call data more so widgets can share the results...
     // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
@@ -169,7 +170,7 @@
         // $scope.selectedSymbol = $scope.symbols[0];
       }, function (err) {
         esError = 'unable to load symbols({0}): {1}'.format(market, err.message);
-        console.trace(esError);
+        $log.error(esError);
       });
     }
 
@@ -178,7 +179,7 @@
         vm.strategies = response.strategies;
       }, function (err) {
         esError = 'unable to load strategies: {0}'.format(err.message);
-        console.trace(esError);
+        $log.error(esError);
       });
     }
 
@@ -191,7 +192,7 @@
         chartService.convertData(vm.data, results);
       }, function (err) {
         esError = 'unable to load data: {0}:{1}:{2}'.format(vm.selectedSymbol, vm.selectedStrategy, err.message);
-        console.trace(esError);
+        $log.error(esError);
       });
     }
 
@@ -209,7 +210,7 @@
         // throw new Error("unable to subscribe to topic: " + topic);
       } catch (err) {
         stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
-        console.trace(stompError);
+        $log.error(stompError);
       }
     }
 
@@ -223,7 +224,7 @@
 
 
     function doChart(item) {
-      console.log("strategy.controller.js::doChart");
+      $log.debug("strategy.controller.js::doChart");
       // $scope.item = item;
       item.name = vm.selectedSymbol;
       reset();

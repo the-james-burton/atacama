@@ -8,9 +8,23 @@
    * # StatusController controller of the atacamaApp
    */
   angular.module('atacamaApp')
-    .controller('StatusController', function ($scope, ngstomp, Restangular) {
-      console.log('StatusController has been created');
+    .controller('StatusController', function ($scope, ngstomp, Restangular, $log) {
       var vm = this;
+
+      var objectToSend = {
+        message: 'atacama status page'
+      };
+      var stompHeaders = {
+        headers1: 'xx',
+        headers2: 'yy'
+      };
+
+      var ping = Restangular.one('/tick/ping');
+
+      function onReply(message) {
+        vm.statusReply = message.body;
+        $scope.$apply();
+      }
 
       vm.statusReply = 'reply goes here';
 
@@ -23,8 +37,6 @@
 
       vm.greeting.ping = 'ping!';
 
-      var ping = Restangular.one('/tick/ping');
-
       ping.get().then(function (reply) {
         vm.greeting.ping = reply.time;
       });
@@ -32,23 +44,12 @@
       ngstomp
         .subscribe('/topic/reply', onReply, {}, $scope);
 
-      function onReply(message) {
-        vm.statusReply = message.body;
-        $scope.$apply();
-      }
-
-      var objectToSend = {
-          message: 'atacama status page'
-        },
-        stompHeaders = {
-          headers1: 'xx',
-          headers2: 'yy'
-        };
-
       // $scope.sendDataToWS = function(message) {
       ngstomp
         .send('/amq/queue/request', objectToSend, stompHeaders);
       // };
+
+      $log.debug('StatusController has been created');
 
       /*
               $stomp

@@ -17,17 +17,6 @@
     elasticsearchService, chartService, turbineService, utilService) {
     var vm = this;
 
-    vm.isLoaded = false;
-    vm.hasError = false;
-    vm.selectedSymbol = "...";
-    vm.values = {};
-
-    vm.selectSymbol = function (selectedSymbol) {
-      vm.selectedSymbol = selectedSymbol;
-      $log.log('select symbol: ', vm.selectedSymbol);
-      doChart($scope.item);
-    };
-
     // var url = 'http://localhost:48002';
     var sod = moment(0, "HH").format("x");
     // var subscription;
@@ -42,6 +31,17 @@
     var topic = '';
     var esError = '';
     var stompError = '';
+
+    vm.isLoaded = false;
+    vm.hasError = false;
+    vm.selectedSymbol = "...";
+    vm.values = {};
+
+    vm.selectSymbol = function (selectedSymbol) {
+      vm.selectedSymbol = selectedSymbol;
+      $log.log('select symbol: ', vm.selectedSymbol);
+      doChart($scope.item);
+    };
 
     // TODO centralise the rest call data more so widgets can share the results...
     // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
@@ -182,7 +182,7 @@
         // $scope.selectedSymbol = $scope.symbols[0];
       }, function (err) {
         esError = 'unable to load symbols: {0}'.format(err.message);
-        console.trace(esError);
+        $log.error(esError);
       });
     }
 
@@ -194,7 +194,7 @@
         vm.values = elasticsearchService.parseResults(response);
       }, function (err) {
         esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
-        console.trace(esError);
+        $log.error(esError);
       });
     }
 
@@ -212,7 +212,7 @@
         // throw new Error("unable to subscribe to topic: " + topic);
       } catch (err) {
         stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
-        console.trace(stompError);
+        $log.error(stompError);
       }
     }
 
@@ -226,7 +226,7 @@
 
 
     function doChart(item) {
-      console.log("ohlc.controller.js::doChart");
+      $log.debug("ohlc.controller.js::doChart");
       // $scope.item = item;
       item.name = vm.selectedSymbol;
       reset();

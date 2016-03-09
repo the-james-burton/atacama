@@ -17,19 +17,20 @@
       traceLog: traceLog,
       unsubscribeTopic: unsubscribeTopic
     };
-    $log.debug('utilService has been created');
-    return service;
 
     function traceLog(item, text) {
       $log.debug("{0}.{1}.{2} {3}".format(
         item.name, item.row, item.col, text));
-    };
+    }
 
     function unsubscribeTopic(topic) {
       if (topic.length > 0) {
         ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
       }
-    };
+    }
+
+    $log.debug('utilService has been created');
+    return service;
 
   }
 
