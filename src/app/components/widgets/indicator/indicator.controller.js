@@ -155,7 +155,7 @@
 
     function fetchStocks() {
       turbineService.symbols(market).then(function (response) {
-        // console.log(JSON.stringify(response.stocks));
+        // console.log(angular.toJson(response.stocks));
         vm.symbols = _.map(response.stocks, 'symbol');
         // $scope.selectedSymbol = $scope.symbols[0];
       }, function (err) {

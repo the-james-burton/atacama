@@ -130,7 +130,7 @@
       var query = createESQuery([
         ['symbol', symbol]
       ], date);
-      $log.debug(JSON.stringify(query));
+      $log.debug(angular.toJson(query));
       return es.search({
         index: 'turbine-ticks',
         type: 'turbine-tick',
@@ -143,7 +143,7 @@
         ['symbol', symbol],
         ['name', name]
       ], date);
-      $log.debug(JSON.stringify(query));
+      $log.debug(angular.toJson(query));
       return es.search({
         index: 'turbine-indicators',
         type: 'turbine-indicator',
@@ -156,7 +156,7 @@
         ['symbol', symbol],
         ['name', name]
       ], date);
-      $log.debug(JSON.stringify(query));
+      $log.debug(angular.toJson(query));
       return es.search({
         index: 'turbine-strategies',
         type: 'turbine-strategy',

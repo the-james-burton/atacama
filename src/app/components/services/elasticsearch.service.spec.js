@@ -55,14 +55,14 @@
         }
       };
       expect(elasticsearchService.createQueryString(key1, value1)).toEqual(expected);
-      $log.debug(JSON.stringify(expected));
+      $log.debug(angular.toJson(expected));
     });
 
     it('should join many elasticsearch query_strings into an array', function () {
       var input = requiredQueries();
       var result = elasticsearchService.createQueryStrings(input);
 
-      $log.debug(JSON.stringify(result));
+      $log.debug(angular.toJson(result));
       checkQueryString(result);
     });
 
@@ -71,14 +71,14 @@
       var queryStrings = elasticsearchService.createQueryStrings(input);
       var result = elasticsearchService.createQueries(queryStrings, sod);
 
-      $log.debug(JSON.stringify(result));
+      $log.debug(angular.toJson(result));
       checkQueryString(result);
       expect(result[2].range.date.from).toEqual(sod);
     });
 
     it('should create a complete elasticsearch query', function () {
       var result = elasticsearchService.createESQuery(requiredQueries(), sod);
-      $log.debug(JSON.stringify(result));
+      $log.debug(angular.toJson(result));
 
       expect(result.size).toBeDefined();
       expect(result.query).toBeDefined();

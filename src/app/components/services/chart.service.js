@@ -22,7 +22,8 @@
     // TODO convert these functions to return values instead of modifying the parameters...
 
     function generateChartSeries(results, overlay) {
-      $log.debug(JSON.stringify(_(results).property('indicators').value()));
+      // $log.debug(angular.toJson(_(results).property('indicators').value()));
+      $log.debug(angular.toJson(_(results).property('indicators').value()));
       var i = 1;
       // var series = _.map(_.keys(results.indicators, 'indicators'), convertIndicators);
       //var series = _(results).property('indicators')
@@ -41,12 +42,12 @@
           };
         })
         .value();
-      $log.debug(JSON.stringify(series));
+      $log.debug(angular.toJson(series));
       return series;
     }
 
     function convertData(data, results) {
-      // $log.debug(JSON.stringify(data) + ',' + JSON.stringify(results));
+      // $log.debug(angular.toJson(data) + ',' + angular.toJson(results));
       _.forEach(data, function (item) {
         data[item.position].values = _.sortBy(_.map(results, _.curry(convertMessages)(item.key)), 'x');
       });
@@ -59,7 +60,7 @@
     }
 
     function convertMessages(property, messages) {
-      // $log.debug(property + '.' + JSON.stringify(messages));
+      // $log.debug(property + '.' + angular.toJson(messages));
       return _.mapKeys({
         'date': _.get(messages, 'date'),
         property: _.get(messages, property)

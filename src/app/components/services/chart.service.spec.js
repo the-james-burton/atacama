@@ -19,7 +19,7 @@
     // interrogate $log messages in Karma...
     // http://www.jvandemo.com/how-to-access-angular-log-debug-messages-from-within-karma/
     // afterEach(function () {
-    //   console.log("debug:{0}".format(JSON.stringify($log.debug.logs)));
+    //   console.log("debug:{0}".format(angular.toJson($log.debug.logs)));
     // });
 
     it('should be registered', function () {
@@ -119,7 +119,7 @@
         strokeWidth: 1,
         classed: "dashed"
       }];
-      $log.debug(JSON.stringify(data));
+      $log.debug(angular.toJson(data));
       //var series = chartService.generateChartSeriesAlt('indicators', 'indicator', data);
       var series = chartService.generateChartSeries(data);
       expect(series).toEqual(expected);
