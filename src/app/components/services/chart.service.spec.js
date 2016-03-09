@@ -3,16 +3,29 @@
 
   describe('service chartService', function () {
     var chartService;
+    var $log;
 
-    beforeEach(module('atacamaApp'));
-    beforeEach(inject(function (_chartService_) {
-      chartService = _chartService_;
+    // how to get angularjs to print log messages to console inside a test...
+    // http://stackoverflow.com/questions/21602750/how-to-see-log-calls-in-terminal-when-running-angularjs-unit-tests-with-karma
+    beforeEach(module('atacamaApp', function ($provide) {
+      $provide.value('$log', console);
     }));
+
+    beforeEach(inject(function (_chartService_, _$log_) {
+      chartService = _chartService_;
+      $log = _$log_;
+    }));
+
+    // interrogate $log messages in Karma...
+    // http://www.jvandemo.com/how-to-access-angular-log-debug-messages-from-within-karma/
+    // afterEach(function () {
+    //   console.log("debug:{0}".format(JSON.stringify($log.debug.logs)));
+    // });
 
     it('should be registered', function () {
       expect(chartService).not.toEqual(null);
+      //$log.debug("**** angular, log, {0}".format("working"));
     });
-
 
     it('converts the data', function () {
       var series = [{
@@ -65,9 +78,9 @@
         y: 401
       }];
       chartService.convertData(series, data);
-      console.log(series[0].values);
-      console.log(series[1].values);
-      console.log(series[2].values);
+      $log.debug(series[0].values);
+      $log.debug(series[1].values);
+      $log.debug(series[2].values);
       expect(series[0].values).toEqual(expected0);
       expect(series[1].values).toEqual(expected1);
       expect(series[2].values).toEqual(expected2);
@@ -106,7 +119,7 @@
         strokeWidth: 1,
         classed: "dashed"
       }];
-      console.log(JSON.stringify(data));
+      $log.debug(JSON.stringify(data));
       //var series = chartService.generateChartSeriesAlt('indicators', 'indicator', data);
       var series = chartService.generateChartSeries(data);
       expect(series).toEqual(expected);

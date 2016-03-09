@@ -17,7 +17,7 @@
       traceLog: traceLog,
       unsubscribeTopic: unsubscribeTopic
     };
-    console.log('utilService has been created');
+    $log.debug('utilService has been created');
     return service;
 
     function traceLog(item, text) {

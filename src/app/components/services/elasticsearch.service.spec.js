@@ -3,15 +3,7 @@
 
   describe('service webDevTec', function () {
     var elasticsearchService;
-
-    beforeEach(module('atacamaApp'));
-    beforeEach(inject(function (_elasticsearchService_) {
-      elasticsearchService = _elasticsearchService_;
-    }));
-
-    it('should be registered', function () {
-      expect(elasticsearchService).not.toEqual(null);
-    });
+    var $log;
 
     // ----------------------------------------------------
     var sod = moment(0, "HH").format("x");
@@ -38,6 +30,19 @@
     };
     // ----------------------------------------------------
 
+    beforeEach(module('atacamaApp', function ($provide) {
+      $provide.value('$log', console);
+    }));
+
+    beforeEach(inject(function (_elasticsearchService_, _$log_) {
+      elasticsearchService = _elasticsearchService_;
+      $log = _$log_;
+    }));
+
+    it('should be registered', function () {
+      expect(elasticsearchService).not.toEqual(null);
+    });
+
     it('should return something', function () {
       expect(elasticsearchService.testReply("jasmine")).toEqual("hello jasmine");
     });
@@ -50,14 +55,14 @@
         }
       };
       expect(elasticsearchService.createQueryString(key1, value1)).toEqual(expected);
-      console.log(JSON.stringify(expected));
+      $log.debug(JSON.stringify(expected));
     });
 
     it('should join many elasticsearch query_strings into an array', function () {
       var input = requiredQueries();
       var result = elasticsearchService.createQueryStrings(input);
 
-      console.log(JSON.stringify(result));
+      $log.debug(JSON.stringify(result));
       checkQueryString(result);
     });
 
@@ -66,14 +71,14 @@
       var queryStrings = elasticsearchService.createQueryStrings(input);
       var result = elasticsearchService.createQueries(queryStrings, sod);
 
-      console.log(JSON.stringify(result));
+      $log.debug(JSON.stringify(result));
       checkQueryString(result);
       expect(result[2].range.date.from).toEqual(sod);
     });
 
     it('should create a complete elasticsearch query', function () {
       var result = elasticsearchService.createESQuery(requiredQueries(), sod);
-      console.log(JSON.stringify(result));
+      $log.debug(JSON.stringify(result));
 
       expect(result.size).toBeDefined();
       expect(result.query).toBeDefined();

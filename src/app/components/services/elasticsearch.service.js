@@ -118,9 +118,9 @@
         hello: "elasticsearch"
       }, function (error) {
         if (error) {
-          console.error('elasticsearch cluster is down!');
+          $log.error('elasticsearch cluster is down!');
         } else {
-          console.log('elasticsearch cluster returned ping');
+          $log.info('elasticsearch cluster returned ping');
         }
       });
     }
@@ -194,7 +194,7 @@
     //    ticks.push(tick);
     //};
 
-    console.log('elasticsearchService has been created');
+    $log.debug('elasticsearchService has been created');
     return service;
 
   }

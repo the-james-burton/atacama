@@ -12,13 +12,13 @@
   angular.module('atacamaApp')
     .factory('turbineService', turbineService);
 
-  function turbineService(Restangular) {
+  function turbineService(Restangular, $log) {
     var service = {
       symbols: symbols,
       indicators: indicators,
       strategies: strategies
     };
-    console.log('turbineService has been created');
+    $log.debug('turbineService has been created');
     return service;
 
     function symbols(market) {

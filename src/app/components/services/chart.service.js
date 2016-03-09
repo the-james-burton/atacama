@@ -22,7 +22,7 @@
     // TODO convert these functions to return values instead of modifying the parameters...
 
     function generateChartSeries(results, overlay) {
-      console.log(JSON.stringify(_(results).property('indicators').value()));
+      $log.debug(JSON.stringify(_(results).property('indicators').value()));
       var i = 1;
       // var series = _.map(_.keys(results.indicators, 'indicators'), convertIndicators);
       //var series = _(results).property('indicators')
@@ -41,7 +41,7 @@
           };
         })
         .value();
-      console.log(JSON.stringify(series));
+      $log.debug(JSON.stringify(series));
       return series;
     }
 
@@ -82,7 +82,7 @@
     //    }
     //  };
 
-    console.log('chartService has been created');
+    $log.debug('chartService has been created');
     return service;
 
   }
