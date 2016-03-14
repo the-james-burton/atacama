@@ -44,7 +44,7 @@ You can also run `gulp build` for building a distributable for nginx, `gulp test
 
 ## What is it built on?
 
-I am, of course, standing very much on the shoulders of giants. Indeed, part of the fun is finding these giants and then standing on their shoulders. In this project, I have set out to write a business application and therefore I want to write as little code as possible. This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular). This gives me a number of core angular-js components, as well as bootstrap and sass. In addition to those, I have found a number of very helpful open-source projects that deserve a special mention...
+I am, of course, standing very much on the shoulders of giants. Indeed, part of the fun is finding these giants and then standing on their shoulders. In this project, I have set out to write a business application and therefore I want to write as little code as possible. This project is generated with [yo angular-gulp-generator](https://github.com/Swiip/generator-gulp-angular). This gives me a number of core angular-js components, as well as bootstrap and sass. In addition to those, I have found a number of very helpful open-source projects that deserve a special mention...
 
 * **angular-moment** Easy use of the essential moment-js from within angular-js.
 * **angular-nvd3** Does great dynamic charts really easily.
@@ -63,8 +63,8 @@ I am, of course, standing very much on the shoulders of giants. Indeed, part of 
 ## What is going to be done soon?
 
 * **styling, logo and tidy up** The UI is pretty rough at the moment with very little custom formatting. Most of what you see is the default look of a yeoman app with bootstrap and sass. I want to do some unique styling, largely as a way to get familiar with CSS, SASS and bootstrap.
-* **ability to choose indicators**
-* **ability to chose strategies**
+* **ability to choose indicators** *DONE*
+* **ability to chose strategies** *DONE*
 * **more refactoring** I tend to deliver early, let code evolve and refactor later as patterns emerge. This works well when trying new technologies, which I am doing all the time in the project.
 * **tests for controllers** I will try and ensure that more of the code is tested, particularly the angular controllers.
 * **persistent dashboards**
