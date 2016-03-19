@@ -9,6 +9,7 @@
     "angular-messages": "~1.5.0",
     "angular-moment": "~1.0.0",
     "angular-aria": "~1.5.0",
+    "angular-smart-table": "~2.1.7",
     "restangular": "~1.5.1",
     "angular-route": "~1.5.0",
     "angular-resource": "~1.5.0",
