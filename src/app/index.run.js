@@ -8,7 +8,7 @@
   /** @ngInject */
   function runBlock($log, Restangular, securityService) {
 
-    securityService.init();
+    // securityService.login('user', 'password');
 
     // var esError = '';
     // var csrfToken = '';
@@ -34,7 +34,7 @@
     //   $log.error(esError);
     // });
 
-    // $log.debug('runBlock end');
+    $log.debug('runBlock end');
   }
 
 })();

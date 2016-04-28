@@ -14,10 +14,15 @@
 
   function turbineService(Restangular, $log) {
     var service = {
+      user: user,
       symbols: symbols,
       indicators: indicators,
       strategies: strategies
     };
+
+    function user() {
+      return Restangular.one('user').get();
+    }
 
     function symbols(market) {
       return Restangular.one('turbine').one('stocks').one(market).get();

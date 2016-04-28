@@ -21,6 +21,11 @@
       templateUrl: 'app/components/dashboard/dashboard.html'
       // template: '<atacama-dashboard></atacama-dashboard>'
     })
+    .when('/login', {
+      templateUrl : 'app/components/security/login.html',
+      controller : 'LoginController',
+      controllerAs: 'vm'
+    })
     .otherwise({
       redirectTo: '/'
     });

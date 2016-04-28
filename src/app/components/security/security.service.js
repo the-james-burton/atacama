@@ -14,13 +14,13 @@
 
   function securityService(Restangular, $log) {
     var service = {
-      init: init
+      login: login
     };
 
-    function init() {
+    function login(username, password, callback) {
       var esError = '';
       var csrfToken = '';
-      var authorization = 'Basic ' + btoa('user:password');
+      var authorization = 'Basic ' + btoa('{0}:{1}'.format(username, password));
 
       Restangular.setDefaultHttpFields({
         withCredentials: true
@@ -42,9 +42,11 @@
           'X-Requested-With': 'XMLHttpRequest'
         });
         Restangular.setFullResponse(false);
+        callback && callback(true);
       }, function (err) {
         esError = 'unable to call /user: {0}:{1}:{2}'.format(authorization, err.status, err.statusText);
         $log.error(esError);
+        callback && callback(false);
       });
     }
 
