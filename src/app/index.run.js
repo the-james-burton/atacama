@@ -6,7 +6,13 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock($log, Restangular, securityService) {
+  function runBlock($rootScope, $cookies, $log, Restangular, securityService) {
+
+    // keep user logged in after page refresh
+    $rootScope.globals = $cookies.getObject('globals') || {};
+    if ($rootScope.globals.authorization) {
+      Restangular.setDefaultHeaders($rootScope.globals.headers);
+    }
 
     // securityService.login('user', 'password');
 
