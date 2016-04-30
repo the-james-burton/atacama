@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6,7 +6,7 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock($rootScope, $cookies, $log, Restangular, securityService) {
+  function runBlock($rootScope, $cookies, $log, Restangular, securityService, $location) {
 
     // keep user logged in after page refresh
     $rootScope.globals = $cookies.getObject('globals') || {};
@@ -14,6 +14,16 @@
       Restangular.setDefaultHeaders($rootScope.globals.headers);
     }
 
+    // http://jasonwatmore.com/post/2015/03/10/AngularJS-User-Registration-and-Login-Example.aspx
+    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+      // redirect to login page if not logged in and trying to access a restricted page
+      var path = $location.path();
+      var isSecuredPage = !_.includes(['/login', '/register'], path);
+      var loggedIn = $rootScope.globals.authorization;
+      if (isSecuredPage && !loggedIn) {
+        $location.path('/login');
+      }
+    });
     // securityService.login('user', 'password');
 
     // var esError = '';
