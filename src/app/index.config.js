@@ -22,7 +22,7 @@
     toastrConfig.preventDuplicates = true;
     toastrConfig.progressBar = true;
 
-    RestangularProvider.setBaseUrl('http://localhost:48002');
+    RestangularProvider.setBaseUrl('https://localhost:48002');
 
     // https://www.rabbitmq.com/web-stomp.html
     // Missing features

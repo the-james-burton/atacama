@@ -17,7 +17,6 @@
     elasticsearchService, chartService, turbineService, utilService) {
     var vm = this;
 
-    // var url = 'http://localhost:48002';
     var sod = moment(0, "HH").format("x");
     // var subscription;
 
