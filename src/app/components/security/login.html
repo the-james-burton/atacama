@@ -6,21 +6,25 @@
 
   <div class="col-md-6 col-md-offset-3">
 
+    <p>authenticated? {{ vm.authenticated }}</p>
+    <p>available? {{ vm.available }} </p>
+
     <div ng-show="vm.authenticated">
       <div class="alert alert-success">
         {{ vm.message }}
       </div>
       <div>
-        <p><a href="#" class="btn btn-primary" role="button" ng-click="vm.logout()">Logout</a></p>
+        <p><a ng-href="#/login/true" class="btn btn-primary" role="button">Logout</a></p>
       </div>
     </div>
 
-    <div ng-hide="vm.authenticated">
-
+    <div ng-show="!vm.authenticated">
       <div class="alert alert-danger" ng-show="vm.message">
         {{ vm.message }}
       </div>
+    </div>
 
+    <div ng-show="!vm.authenticated && vm.available">
       <form role="form" ng-submit="vm.login()">
         <div class="form-group">
           <label for="username">Username:</label>

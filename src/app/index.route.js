@@ -21,7 +21,7 @@
       templateUrl: 'app/components/dashboard/dashboard.html'
       // template: '<atacama-dashboard></atacama-dashboard>'
     })
-    .when('/login', {
+    .when('/login/:logout', {
       templateUrl : 'app/components/security/login.html',
       controller : 'LoginController',
       controllerAs: 'vm'

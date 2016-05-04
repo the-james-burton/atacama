@@ -21,7 +21,7 @@
       var isSecuredPage = !_.includes(['/login', '/register'], path);
       var loggedIn = $rootScope.globals.authorization;
       if (isSecuredPage && !loggedIn) {
-        $location.path('/login');
+        $location.path('/login/false');
       }
     });
     // securityService.login('user', 'password');
