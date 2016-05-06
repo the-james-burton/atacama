@@ -9,7 +9,7 @@
   function config($logProvider, toastrConfig, RestangularProvider, ngstompProvider) {
 
     // var url = 'http://localhost:48002/ticks';
-    var stompUrl = 'http://localhost:15674/stomp';
+    var stompUrl = 'https://localhost:15671/stomp';
     var csrfToken = "";
 
     // Enable log
