@@ -14,7 +14,7 @@
   .service('es', function (esFactory) {
     return esFactory({
       host: 'localhost:9200',
-      apiVersion: '2.2'
+      apiVersion: '2.3'
     });
   })
 
