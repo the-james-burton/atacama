@@ -9,6 +9,10 @@
   function config($logProvider, toastrConfig, RestangularProvider, ngstompProvider) {
 
     // var url = 'http://localhost:48002/ticks';
+
+    // https://www.rabbitmq.com/web-stomp.html
+    // The /ws is the websocket url according to the does, but it does not seem to exist
+    // However, using /stomp does actually result in a websocket connection...
     var stompUrl = 'https://localhost:15671/stomp';
     var csrfToken = "";
 
@@ -24,10 +28,13 @@
 
     RestangularProvider.setBaseUrl('https://localhost:48002');
 
-    // https://www.rabbitmq.com/web-stomp.html
-    // Missing features
+    // Missing features from RabbitMQ webstomp...
     // RabbitMQ-Web-Stomp is fully compatible with the RabbitMQ-STOMP plugin, with the exception of STOMP heartbeats.
     // STOMP heartbeats won't work with SockJS.
+
+    // Access-Control-Allow-Credentials:true
+    // Access-Control-Allow-Origin:http://localhost:3000
+
     ngstompProvider
         .url(stompUrl)
         .credential('guest', 'guest')
