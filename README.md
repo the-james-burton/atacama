@@ -38,7 +38,7 @@ bower install
 gulp serve
 ```
 
-Then browse to http://localhost:3000 and you should see the app. For it to actually work and show something, you will also need to get *the-turbine* working.
+Then browse to http://localhost:3000 and you should see the app. For it to actually work and show something, you will also need to get [the-turbine](https://github.com/the-james-burton/the-turbine) working.
 
 You can also run `gulp build` for building a distributable for nginx, `gulp test` to run the tests and `gulp serve` for preview. When development reaches a sensible point, I will provide a distributable via github 'releases' tab which can be deployed into nginx.
 
