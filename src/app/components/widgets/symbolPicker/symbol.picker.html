@@ -1,0 +1,27 @@
+<!-- <pre>Model: {{selected | json}}</pre> -->
+
+<!-- <div class="input-group input-group-sm"> -->
+  <input type="text" class="form-control"
+    ng-model="selectedSymbol"
+    uib-typeahead="symbol for symbol in vm.symbols | filter:$viewValue | limitTo:8"
+    typeahead-on-select="vm.selectSymbol(selectedSymbol)"></input>
+<!-- </div> -->
+
+
+<!-- <input type="text" class="form-control" ng-model="search" placeholder="Search..."> -->
+<!-- <div class="btn-group" uib-dropdown>
+  <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>{{ vm.selectedSymbol }}<span class="caret"></span></button>
+  <ul class="dropdown-menu" aria-labelledby="single-button">
+    <li ng-repeat="symbol in vm.symbols | filter:vm.filterBySearch">
+      <a href ng-click="vm.selectSymbol(symbol)">{{ symbol }}</a>
+    </li>
+  </ul>
+</div> -->
+
+<!-- <ul>
+    <li ng-repeat="symbol in vm.symbols | filter:vm.filterBySearch">
+        {{ symbol }}
+    </li>
+</ul> -->
+
+<!-- <input type="text" ng-model="selectedSymbol"/> -->

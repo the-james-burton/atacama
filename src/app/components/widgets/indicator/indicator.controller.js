@@ -31,22 +31,49 @@
     var esError = '';
     var stompError = '';
 
-    vm.isLoaded = false;
-    vm.hasError = false;
+    vm.Status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
+
+    vm.status = vm.Status.WAITING;
+
+    // vm.isLoaded = false;
+    // vm.hasError = false;
     vm.selectedSymbol = "...";
     vm.selectedIndicator = "...";
     vm.values = {};
 
-    vm.selectSymbol = function (selectedSymbol) {
+    $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
+      if (angular.isUndefined(selectedSymbol) ||
+        selectedSymbol === null ||
+        selectedSymbol === "...") {
+        return;
+      }
       vm.selectedSymbol = selectedSymbol;
-      $log.log('select symbol: ', vm.selectedSymbol);
-    };
-
-    vm.selectIndicator = function (selectedIndicator) {
-      vm.selectedIndicator = selectedIndicator;
-      $log.log('select indicator: ', vm.selectedIndicator);
+      $log.log('detected symbol update: ', vm.selectedSymbol);
       doChart($scope.item);
-    };
+    }, false);
+
+
+    $scope.$watch('vm.selectedIndicator', function (selectedIndicator) {
+      if (angular.isUndefined(selectedIndicator) ||
+        selectedIndicator === null ||
+        selectedIndicator === "...") {
+        return;
+      }
+      vm.selectedIndicator = selectedIndicator;
+      $log.log('detected indicator update: ', vm.selectedIndicator);
+      doChart($scope.item);
+    }, false);
+
+    // vm.selectSymbol = function (selectedSymbol) {
+    //   vm.selectedSymbol = selectedSymbol;
+    //   $log.log('select symbol: ', vm.selectedSymbol);
+    // };
+
+    // vm.selectIndicator = function (selectedIndicator) {
+    //   vm.selectedIndicator = selectedIndicator;
+    //   $log.log('select indicator: ', vm.selectedIndicator);
+    //   doChart($scope.item);
+    // };
 
     // TODO centralise the rest call data more so widgets can share the results...
     // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
@@ -54,8 +81,8 @@
     // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
     reset();
-    fetchStocks();
-    fetchIndicators();
+    // fetchStocks();
+    // fetchIndicators();
 
     // set the size of the chart as the widget is resized...
     $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
@@ -78,8 +105,10 @@
 
     function reset() {
       $log.debug('reset()');
-      vm.isLoaded = false;
-      vm.hasError = false;
+
+      vm.status = vm.Status.WAITING;
+      // vm.isLoaded = false;
+      // vm.hasError = false;
 
       vm.options = {
         chart: {
@@ -152,25 +181,25 @@
 
     // TODO make these fetch functions more functional in style...
 
-    function fetchStocks() {
-      turbineService.symbols(market).then(function (response) {
-        // console.log(angular.toJson(response.stocks));
-        vm.symbols = _.map(response.stocks, 'symbol');
-        // $scope.selectedSymbol = $scope.symbols[0];
-      }, function (err) {
-        esError = 'unable to load symbols({0}): {1}'.format(market, err.message);
-        $log.error(esError);
-      });
-    }
+    // function fetchStocks() {
+    //   turbineService.symbols(market).then(function (response) {
+    //     // console.log(angular.toJson(response.stocks));
+    //     vm.symbols = _.map(response.stocks, 'symbol');
+    //     // $scope.selectedSymbol = $scope.symbols[0];
+    //   }, function (err) {
+    //     esError = 'unable to load symbols({0}): {1}'.format(market, err.message);
+    //     $log.error(esError);
+    //   });
+    // }
 
-    function fetchIndicators() {
-      turbineService.indicators().then(function (response) {
-        vm.indicators = response.indicators;
-      }, function (err) {
-        esError = 'unable to load indicators: {0}'.format(err.message);
-        $log.error(esError);
-      });
-    }
+    // function fetchIndicators() {
+    //   turbineService.indicators().then(function (response) {
+    //     vm.indicators = response.indicators;
+    //   }, function (err) {
+    //     esError = 'unable to load indicators: {0}'.format(err.message);
+    //     $log.error(esError);
+    //   });
+    // }
 
     function fetchHistoricDataFromES() {
       var promise = elasticsearchService.getIndicatorsAfter(vm.selectedSymbol, vm.selectedIndicator.name, sod);
@@ -235,6 +264,8 @@
 
     function doChart(item) {
       $log.debug("indicator.controller.js::doChart");
+      vm.status = vm.Status.LOADING;
+
       // $scope.item = item;
       item.name = vm.selectedSymbol;
       reset();
@@ -252,11 +283,13 @@
 
       subscribeToStompUpdates();
 
-      vm.isLoaded = true;
+      vm.status = vm.Status.LOADED;
+      //vm.isLoaded = true;
 
       // TODO catch all errors and set the property and message as required
       if (esError !== '' || stompError !== '') {
-        vm.hasError = true;
+        vm.status = vm.Status.ERROR;
+        //vm.hasError = true;
       }
 
     }

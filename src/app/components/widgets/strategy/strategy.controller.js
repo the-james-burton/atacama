@@ -31,23 +31,48 @@
     var esError = '';
     var stompError = '';
 
+    vm.Status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
 
-    vm.isLoaded = false;
-    vm.hasError = false;
+    vm.status = vm.Status.WAITING;
+
+    // vm.isLoaded = false;
+    // vm.hasError = false;
     vm.selectedSymbol = "...";
     vm.selectedStrategy = "...";
     vm.values = {};
 
-    vm.selectSymbol = function (selectedSymbol) {
+    $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
+      if (angular.isUndefined(selectedSymbol) ||
+        selectedSymbol === null ||
+        selectedSymbol === "...") {
+        return;
+      }
       vm.selectedSymbol = selectedSymbol;
-      $log.log('select symbol: ', vm.selectedSymbol);
-    };
-
-    vm.selectStrategy = function (selectedStrategy) {
-      vm.selectedStrategy = selectedStrategy;
-      $log.log('select strategy: ', vm.selectedStrategy);
+      $log.log('detected symbol update: ', vm.selectedSymbol);
       doChart($scope.item);
-    };
+    }, false);
+
+    $scope.$watch('vm.selectedStrategy', function (selectedStrategy) {
+      if (angular.isUndefined(selectedStrategy) ||
+        selectedStrategy === null ||
+        selectedStrategy === "...") {
+        return;
+      }
+      vm.selectedStrategy = selectedStrategy;
+      $log.log('detected streategy update: ', vm.selectedStrategy);
+      doChart($scope.item);
+    }, false);
+
+    // vm.selectSymbol = function (selectedSymbol) {
+    //   vm.selectedSymbol = selectedSymbol;
+    //   $log.log('select symbol: ', vm.selectedSymbol);
+    // };
+
+    // vm.selectStrategy = function (selectedStrategy) {
+    //   vm.selectedStrategy = selectedStrategy;
+    //   $log.log('select strategy: ', vm.selectedStrategy);
+    //   doChart($scope.item);
+    // };
 
     // TODO centralise the rest call data more so widgets can share the results...
     // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
@@ -55,8 +80,8 @@
     // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
     reset();
-    fetchStocks();
-    fetchStrategies();
+    // fetchStocks();
+    // fetchStrategies();
 
     // set the size of the chart as the widget is resized...
     $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
@@ -79,8 +104,10 @@
 
     function reset() {
       $log.debug('reset()');
-      vm.isLoaded = false;
-      vm.hasError = false;
+      vm.status = vm.Status.WAITING;
+
+      // vm.isLoaded = false;
+      // vm.hasError = false;
 
       vm.options = {
         chart: {
@@ -162,25 +189,25 @@
 
     // TODO make these fetch functions more functional in style...
 
-    function fetchStocks() {
-      turbineService.symbols(market).then(function (response) {
-        // console.log(angular.toJson(response.stocks));
-        vm.symbols = _.map(response.stocks, 'symbol');
-        // $scope.selectedSymbol = $scope.symbols[0];
-      }, function (err) {
-        esError = 'unable to load symbols({0}): {1}'.format(market, err.message);
-        $log.error(esError);
-      });
-    }
-
-    function fetchStrategies() {
-      turbineService.strategies().then(function (response) {
-        vm.strategies = response.strategies;
-      }, function (err) {
-        esError = 'unable to load strategies: {0}'.format(err.message);
-        $log.error(esError);
-      });
-    }
+    // function fetchStocks() {
+    //   turbineService.symbols(market).then(function (response) {
+    //     // console.log(angular.toJson(response.stocks));
+    //     vm.symbols = _.map(response.stocks, 'symbol');
+    //     // $scope.selectedSymbol = $scope.symbols[0];
+    //   }, function (err) {
+    //     esError = 'unable to load symbols({0}): {1}'.format(market, err.message);
+    //     $log.error(esError);
+    //   });
+    // }
+    //
+    // function fetchStrategies() {
+    //   turbineService.strategies().then(function (response) {
+    //     vm.strategies = response.strategies;
+    //   }, function (err) {
+    //     esError = 'unable to load strategies: {0}'.format(err.message);
+    //     $log.error(esError);
+    //   });
+    // }
 
     function fetchHistoricDataFromES() {
       var promise = elasticsearchService.getStrategiesAfter(vm.selectedSymbol, vm.selectedStrategy.name, sod);
@@ -224,6 +251,8 @@
 
     function doChart(item) {
       $log.debug("strategy.controller.js::doChart");
+      vm.status = vm.Status.LOADING;
+
       // $scope.item = item;
       item.name = vm.selectedSymbol;
       reset();
@@ -240,11 +269,13 @@
 
       subscribeToStompUpdates();
 
-      vm.isLoaded = true;
+      vm.status = vm.Status.LOADED;
+      // vm.isLoaded = true;
 
       // TODO catch all errors and set the property and message as required
       if (esError !== '' || stompError !== '') {
-        vm.hasError = true;
+        vm.status = vm.Status.ERROR;
+        // vm.hasError = true;
       }
 
     }

@@ -31,16 +31,31 @@
     var esError = '';
     var stompError = '';
 
-    vm.isLoaded = false;
-    vm.hasError = false;
+    vm.Status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
+
+    vm.status = vm.Status.WAITING;
+
+    //vm.isLoaded = false;
+    //vm.hasError = false;
     vm.selectedSymbol = "...";
     vm.values = {};
 
-    vm.selectSymbol = function (selectedSymbol) {
+    $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
+      if (angular.isUndefined(selectedSymbol)
+           || selectedSymbol === null
+           || selectedSymbol === "...") {
+        return;
+      }
       vm.selectedSymbol = selectedSymbol;
-      $log.log('select symbol: ', vm.selectedSymbol);
+      $log.log('detected symbol update: ', vm.selectedSymbol);
       doChart($scope.item);
-    };
+    }, false);
+
+    // vm.selectSymbol = function (selectedSymbol) {
+    //   vm.selectedSymbol = selectedSymbol;
+    //   $log.log('select symbol: ', vm.selectedSymbol);
+    //   doChart($scope.item);
+    // };
 
     // TODO centralise the rest call data more so widgets can share the results...
     // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
@@ -49,7 +64,7 @@
 
     reset();
 
-    fetchStocks();
+    // fetchStocks();
 
     // $scope.strategies = [
     //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
@@ -92,8 +107,10 @@
 
     function reset() {
       $log.debug('reset()');
-      vm.isLoaded = false;
-      vm.hasError = false;
+
+      vm.status = vm.Status.WAITING;
+      // vm.isLoaded = false;
+      // vm.hasError = false;
 
       vm.options = {
         chart: {
@@ -174,16 +191,16 @@
     //   utilService.unsubscribeTopic(topic);
     // });
 
-    function fetchStocks() {
-      turbineService.symbols(market).then(function (response) {
-        // console.log(angular.toJson(response.stocks));
-        vm.symbols = _.map(response.stocks, 'symbol');
-        // $scope.selectedSymbol = $scope.symbols[0];
-      }, function (err) {
-        esError = 'unable to load symbols: {0}'.format(err.message);
-        $log.error(esError);
-      });
-    }
+    // function fetchStocks() {
+    //   turbineService.symbols(market).then(function (response) {
+    //     // console.log(angular.toJson(response.stocks));
+    //     vm.symbols = _.map(response.stocks, 'symbol');
+    //     // $scope.selectedSymbol = $scope.symbols[0];
+    //   }, function (err) {
+    //     esError = 'unable to load symbols: {0}'.format(err.message);
+    //     $log.error(esError);
+    //   });
+    // }
 
     function fetchHistoricDataFromES() {
       var promise = elasticsearchService.getTicksAfter(vm.selectedSymbol, sod);
@@ -226,6 +243,7 @@
 
     function doChart(item) {
       $log.debug("ohlc.controller.js::doChart");
+      vm.status = vm.Status.LOADING;
       // $scope.item = item;
       item.name = vm.selectedSymbol;
       reset();
@@ -251,10 +269,12 @@
 
       subscribeToStompUpdates();
 
-      vm.isLoaded = true;
+      vm.status = vm.Status.LOADED;
+      // vm.isLoaded = true;
 
       // TODO catch all errors and set the property and message as required
       if (esError !== '' || stompError !== '') {
+        vm.status = vm.Status.ERROR;
         vm.hasError = true;
       }
 

@@ -12,6 +12,9 @@ String.prototype.format = function () {
   });
 };
 
+String.prototype.escapeRegExp = function () {
+  return this.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+};
 
 var A = (function () {
 
