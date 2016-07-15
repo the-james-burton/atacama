@@ -80,7 +80,6 @@
     // {"indicators":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
     // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
 
-    reset();
     // fetchStocks();
     // fetchIndicators();
 
@@ -103,7 +102,7 @@
       }
     }, true);
 
-    function reset() {
+    vm.reset = function() {
       $log.debug('reset()');
 
       vm.status = vm.Status.WAITING;
@@ -128,6 +127,8 @@
       // vm.data = {key: '', values: [{}]};
 
     }
+
+    vm.reset();
 
     function initialise() {
       vm.config = {
@@ -268,7 +269,7 @@
 
       // $scope.item = item;
       item.name = vm.selectedSymbol;
-      reset();
+      vm.reset();
       vm.typeOHLC = true;
       utilService.unsubscribeTopic(topic);
 
