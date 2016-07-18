@@ -21,7 +21,7 @@
 
   function linkFunc(scope, element, attrs) {
     // set to null by default...
-    // scope.symbol = "...";
+    // scope.symbol = "";
   }
 
 })();

@@ -23,7 +23,7 @@
     var market = 'FTSE100';
 
     // set to null by default...
-    // vm.selectedSymbol = "...";
+    // vm.selectedSymbol = "";
 
     // $scope.$watch('search', function (value) {
     //   regex = new RegExp('\\b' + value.escapeRegExp(), 'i');

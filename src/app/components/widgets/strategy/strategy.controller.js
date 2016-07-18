@@ -37,14 +37,14 @@
 
     // vm.isLoaded = false;
     // vm.hasError = false;
-    vm.selectedSymbol = "...";
-    vm.selectedStrategy = "...";
+    vm.selectedSymbol = "";
+    vm.selectedStrategy = "";
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
       if (angular.isUndefined(selectedSymbol) ||
         selectedSymbol === null ||
-        selectedSymbol === "...") {
+        selectedSymbol === "") {
         return;
       }
       vm.selectedSymbol = selectedSymbol;
@@ -55,7 +55,7 @@
     $scope.$watch('vm.selectedStrategy', function (selectedStrategy) {
       if (angular.isUndefined(selectedStrategy) ||
         selectedStrategy === null ||
-        selectedStrategy === "...") {
+        selectedStrategy === "") {
         return;
       }
       vm.selectedStrategy = selectedStrategy;
@@ -258,7 +258,7 @@
       reset();
       utilService.unsubscribeTopic(topic);
 
-      if (vm.selectedSymbol === "...") {
+      if (vm.selectedSymbol === "") {
         return;
       }
 

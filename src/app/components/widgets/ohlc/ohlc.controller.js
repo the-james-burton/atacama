@@ -37,13 +37,13 @@
 
     //vm.isLoaded = false;
     //vm.hasError = false;
-    vm.selectedSymbol = "...";
+    vm.selectedSymbol = "";
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
       if (angular.isUndefined(selectedSymbol)
            || selectedSymbol === null
-           || selectedSymbol === "...") {
+           || selectedSymbol === "") {
         return;
       }
       vm.selectedSymbol = selectedSymbol;
@@ -250,7 +250,7 @@
       vm.typeOHLC = true;
       utilService.unsubscribeTopic(topic);
 
-      if (vm.selectedSymbol === "...") {
+      if (vm.selectedSymbol === "") {
         return;
       }
 

@@ -37,14 +37,14 @@
 
     // vm.isLoaded = false;
     // vm.hasError = false;
-    vm.selectedSymbol = "...";
-    vm.selectedIndicator = "...";
+    vm.selectedSymbol = "";
+    vm.selectedIndicator = "";
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
       if (angular.isUndefined(selectedSymbol) ||
         selectedSymbol === null ||
-        selectedSymbol === "...") {
+        selectedSymbol === "") {
         return;
       }
       vm.selectedSymbol = selectedSymbol;
@@ -56,7 +56,7 @@
     $scope.$watch('vm.selectedIndicator', function (selectedIndicator) {
       if (angular.isUndefined(selectedIndicator) ||
         selectedIndicator === null ||
-        selectedIndicator === "...") {
+        selectedIndicator === "") {
         return;
       }
       vm.selectedIndicator = selectedIndicator;
@@ -273,7 +273,7 @@
       vm.typeOHLC = true;
       utilService.unsubscribeTopic(topic);
 
-      if (vm.selectedSymbol === "...") {
+      if (vm.selectedSymbol === "") {
         return;
       }
 
