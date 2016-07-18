@@ -210,7 +210,7 @@
     // }
 
     function fetchHistoricDataFromES() {
-      var promise = elasticsearchService.getStrategiesAfter(vm.selectedSymbol, vm.selectedStrategy.name, sod);
+      var promise = elasticsearchService.getStrategiesAfter(market, vm.selectedSymbol, vm.selectedStrategy.name, sod);
       utilService.traceLog($scope.item, "elasticsearch");
 
       promise.then(function (response) {
