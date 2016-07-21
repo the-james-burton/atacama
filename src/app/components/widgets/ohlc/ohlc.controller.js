@@ -103,6 +103,52 @@
       }
     }, true);
 
+
+    // ---------------------- datepicker stuff below ------------------
+    vm.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    vm.format = vm.formats[0];
+    vm.altInputFormats = ['M!/d!/yyyy'];
+
+    vm.dateOptions = {
+      // dateDisabled: isDisabled,
+      formatYear: 'yy',
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1
+    };
+
+    vm.popup1 = {
+      opened: false
+    };
+
+    // Disable weekend selection
+    vm.isDisabled = function(date, mode) {
+      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    };
+
+    vm.today = function() {
+      vm.dt = new Date();
+    };
+
+    vm.clear = function() {
+      vm.dt = null;
+    };
+
+    vm.open1 = function() {
+      vm.popup1.opened = true;
+    };
+
+    vm.today();
+
+    // test function just to check it is working...
+    $scope.$watch('vm.dt', function (newValues) {
+      if (newValues) {
+        $log.info("vm.dt:{0}".format(vm.dt));
+      }
+    }, true);
+
+    // ---------------------- datepicker stuff above ------------------
+
     vm.reset = function () {
       $log.debug('reset()');
 
