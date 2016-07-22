@@ -17,9 +17,6 @@
     elasticsearchService, chartService, turbineService, utilService) {
     var vm = this;
 
-    var sod = moment(0, "HH").format("x");
-    // var subscription;
-
     // adjustments to make the chart fit better in the widget...
     var adjustX = -35;
     var adjustY = -65;
@@ -112,8 +109,8 @@
     vm.dateOptions = {
       // dateDisabled: isDisabled,
       formatYear: 'yy',
-      maxDate: new Date(2020, 5, 22),
-      minDate: new Date(),
+      // maxDate: new Date(2020, 5, 22),
+      // minDate: new Date(),
       startingDay: 1
     };
 
@@ -127,11 +124,11 @@
     };
 
     vm.today = function() {
-      vm.dt = new Date();
+      vm.dateFrom = new Date();
     };
 
     vm.clear = function() {
-      vm.dt = null;
+      vm.dateFrom = null;
     };
 
     vm.open1 = function() {
@@ -140,10 +137,14 @@
 
     vm.today();
 
-    // test function just to check it is working...
-    $scope.$watch('vm.dt', function (newValues) {
+    // update chart on date change...
+    $scope.$watch('vm.dateFrom', function (newValues) {
       if (newValues) {
-        $log.info("vm.dt:{0}".format(vm.dt));
+        vm.dateFrom.setHours(0);
+        vm.dateFrom.setMinutes(0);
+        vm.dateFrom.setSeconds(0);
+        $log.log('detected date update: ', vm.dateFrom);
+        doChart($scope.item);
       }
     }, true);
 
@@ -248,8 +249,8 @@
     //   });
     // }
 
-    function fetchHistoricDataFromES() {
-      var promise = elasticsearchService.getTicksAfter(market, vm.selectedSymbol, sod);
+    function fetchHistoricDataFromES(from) {
+      var promise = elasticsearchService.getTicksAfter(market, vm.selectedSymbol, from);
 
       promise.then(function (response) {
         utilService.traceLog($scope.item, "elasticsearch");
@@ -311,7 +312,10 @@
       // });
 
       utilService.traceLog(item, "elasticsearch");
-      fetchHistoricDataFromES();
+
+      // var sod = moment(0, "HH").format("x");
+      var from = moment(vm.dateFrom).format("x");
+      fetchHistoricDataFromES(from);
 
       subscribeToStompUpdates();
 
