@@ -42,9 +42,7 @@
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
-      if (angular.isUndefined(selectedSymbol) ||
-        selectedSymbol === null ||
-        selectedSymbol === "") {
+      if (!selectedSymbol) {
         return;
       }
       vm.selectedSymbol = selectedSymbol;
@@ -53,9 +51,7 @@
     }, false);
 
     $scope.$watch('vm.selectedStrategy', function (selectedStrategy) {
-      if (angular.isUndefined(selectedStrategy) ||
-        selectedStrategy === null ||
-        selectedStrategy === "") {
+      if (!selectedStrategy) {
         return;
       }
       vm.selectedStrategy = selectedStrategy;
@@ -251,6 +247,10 @@
 
     function doChart(item) {
       $log.debug("strategy.controller.js::doChart");
+      if (!vm.selectedSymbol || !vm.selectedStrategy) {
+        return;
+      }
+
       vm.status = vm.Status.LOADING;
 
       // $scope.item = item;

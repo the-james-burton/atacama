@@ -42,9 +42,7 @@
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
-      if (angular.isUndefined(selectedSymbol) ||
-        selectedSymbol === null ||
-        selectedSymbol === "") {
+      if (!selectedSymbol) {
         return;
       }
       vm.selectedSymbol = selectedSymbol;
@@ -54,9 +52,7 @@
 
 
     $scope.$watch('vm.selectedIndicator', function (selectedIndicator) {
-      if (angular.isUndefined(selectedIndicator) ||
-        selectedIndicator === null ||
-        selectedIndicator === "") {
+      if (!selectedIndicator) {
         return;
       }
       vm.selectedIndicator = selectedIndicator;
@@ -265,6 +261,9 @@
 
     function doChart(item) {
       $log.debug("indicator.controller.js::doChart");
+      if (!vm.selectedSymbol || !vm.selectedIndicator) {
+        return;
+      }
       vm.status = vm.Status.LOADING;
 
       // $scope.item = item;
