@@ -35,12 +35,12 @@
 
     <!--<div class="wwa-temperature-body" style="background-image: url(/images/{{selectedLocation.image}});">-->
     <!-- This fixes the image error because it tries to bind the source before selectedLocation is set -->
-    <div class="widget-gridster-body">
+    <div class="widget-gridster-chart-body">
         <div ng-if="vm.status == vm.Status.LOADING">
             <!-- fa-spin -->
             <i class="fa fa-refresh fa-2x"></i>
         </div>
-        <div ng-if="vm.status == vm.Status.LOADED" class="widget-gridster-view">
+        <div ng-if="vm.status == vm.Status.LOADED" class="widget-gridster-chart-view">
           <nvd3 options='vm.options' data='vm.data' api="vm.api" config='vm.config'></nvd3>
         </div>
         <div ng-if="vm.status == vm.Status.ERROR">
