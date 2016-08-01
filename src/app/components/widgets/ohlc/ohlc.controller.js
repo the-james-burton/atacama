@@ -38,9 +38,7 @@
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
-      if (angular.isUndefined(selectedSymbol)
-           || selectedSymbol === null
-           || selectedSymbol === "") {
+      if (!selectedSymbol) {
         return;
       }
       vm.selectedSymbol = selectedSymbol;

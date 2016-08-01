@@ -24,13 +24,15 @@
 }
 
 .widget-gridster-body {
-    position: relative;
+    // position: relative;
+    position: absolute;
     text-align: center;
     background-size: cover;
     background-position: center;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
+    overflow: auto;
     min-height: 180px;
 }
 
@@ -47,6 +49,7 @@
     bottom: 38px;
     padding: 10px;
     border: 1px solid black;
+    overflow: auto;
 }
 
 .widget-gridster-river-name {

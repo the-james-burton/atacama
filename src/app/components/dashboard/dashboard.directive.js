@@ -66,6 +66,20 @@
             controller: 'WidgetSettingsController'
           }
         }
+      }, {
+        title: 'Strategy Table',
+        settings: {
+          sizeX: 5,
+          sizeY: 3,
+          minSizeX: 2,
+          minSizeY: 2,
+          template: '<atacama-strategy-table></atacama-strategy-table>',
+          widgetSettings: {
+            id: 1003,
+            templateUrl: 'app/components/widgets/widget.settings.html',
+            controller: 'WidgetSettingsController'
+          }
+        }
       }];
 
       //widgets collection - new widgets get added here

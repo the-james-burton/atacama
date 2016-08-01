@@ -1,0 +1,52 @@
+<div class="widget-gridster">
+
+    <div class="widget-gridster-heading">
+        <!-- dont use self-close tags for directives! -->
+        <form class="form-inline">
+          <symbol-picker selected-symbol="vm.selectedSymbol"></symbol-picker>
+            <p class="input-group">
+              <input type="text" class="form-control" uib-datepicker-popup="{{vm.format}}" ng-model="vm.dateFrom" is-open="vm.popup1.opened" datepicker-options="vm.dateOptions" date-disabled="vm.isDisabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats"></input>
+              <span class="input-group-btn">
+                <button type="button" class="form-control btn btn-default" ng-click="vm.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+      </form>
+
+    </div>
+
+    <div class="widget-gridster-body">
+        <!-- <pre>vm.status: {{ vm.status }} </pre> -->
+        <div ng-if="vm.status == vm.Status.LOADING">
+            <!-- fa-spin -->
+            <i class="fa fa-refresh fa-2x"></i>
+        </div>
+        <!-- <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div> -->
+        <!-- class="widget-gridster-view" -->
+        <div ng-if="vm.status == vm.Status.LOADED">
+          <table st-table="vm.strategies" class="table table-condensed table-responsive">
+						<thead>
+						<tr>
+							<th>Action</th>
+							<th>Symbol</th>
+							<th>Market</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="strategy in vm.strategies">
+							<td>{{strategy.action}}</td>
+							<td>{{strategy.symbol}}</td>
+							<td>{{strategy.market}}</td>
+						</tr>
+						</tbody>
+					</table>
+        </div>
+        <div ng-if="vm.status == vm.Status.ERROR">
+            <h4>Error loading widget.</h4>
+            <button class="btn btn-primary" ng-click="vm.reset()">Reload</button>
+        </div>
+    </div>
+
+</div>
