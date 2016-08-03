@@ -109,6 +109,7 @@
     function fetchStrategies() {
       turbineService.strategies().then(function (response) {
         vm.strategies = response.strategies;
+        $log.info('available strategies : {0}'.format(angular.toJson(vm.strategies)));
       }, function (err) {
         esError = 'unable to load strategies: {0}'.format(err.message);
         $log.error(esError);
@@ -130,6 +131,7 @@
     }
 
     function subscribeToStompUpdates() {
+      // TODO subscribed to all strategies..?
       topic = "/topic/strategies.{0}.{1}.SMAStrategy".format(market, vm.selectedSymbol);
       //ngstomp.subscribe(topic, onMessage, {}, $scope);
 
@@ -169,6 +171,9 @@
 
       // var sod = moment(0, "HH").format("x");
       var from = moment(vm.dateFrom).format("x");
+
+      // get list of all available strategies from the turbine...
+      fetchStrategies();
 
       // update vm.strategies with historic data from ES...
       fetchHistoricDataFromES(from);
