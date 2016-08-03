@@ -26,7 +26,7 @@
         </div> -->
         <!-- class="widget-gridster-view" -->
         <div ng-if="vm.status == vm.Status.LOADED" class="widget-gridster-table-view">
-          <table st-table="vm.strategies" class="table table-condensed table-responsive">
+          <table st-table="vm.actions" class="table table-condensed table-responsive">
 						<thead>
 						<tr>
 							<th>Action</th>
@@ -35,10 +35,10 @@
 						</tr>
 						</thead>
 						<tbody>
-						<tr ng-repeat="strategy in vm.strategies">
-							<td>{{strategy.action}}</td>
-							<td>{{strategy.symbol}}</td>
-							<td>{{strategy.market}}</td>
+						<tr ng-repeat="action in vm.actions">
+							<td>{{action.action}}</td>
+							<td>{{action.symbol}}</td>
+							<td>{{action.market}}</td>
 						</tr>
 						</tbody>
 					</table>

@@ -34,6 +34,7 @@
 
     vm.selectedSymbol = "";
     vm.strategies = {};
+    vm.actions = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
       if (!selectedSymbol) {
@@ -105,103 +106,14 @@
       }
     }, true);
 
-    // ---------------------- datepicker stuff above ------------------
-
-    // vm.reset = function () {
-    //   $log.debug('reset()');
-    //
-    //   vm.status = vm.Status.WAITING;
-    //   // vm.isLoaded = false;
-    //   // vm.hasError = false;
-    //
-    //   vm.options = {
-    //     chart: {
-    //       // TODO error message appears in console...
-    //     }
-    //   };
-    //
-    //   vm.config = {
-    //     deepWatchData: true,
-    //     // deepWatchDataDepth: 1,
-    //     refreshDataOnly: false,
-    //     disabled: true
-    //   };
-    //
-    //   vm.data = [];
-    //
-    // };
-    //
-    // vm.reset();
-
-    // function initialise() {
-    //   vm.config = {
-    //     deepWatchData: true,
-    //     // deepWatchDataDepth: 1,
-    //     refreshDataOnly: false,
-    //     disabled: false
-    //   };
-    //
-    //   vm.options = {
-    //     chart: {
-    //       type: 'candlestickBarChart',
-    //       // type: 'ohlcBarChart',
-    //       // width: $scope.offsetParent.prop('offsetWidth') + adjustX,
-    //       // height: $scope.offsetParent.prop('offsetHeight') + adjustY,
-    //       width: $scope.gridsterItem.getElementSizeX() + adjustX,
-    //       height: $scope.gridsterItem.getElementSizeY() + adjustY,
-    //       margin: {
-    //         top: 20,
-    //         right: 40,
-    //         bottom: 40,
-    //         left: 40
-    //       },
-    //       x: function (d) {
-    //         return d.date;
-    //       },
-    //       y: function (d) {
-    //         return d.close;
-    //       },
-    //       showValues: true,
-    //       transitionDuration: 500,
-    //       xAxis: {
-    //         // axisLabel: 'Dates',
-    //         tickFormat: function (d) {
-    //           return d3.time.format('%X')(new Date(d));
-    //         },
-    //       },
-    //       yAxis: {
-    //         // axisLabel: 'Stock Price',
-    //         tickFormat: function (d, i) {
-    //           return '$' + d3.format(',.1f')(d);
-    //         }
-    //       }
-    //     }
-    //   };
-    // }
-
-    // for smart-table...
-    // $scope.addStrategies = function(widget) {
-    //    console.log("widget.js::addStrategies");
-    //    reset();
-    //    $scope.typeStrategies = true;
-    //    unsubscribeTopic();
-    //  };
-
-    // I don't think this is necessary anymore...
-    // $scope.$on('$destroy', function() {
-    //   utilService.unsubscribeTopic(topic);
-    // });
-
-    // function fetchStocks() {
-    //   turbineService.symbols(market).then(function (response) {
-    //     // console.log(angular.toJson(response.stocks));
-    //     vm.symbols = _.map(response.stocks, 'symbol');
-    //     // $scope.selectedSymbol = $scope.symbols[0];
-    //   }, function (err) {
-    //     esError = 'unable to load symbols: {0}'.format(err.message);
-    //     $log.error(esError);
-    //   });
-    // }
+    function fetchStrategies() {
+      turbineService.strategies().then(function (response) {
+        vm.strategies = response.strategies;
+      }, function (err) {
+        esError = 'unable to load strategies: {0}'.format(err.message);
+        $log.error(esError);
+      });
+    }
 
     function fetchHistoricDataFromES(from) {
 
@@ -210,7 +122,7 @@
 
       promise.then(function (response) {
         utilService.traceLog($scope.item, "elasticsearch");
-        vm.strategies = elasticsearchService.parseResults(response);
+        vm.actions = elasticsearchService.parseResults(response);
       }, function (err) {
         esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
         $log.error(esError);
@@ -218,7 +130,7 @@
     }
 
     function subscribeToStompUpdates() {
-      topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
+      topic = "/topic/strategies.{0}.{1}.SMAStrategy".format(market, vm.selectedSymbol);
       //ngstomp.subscribe(topic, onMessage, {}, $scope);
 
       try {
@@ -238,7 +150,7 @@
     function onMessage(message) {
       // TODO avoid $scope?
       utilService.traceLog($scope.item, "rabbit");
-      vm.strategies.push(message.body);
+      vm.actions.push(message.body);
       $scope.$apply();
     }
 
