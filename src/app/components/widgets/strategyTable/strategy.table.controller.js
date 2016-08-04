@@ -132,7 +132,7 @@
 
     function subscribeToStompUpdates() {
       // TODO subscribed to all strategies..?
-      topic = "/topic/strategies.{0}.{1}.SMAStrategy".format(market, vm.selectedSymbol);
+      topic = "/topic/strategies.{0}.{1}.*".format(market, vm.selectedSymbol);
       //ngstomp.subscribe(topic, onMessage, {}, $scope);
 
       try {

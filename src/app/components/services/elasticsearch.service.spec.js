@@ -8,26 +8,16 @@
     // ----------------------------------------------------
     var sod = moment(0, "HH").format("x");
 
-    var key1 = 'my-key1';
-    var key2 = 'my-key2';
-    var value1 = 'my-value1';
-    var value2 = 'my-value2';
-    var keyValueTuple1 = [key1, value1];
-    var keyValueTuple2 = [key2, value2];
+    var marketTerm = { match: { market: "XYZ"} };
+    var symbolTerm = { match: { symbol: "ZYX"} };
 
     var requiredQueries = function () {
-      var arrayOfKeyValueTuples = [];
-      arrayOfKeyValueTuples.push(keyValueTuple1);
-      arrayOfKeyValueTuples.push(keyValueTuple2);
-      return arrayOfKeyValueTuples;
+      var arrayOfQueryTerms = [];
+      arrayOfQueryTerms.push(marketTerm);
+      arrayOfQueryTerms.push(symbolTerm);
+      return arrayOfQueryTerms;
     };
 
-    var checkQueryString = function (result) {
-      expect(result[0].query_string.query).toEqual(keyValueTuple1[1]);
-      expect(result[0].query_string.fields).toContain(keyValueTuple1[0]);
-      expect(result[1].query_string.query).toEqual(keyValueTuple2[1]);
-      expect(result[1].query_string.fields).toContain(keyValueTuple2[0]);
-    };
     // ----------------------------------------------------
 
     beforeEach(module('atacamaApp', function ($provide) {
@@ -47,37 +37,48 @@
       expect(elasticsearchService.testReply("jasmine")).toEqual("hello jasmine");
     });
 
-    it('should create an elasticsearch query string', function () {
-      var expected = {
-        query_string: {
-          query: value1,
-          fields: [key1]
-        }
-      };
-      expect(elasticsearchService.createQueryString(key1, value1)).toEqual(expected);
-      $log.debug(angular.toJson(expected));
-    });
+    // it('should create an elasticsearch query string', function () {
+    //   var expected = {
+    //     query_string: {
+    //       query: value1,
+    //       fields: [key1]
+    //     }
+    //   };
+    //   expect(elasticsearchService.createQueryString(key1, value1)).toEqual(expected);
+    //   $log.debug(angular.toJson(expected));
+    // });
+    //
+    // it('should join many elasticsearch query_strings into an array', function () {
+    //   var input = requiredQueries();
+    //   var result = elasticsearchService.createQueryStrings(input);
+    //
+    //   $log.debug(angular.toJson(result));
+    //   checkQueryString(result);
+    // });
 
-    it('should join many elasticsearch query_strings into an array', function () {
+    // it('should convert elasticsearch query_strings into an query', function () {
+    //   var input = requiredQueries();
+    //   var queryStrings = elasticsearchService.createQueryStrings(input);
+    //   var result = elasticsearchService.createQueries(queryStrings, sod);
+    //
+    //   $log.debug(angular.toJson(result));
+    //   checkQueryString(result);
+    //   expect(result[2].range.date.from).toEqual(sod);
+    // });
+
+    it('should add a date range onto a array of queries', function () {
       var input = requiredQueries();
-      var result = elasticsearchService.createQueryStrings(input);
+      var result = elasticsearchService.addDateRangeToQueries(input, sod);
 
       $log.debug(angular.toJson(result));
-      checkQueryString(result);
-    });
-
-    it('should convert elasticsearch query_strings into an query', function () {
-      var input = requiredQueries();
-      var queryStrings = elasticsearchService.createQueryStrings(input);
-      var result = elasticsearchService.createQueries(queryStrings, sod);
-
-      $log.debug(angular.toJson(result));
-      checkQueryString(result);
+      expect(result[0]).toEqual(marketTerm);
+      expect(result[1]).toEqual(symbolTerm);
       expect(result[2].range.date.from).toEqual(sod);
     });
 
     it('should create a complete elasticsearch query', function () {
-      var result = elasticsearchService.createESQuery(requiredQueries(), sod);
+      var input = requiredQueries();
+      var result = elasticsearchService.createESQueryFromDate(input, sod);
       $log.debug(angular.toJson(result));
 
       expect(result.size).toBeDefined();
