@@ -151,6 +151,9 @@
 
     function onMessage(message) {
       // TODO avoid $scope?
+      if (message.body.action === 'none') {
+        return;
+      }
       utilService.traceLog($scope.item, "rabbit");
       vm.actions.push(message.body);
       $scope.$apply();
