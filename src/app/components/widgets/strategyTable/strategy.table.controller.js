@@ -119,7 +119,7 @@
     function fetchHistoricDataFromES(from) {
 
       // TODO fetch all strategies..?
-      var promise = elasticsearchService.getStrategiesAfter(market, vm.selectedSymbol, "SMAStrategy", from);
+      var promise = elasticsearchService.getStrategyActionsAfter(market, vm.selectedSymbol, "SMAStrategy", from);
 
       promise.then(function (response) {
         utilService.traceLog($scope.item, "elasticsearch");

@@ -32,6 +32,7 @@
       getTicksAfter: getTicksAfter,
       getIndicatorsAfter: getIndicatorsAfter,
       getStrategiesAfter: getStrategiesAfter,
+      getStrategyActionsAfter: getStrategyActionsAfter,
       parseResults: parseResults,
       testReply: testReply
     };
@@ -66,8 +67,8 @@
     //   return _.map(arrayOfKeyValueTuples, createQueryStringTuple);
     // }
 
-    function addDateRangeToQueries(arrayOfQueryTerms, date) {
-      return arrayOfQueryTerms.concat({
+    function addDateRangeToQueries(mustQueryTerms, date) {
+      return mustQueryTerms.concat({
         range: {
           date: {
             from: date,
@@ -80,15 +81,14 @@
     }
 
     // TODO improve templating by using lodash to insert a list of tuples as query strings...
-    function createESQueryFromDate(arrayOfQueryTerms, date) {
-      // TODO perhaps a little more functional style..?
-      // var queryStrings = createQueryStrings(arrayOfKeyValueTuples);
-      var queriesWithDate = addDateRangeToQueries(arrayOfQueryTerms, date);
+    function createESQueryFromDate(mustQueryTerms, mustNotQueryTerms, date) {
+      var mustQueryTermsWithDate = addDateRangeToQueries(mustQueryTerms, date);
       return {
         size: 5000,
         query: {
           bool: {
-            must: queriesWithDate
+            must: mustQueryTermsWithDate,
+            must_not: mustNotQueryTerms
           }
         }
       };
@@ -133,10 +133,11 @@
       //   ['market', market],
       //   ['symbol', symbol]
       // ], date);
-      var query = createESQueryFromDate([
+      var mustQueryTerms = [
         { match : {'market': market}},
         { match : {'symbol': symbol}}
-      ], date);
+      ];
+      var query = createESQueryFromDate(mustQueryTerms, [], date);
       $log.debug(angular.toJson(query));
       return es.search({
         index: 'turbine-ticks',
@@ -146,11 +147,12 @@
     }
 
     function getIndicatorsAfter(market, symbol, name, date) {
-      var query = createESQueryFromDate([
+      var mustQueryTerms = [
         { match : {'market': market}},
         { match : {'symbol': symbol}},
         { match : {'name': name}}
-      ], date);
+      ]
+      var query = createESQueryFromDate(mustQueryTerms, [], date);
       $log.debug(angular.toJson(query));
       return es.search({
         index: 'turbine-indicators',
@@ -160,11 +162,30 @@
     }
 
     function getStrategiesAfter(market, symbol, name, date) {
-      var query = createESQueryFromDate([
+      var mustQueryTerms = [
         { match : {'market': market}},
         { match : {'symbol': symbol}},
         { match : {'name': name}}
-      ], date);
+      ]
+      var query = createESQueryFromDate(mustQueryTerms, [], date);
+      $log.debug(angular.toJson(query));
+      return es.search({
+        index: 'turbine-strategies',
+        type: 'turbine-strategy',
+        body: query
+      });
+    }
+
+    function getStrategyActionsAfter(market, symbol, name, date) {
+      var mustQueryTerms = [
+        { match : {'market': market}},
+        { match : {'symbol': symbol}},
+        { match : {'name': name}}
+      ]
+      var mustNotQueryTerms = [
+        { match : {'action': 'none'}}
+      ]
+      var query = createESQueryFromDate(mustQueryTerms, mustNotQueryTerms, date);
       $log.debug(angular.toJson(query));
       return es.search({
         index: 'turbine-strategies',
