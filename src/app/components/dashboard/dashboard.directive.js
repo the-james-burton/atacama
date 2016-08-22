@@ -75,7 +75,7 @@
           minSizeY: 2,
           template: '<atacama-strategy-table></atacama-strategy-table>',
           widgetSettings: {
-            id: 1003,
+            id: 1004,
             templateUrl: 'app/components/widgets/widget.settings.html',
             controller: 'WidgetSettingsController'
           }
