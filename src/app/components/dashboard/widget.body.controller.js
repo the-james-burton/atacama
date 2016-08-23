@@ -13,16 +13,16 @@
     .controller('WidgetBodyController', WidgetBodyController);
 
   function WidgetBodyController($scope, $uibModal, $log) {
-    var wb = this;
+    var vm = this;
     var widget = $scope.$parent;
     // TODO ...aaaargh! How to avoid this? How to sensibly work with the dashobard controller?
     var dashboard = $scope.$parent.$parent.$parent.vm;
 
-    wb.close = function () {
+    vm.close = function () {
       dashboard.widgets.splice(dashboard.widgets.indexOf(widget.item), 1);
     };
 
-    wb.settings = function () {
+    vm.settings = function () {
       var options = {
         templateUrl: widget.item.widgetSettings.templateUrl,
         controller: widget.item.widgetSettings.controller,
@@ -32,7 +32,7 @@
     };
 
     //use empty function so angular handles click event and allows menu to be opened on touch devices
-    wb.iconClicked = function () {
+    vm.iconClicked = function () {
       $log.info("wb.settings()");
     };
   }
