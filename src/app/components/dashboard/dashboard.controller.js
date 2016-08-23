@@ -24,13 +24,20 @@
       pushing: true,
       floating: true,
       swapping: true,
+      draggable: {
+        enabled: true
+      },
+      resizable: {
+        enabled: true,
+        handles: ['s', 'se', 'sw']
+      },
       mobileBreakPoint: 600
     };
 
     vm.widgetDefinitions = [{
       title: 'OHLC',
       settings: {
-        sizeX: 3,
+        sizeX: 5,
         sizeY: 2,
         minSizeX: 2,
         minSizeY: 2,
