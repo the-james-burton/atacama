@@ -1,5 +1,5 @@
 ﻿
-.ps-dashboard {
+.atacama-dashboard {
     font-size: 44px;
     margin: 0;
     width: 100%;
@@ -11,7 +11,7 @@
     overflow: hidden;
 }
 
-.ps-widget-header {
+.atacama-widget-header {
     position: relative;
     color: white;
     background-color: #444;
@@ -23,24 +23,24 @@
     padding-bottom: 2px;
 }
 
-.ps-widget-header-buttons {
+.atacama-widget-header-buttons {
     position: absolute;
     top: 0;
     right: 0;
 }
 
-.ps-widget-header-buttons .btn {
+.atacama-widget-header-buttons .btn {
     margin: 4px;
     margin-top: 3px;
     padding-top: 1px;
     padding-bottom: 1px;
 }
 
-.ps-widget-body {
+.atacama-widget-body {
     position: relative;
 }
 
-.ps-dashboard-header {
+.atacama-dashboard-header {
     font-size: 20px;
     border-bottom: 1px solid #444;
     color: white;
@@ -52,27 +52,27 @@
     padding-left: 20px;
 }
 
-.ps-dashboard-controls {
+.atacama-dashboard-controls {
     float: right;
 }
 
-.ps-widget-menu-area {
+.atacama-widget-menu-area {
     position: absolute;
     top: 0;
     right: 8px;
     font-size: 22px;
 }
 
-.ps-widget-menu-area .dropdown-menu {
+.atacama-widget-menu-area .dropdown-menu {
     left: -20px;
     padding-left: 15px;
 }
 
-.ps-widget-menu-area a {
+.atacama-widget-menu-area a {
     color: white;
 }
 
-.ps-widget-menu-area i {
+.atacama-widget-menu-area i {
     cursor: pointer;
 }
 

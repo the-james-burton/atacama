@@ -14,9 +14,9 @@
 
   function WidgetSettingsController($scope, $timeout, $rootScope, $uibModalInstance) {
     // TODO cannot use vm as uibModal.open does not seem to support controllerAs
-    // see ps.widget.body.directive.js ...
+    // see widget.body.directive.js ...
     // var vm = this;
-    
+
     var widget = $scope.item;
 
     $scope.form = {

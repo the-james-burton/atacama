@@ -2,10 +2,10 @@
 
   'use strict';
 
-  angular.module('atacamaApp').directive('psWidgetBody',
+  angular.module('atacamaApp').directive('atacamaWidgetBody',
     function ($compile) {
       return {
-        templateUrl: 'app/components/dashboard/ps.widget.body.template.html',
+        templateUrl: 'app/components/dashboard/widget.body.template.html',
         link: linkFunc,
         controller: 'WidgetBodyController',
         controllerAs: 'wb'
