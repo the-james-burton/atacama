@@ -37,7 +37,7 @@
     vm.widgetDefinitions = [{
       title: 'OHLC',
       settings: {
-        sizeX: 5,
+        sizeX: 6,
         sizeY: 2,
         minSizeX: 2,
         minSizeY: 2,
@@ -51,7 +51,7 @@
     }, {
       title: 'Indicator',
       settings: {
-        sizeX: 3,
+        sizeX: 6,
         sizeY: 2,
         minSizeX: 2,
         minSizeY: 2,
@@ -65,7 +65,7 @@
     }, {
       title: 'Strategy',
       settings: {
-        sizeX: 3,
+        sizeX: 6,
         sizeY: 2,
         minSizeX: 2,
         minSizeY: 2,
@@ -79,7 +79,7 @@
     }, {
       title: 'Strategy Table',
       settings: {
-        sizeX: 3,
+        sizeX: 6,
         sizeY: 2,
         minSizeX: 2,
         minSizeY: 2,

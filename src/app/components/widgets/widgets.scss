@@ -4,7 +4,7 @@
     height: 100%;
     width: 100%;
     min-height: 180px;
-    font-size: 16px;
+    // font-size: 16px;
     color: black;
 }
 
@@ -13,7 +13,7 @@
     color: white;
     height: 37px;
     padding-top: 2px;
-    font-size: 15px;
+    // font-size: 15px;
     line-height: 32px;
 }
 
@@ -76,16 +76,4 @@
     border: 1px solid white;
     // overflow: auto;
     // border-bottom: 40px solid white;
-}
-
-.widget-gridster-river-name {
-    height: 30px;
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: 8px;
-}
-
-.widget-gridster-degrees {
-    font-size: 64px;
-    margin-top: -20px;
 }
