@@ -18,7 +18,9 @@
       controllerAs: 'vm'
     })
     .when('/dashboard', {
-      templateUrl: 'app/components/dashboard/dashboard.html'
+      templateUrl: 'app/components/dashboard/dashboard.html',
+      controller: 'DashboardController',
+      controllerAs: 'vm'
       // template: '<atacama-dashboard></atacama-dashboard>'
     })
     .when('/login/:logout', {

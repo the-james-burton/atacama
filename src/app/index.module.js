@@ -20,7 +20,6 @@
       'gridster',
       'elasticsearch',
       'AngularStompDK',
-      'psDashboard',
       'angular-cache'
     ]);
 
