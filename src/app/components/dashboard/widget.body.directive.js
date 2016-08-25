@@ -8,8 +8,8 @@
         templateUrl: 'app/components/dashboard/widget.body.template.html',
         link: linkFunc,
         controller: 'WidgetBodyController',
-        controllerAs: 'wb'
-        // bindToController: true // because the scope is isolated
+        controllerAs: 'wb',
+        bindToController: true // because the scope is isolated
       };
 
       function linkFunc(scope, element, attrs) {

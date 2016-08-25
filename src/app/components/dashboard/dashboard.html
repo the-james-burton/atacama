@@ -8,6 +8,11 @@
       {{ vm.title }}
       <div class="atacama-dashboard-controls">
 
+        <select class="form-control" style="width: 150px; margin-bottom: 20px; display:inline-block;"
+          ng-change="changeDashboard()" ng-model="selectedDashboardId"
+          ng-options="d.id as d.name for d in vm.dashboards | object2array | orderBy:'id'">
+      	</select>
+
         <div class="btn-group" uib-dropdown>
 
           <button id="btnAddWidget" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
@@ -27,7 +32,7 @@
 
   <div gridster="vm.gridsterOpts">
       <ul>
-          <li gridster-item="item" ng-repeat="item in vm.widgets">
+          <li gridster-item="item" ng-repeat="item in vm.dashboard.widgets">
               <atacama-widget-body>
               </atacama-widget-body>
           </li>

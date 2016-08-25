@@ -92,19 +92,46 @@
       }
     }];
 
-    //widgets collection - new widgets get added here
-    //check localstorage for saved widgets
-    vm.widgets = $localStorage.widgets || [];
+    // list of available dashboards...
+    // TODO make user configurable...
+    vm.defaultDashboards = {
+      '1': {
+        id: '1',
+        name: 'one',
+        widgets: []
+      },
+      '2': {
+        id: '2',
+        name: 'two',
+        widgets: []
+      }
+    };
 
-    $scope.$watch('widgets', function () {
-      $localStorage.widgets = vm.widgets;
+    // check localstorage for saved dashboards, or use default...
+    vm.dashboards = $localStorage.dashboards || vm.defaultDashboards;
+
+    // auto sync local storage with our list of dashboards...
+    $scope.$watch('dashboards', function () {
+      $localStorage.dashboards = vm.dashboards;
     }, true);
+
+    $scope.$watch('selectedDashboardId', function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        vm.dashboard = vm.dashboards[newVal];
+      } else {
+        vm.dashboard = vm.dashboards[1];
+      }
+    });
+
+    // select an initial dashboard for the user...
+    // TODO load from local storage...
+    vm.selectedDashboardId = 1;
 
     vm.addNewWidget = function (widget) {
       //deep copy widget settings to be used in new widget
       var newWidget = angular.copy(widget.settings);
       //add new widget to array
-      vm.widgets.push(newWidget);
+      vm.dashboard.widgets.push(newWidget);
     };
 
   }

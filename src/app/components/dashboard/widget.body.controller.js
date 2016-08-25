@@ -16,7 +16,7 @@
     var vm = this;
     var widget = $scope.$parent;
     // TODO ...aaaargh! How to avoid this? How to sensibly work with the dashobard controller?
-    var dashboard = $scope.$parent.$parent.$parent.vm;
+    var dashboard = $scope.$parent.$parent.$parent.vm.dashboard;
 
     vm.close = function () {
       dashboard.widgets.splice(dashboard.widgets.indexOf(widget.item), 1);
