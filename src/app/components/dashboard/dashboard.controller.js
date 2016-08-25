@@ -115,17 +115,24 @@
       $localStorage.dashboards = vm.dashboards;
     }, true);
 
-    $scope.$watch('selectedDashboardId', function (newVal, oldVal) {
-      if (newVal !== oldVal) {
-        vm.dashboard = vm.dashboards[newVal];
-      } else {
-        vm.dashboard = vm.dashboards[1];
-      }
-    });
+    // use this when using a HTML 'select' element and ng-model...
+    // $scope.$watch('selectedDashboardId', function (newVal, oldVal) {
+    //   if (newVal !== oldVal) {
+    //     vm.dashboard = vm.dashboards[newVal];
+    //   } else {
+    //     vm.dashboard = vm.dashboards[1];
+    //   }
+    // });
+
+    // use this when using uib-dropdown with 'ng-click' method (can't bind)...
+    vm.selectDashboard = function (id) {
+      vm.dashboard = vm.dashboards[id];
+    };
 
     // select an initial dashboard for the user...
     // TODO load from local storage...
-    vm.selectedDashboardId = 1;
+    // vm.selectedDashboardId = 1;
+    vm.selectDashboard(1);
 
     vm.addNewWidget = function (widget) {
       //deep copy widget settings to be used in new widget

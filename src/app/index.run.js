@@ -8,6 +8,17 @@
   /** @ngInject */
   function runBlock($rootScope, $cookies, $log, Restangular, securityService, $location) {
 
+    var testObject = {
+      one : {
+        prop : 'hello'
+      },
+      two : {
+        prop : 'world'
+      }
+    };
+
+    $log.info('test:{0} {1}'.format(testObject['one'].prop, testObject['two'].prop));
+
     // keep user logged in after page refresh
     $rootScope.globals = $cookies.getObject('globals') || {};
     if ($rootScope.globals.authorization) {
@@ -24,6 +35,8 @@
         $location.path('/login/false');
       }
     });
+
+
     // securityService.login('user', 'password');
 
     // var esError = '';
