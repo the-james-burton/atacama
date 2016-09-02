@@ -141,6 +141,9 @@
       vm.dashboard.widgets.push(newWidget);
     };
 
+    vm.removeWidget = function (widget) {
+      vm.dashboard.widgets.splice(vm.dashboard.widgets.indexOf(widget), 1);
+    };
   }
 
 })();
