@@ -47,7 +47,7 @@
 
   <div gridster="vm.gridsterOpts">
       <ul>
-          <li gridster-item="item" ng-repeat="item in vm.dashboard.widgets">
+          <li gridster-item="vm.customItemMap" ng-repeat="item in vm.dashboard.widgets">
               <atacama-widget-body>
               </atacama-widget-body>
           </li>

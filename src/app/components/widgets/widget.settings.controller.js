@@ -20,11 +20,11 @@
     var widget = $scope.item;
 
     $scope.form = {
-      name: widget.widgetSettings.id,
-      sizeX: widget.sizeX,
-      sizeY: widget.sizeY,
-      col: widget.col,
-      row: widget.row
+      name: widget.settings.widgetSettings.id,
+      sizeX: widget.settings.sizeX,
+      sizeY: widget.settings.sizeY,
+      col: widget.settings.col,
+      row: widget.settings.row
     };
 
     $scope.dismiss = function () {
@@ -32,7 +32,8 @@
     };
 
     $scope.submit = function () {
-      angular.extend(widget, $scope.form);
+      // TODO this looks like a nasty hack to me...
+      angular.extend(widget.settings, $scope.form);
 
       $uibModalInstance.close(widget);
     };

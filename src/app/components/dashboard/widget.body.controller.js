@@ -25,8 +25,8 @@
 
     vm.settings = function () {
       var options = {
-        templateUrl: widget.item.widgetSettings.templateUrl,
-        controller: widget.item.widgetSettings.controller,
+        templateUrl: widget.item.settings.widgetSettings.templateUrl,
+        controller: widget.item.settings.widgetSettings.controller,
         scope: $scope
       };
       $uibModal.open(options);

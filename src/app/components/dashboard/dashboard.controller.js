@@ -34,6 +34,15 @@
       mobileBreakPoint: 600
     };
 
+    vm.customItemMap = {
+      sizeX: 'item.settings.sizeX',
+      sizeY: 'item.settings.sizeY',
+      row: 'item.settings.row',
+      col: 'item.settings.col',
+      minSizeY: 'item.settings.minSizeY',
+      maxSizeY: 'item.settings.maxSizeY'
+    };
+
     vm.widgetDefinitions = [{
       title: 'OHLC',
       settings: {
@@ -136,7 +145,7 @@
 
     vm.addNewWidget = function (widget) {
       //deep copy widget settings to be used in new widget
-      var newWidget = angular.copy(widget.settings);
+      var newWidget = angular.copy(widget);
       //add new widget to array
       vm.dashboard.widgets.push(newWidget);
     };
