@@ -1,5 +1,5 @@
 {
-  "extends": "eslint:recommended",
+  "extends": "angular",
   "plugins": ["angular"],
   "env": {
     "browser": true,
