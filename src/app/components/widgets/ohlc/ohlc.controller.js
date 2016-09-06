@@ -34,7 +34,7 @@
 
     //vm.isLoaded = false;
     //vm.hasError = false;
-    vm.selectedSymbol = "";
+    vm.selectedSymbol = $scope.item.symbol;
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
@@ -42,8 +42,13 @@
         return;
       }
       vm.selectedSymbol = selectedSymbol;
+      $scope.item.symbol = selectedSymbol
       $log.log('detected symbol update: ', vm.selectedSymbol);
       doChart($scope.item);
+    }, false);
+
+    $scope.$watch('vm.data', function (data) {
+      $log.info("vm.data change:" + angular.toJson(vm.data));
     }, false);
 
     // vm.selectSymbol = function (selectedSymbol) {
@@ -287,17 +292,17 @@
 
 
     function doChart(item) {
+      if (!vm.selectedSymbol) {
+        return;
+      }
+
       $log.debug("ohlc.controller.js::doChart");
       vm.status = vm.Status.LOADING;
       // $scope.item = item;
-      item.name = vm.selectedSymbol;
+      // item.name = vm.selectedSymbol;
       vm.reset();
-      vm.typeOHLC = true;
+      // vm.typeOHLC = true;
       utilService.unsubscribeTopic(topic);
-
-      if (vm.selectedSymbol === "") {
-        return;
-      }
 
       initialise();
 

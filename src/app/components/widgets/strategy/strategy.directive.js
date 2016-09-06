@@ -11,7 +11,6 @@
       controller: 'StrategyWidgetController',
       controllerAs: 'vm',
       bindToController: true // because the scope is isolated
-
     };
   }
 

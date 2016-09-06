@@ -37,15 +37,18 @@
 
     // vm.isLoaded = false;
     // vm.hasError = false;
-    vm.selectedSymbol = "";
-    vm.selectedStrategy = "";
+    vm.selectedSymbol = $scope.item.symbol;
+    vm.selectedStrategy = $scope.item.strategy;
     vm.values = {};
+
+    initialise();
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
       if (!selectedSymbol) {
         return;
       }
       vm.selectedSymbol = selectedSymbol;
+      $scope.item.symbol = selectedSymbol;
       $log.log('detected symbol update: ', vm.selectedSymbol);
       doChart($scope.item);
     }, false);
@@ -55,50 +58,12 @@
         return;
       }
       vm.selectedStrategy = selectedStrategy;
+      $scope.item.strategy = selectedStrategy;
       $log.log('detected streategy update: ', vm.selectedStrategy);
-      doChart($scope.item);
+      // doChart($scope.item);
     }, false);
 
-    // vm.selectSymbol = function (selectedSymbol) {
-    //   vm.selectedSymbol = selectedSymbol;
-    //   $log.log('select symbol: ', vm.selectedSymbol);
-    // };
-
-    // vm.selectStrategy = function (selectedStrategy) {
-    //   vm.selectedStrategy = selectedStrategy;
-    //   $log.log('select strategy: ', vm.selectedStrategy);
-    //   doChart($scope.item);
-    // };
-
-    // TODO centralise the rest call data more so widgets can share the results...
-    // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
-    // {"strategies":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
-    // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
-
-    reset();
-    // fetchStocks();
-    // fetchStrategies();
-
-    // set the size of the chart as the widget is resized...
-    $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
-      $log.debug('gridster-item-resized {0}x{1}'.format(
-        gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
-      vm.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
-      vm.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
-      // TODO now causes an error... is this needed?
-      // $scope.api.update();
-    });
-
-    $scope.$watch('vm.values', function (newValues) {
-      if (newValues) {
-        vm.data = [{
-          key: vm.selectedSymbol,
-          values: newValues
-        }];
-      }
-    }, true);
-
-    function reset() {
+    vm.reset = function() {
       $log.debug('reset()');
       vm.status = vm.Status.WAITING;
 
@@ -124,6 +89,48 @@
 
     }
 
+    // $scope.$watch('vm.data', function (data) {
+    //   $log.info("vm.data change:" + angular.toJson(vm.data));
+    // }, false);
+
+    // vm.selectSymbol = function (selectedSymbol) {
+    //   vm.selectedSymbol = selectedSymbol;
+    //   $log.log('select symbol: ', vm.selectedSymbol);
+    // };
+
+    // vm.selectStrategy = function (selectedStrategy) {
+    //   vm.selectedStrategy = selectedStrategy;
+    //   $log.log('select strategy: ', vm.selectedStrategy);
+    //   doChart($scope.item);
+    // };
+
+    // TODO centralise the rest call data more so widgets can share the results...
+    // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
+    // {"strategies":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
+    // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
+
+    // fetchStocks();
+    // fetchStrategies();
+
+    // set the size of the chart as the widget is resized...
+    $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
+      $log.debug('gridster-item-resized {0}x{1}'.format(
+        gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
+      vm.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
+      vm.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
+      // TODO now causes an error... is this needed?
+      // $scope.api.update();
+    });
+
+    // $scope.$watch('vm.values', function (newValues) {
+    //   if (newValues) {
+    //     vm.data = [{
+    //       key: vm.selectedSymbol,
+    //       values: newValues
+    //     }];
+    //   }
+    // }, true);
+
     function initialise() {
       vm.config = {
         deepWatchData: true,
@@ -143,8 +150,8 @@
             bottom: 40,
             left: 40
           },
-          showValues: true,
           showLegend: false,
+          showValues: true,
           transitionDuration: 500,
           xAxis: {
             // axisLabel: 'Dates',
@@ -210,6 +217,7 @@
       utilService.traceLog($scope.item, "elasticsearch");
 
       promise.then(function (response) {
+        $log.info("received results from ES");
         var results = elasticsearchService.parseResults(response);
         chartService.convertData(vm.data, results);
       }, function (err) {
@@ -247,20 +255,15 @@
 
     function doChart(item) {
       $log.debug("strategy.controller.js::doChart");
-      if (!vm.selectedSymbol || !vm.selectedStrategy) {
+      if (!vm.selectedSymbol || !vm.selectedStrategy || vm.selectedSymbol === "") {
         return;
       }
 
       vm.status = vm.Status.LOADING;
 
       // $scope.item = item;
-      item.name = vm.selectedSymbol;
-      reset();
+      // vm.reset();
       utilService.unsubscribeTopic(topic);
-
-      if (vm.selectedSymbol === "") {
-        return;
-      }
 
       initialise();
 

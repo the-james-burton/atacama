@@ -20,7 +20,7 @@
 
     function traceLog(item, text) {
       $log.debug("{0}.{1}.{2} {3}".format(
-        item.name, item.row, item.col, text));
+        item.title, item.settings.row, item.settings.col, text));
     }
 
     function unsubscribeTopic(topic) {

@@ -37,8 +37,7 @@
 
     // vm.isLoaded = false;
     // vm.hasError = false;
-    vm.selectedSymbol = "";
-    vm.selectedIndicator = "";
+    vm.selectedIndicator = $scope.item.indicator;
     vm.values = {};
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
@@ -46,8 +45,9 @@
         return;
       }
       vm.selectedSymbol = selectedSymbol;
+      $scope.item.symbol = vm.selectedSymbol;
       $log.log('detected symbol update: ', vm.selectedSymbol);
-      doChart($scope.item);
+      doChart($scope.item.settings);
     }, false);
 
 
@@ -56,8 +56,9 @@
         return;
       }
       vm.selectedIndicator = selectedIndicator;
+      $scope.item.indicator = vm.selectedIndicator;
       $log.log('detected indicator update: ', vm.selectedIndicator);
-      doChart($scope.item);
+      doChart($scope.item.settings);
     }, false);
 
     // vm.selectSymbol = function (selectedSymbol) {
@@ -89,14 +90,14 @@
       // $scope.api.update();
     });
 
-    $scope.$watch('vm.values', function (newValues) {
-      if (newValues) {
-        vm.data = [{
-          key: vm.selectedSymbol,
-          values: newValues
-        }];
-      }
-    }, true);
+    // $scope.$watch('vm.values', function (newValues) {
+    //   if (newValues) {
+    //     vm.data = [{
+    //       key: vm.selectedSymbol,
+    //       values: newValues
+    //     }];
+    //   }
+    // }, true);
 
     vm.reset = function() {
       $log.debug('reset()');
@@ -261,20 +262,15 @@
 
     function doChart(item) {
       $log.debug("indicator.controller.js::doChart");
-      if (!vm.selectedSymbol || !vm.selectedIndicator) {
+      if (!vm.selectedSymbol || !vm.selectedIndicator || vm.selectedSymbol === "") {
         return;
       }
       vm.status = vm.Status.LOADING;
 
       // $scope.item = item;
-      item.name = vm.selectedSymbol;
+      // item.name = vm.selectedSymbol;
       vm.reset();
-      vm.typeOHLC = true;
       utilService.unsubscribeTopic(topic);
-
-      if (vm.selectedSymbol === "") {
-        return;
-      }
 
       initialise();
 
