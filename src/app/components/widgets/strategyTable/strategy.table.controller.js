@@ -32,7 +32,9 @@
 
     vm.status = vm.Status.WAITING;
 
-    vm.selectedSymbol = "";
+    // vm.selectedSymbol = "";
+    vm.selectedSymbol = $scope.item.symbol;
+
     vm.strategies = {};
     vm.actions = {};
 
@@ -40,7 +42,7 @@
       if (!selectedSymbol) {
         return;
       }
-      vm.selectedSymbol = selectedSymbol;
+      $scope.item.symbol = selectedSymbol;
       $log.log('detected symbol update: ', vm.selectedSymbol);
       doTable($scope.item);
     }, false);
@@ -82,7 +84,11 @@
     };
 
     vm.today = function() {
-      vm.dateFrom = new Date();
+      var dateFrom = new Date();
+      dateFrom.setHours(0);
+      dateFrom.setMinutes(0);
+      dateFrom.setSeconds(0);
+      vm.dateFrom = dateFrom;
     };
 
     vm.clear = function() {
@@ -162,7 +168,7 @@
 
     function doTable(item) {
       $log.debug("strategy.table.controller.js::doChart");
-      if (vm.selectedSymbol === "") {
+      if (!vm.selectedSymbol) {
         return;
       }
       vm.status = vm.Status.LOADING;

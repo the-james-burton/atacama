@@ -127,7 +127,11 @@
     };
 
     vm.today = function() {
-      vm.dateFrom = new Date();
+      var dateFrom = new Date();
+      dateFrom.setHours(0);
+      dateFrom.setMinutes(0);
+      dateFrom.setSeconds(0);
+      vm.dateFrom = dateFrom;
     };
 
     vm.clear = function() {
