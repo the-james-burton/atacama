@@ -18,8 +18,8 @@
     var vm = this;
 
     // adjustments to make the chart fit better in the widget...
-    var adjustX = -35;
-    var adjustY = -65;
+    const adjustX = -35;
+    const adjustY = -65;
 
     // TODO select market in UI
     var market = 'FTSE100';
@@ -34,16 +34,23 @@
 
     //vm.isLoaded = false;
     //vm.hasError = false;
+
+    // load the saved values...
     vm.selectedSymbol = $scope.item.symbol;
+    vm.dateFrom = $scope.item.dateFrom;
     vm.values = {};
 
-    $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
-      if (!selectedSymbol) {
+    $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
+      if (!vm.selectedSymbol || !vm.dateFrom) {
         return;
       }
-      vm.selectedSymbol = selectedSymbol;
-      $scope.item.symbol = selectedSymbol
-      $log.log('detected symbol update: ', vm.selectedSymbol);
+      $scope.item.symbol = vm.selectedSymbol;
+      $scope.item.dateFrom = vm.dateFrom;
+      vm.dateFrom.setHours(0);
+      vm.dateFrom.setMinutes(0);
+      vm.dateFrom.setSeconds(0);
+      $log.log('detected updates: old:{0}, new:{1}'.format(
+        angular.toJson(oldValues), angular.toJson(newValues)));
       doChart($scope.item);
     }, false);
 
@@ -145,15 +152,15 @@
     vm.today();
 
     // update chart on date change...
-    $scope.$watch('vm.dateFrom', function (newValues) {
-      if (newValues) {
-        vm.dateFrom.setHours(0);
-        vm.dateFrom.setMinutes(0);
-        vm.dateFrom.setSeconds(0);
-        $log.log('detected date update: ', vm.dateFrom);
-        doChart($scope.item);
-      }
-    }, true);
+    // $scope.$watch('vm.dateFrom', function (newValues) {
+    //   if (newValues) {
+    //     vm.dateFrom.setHours(0);
+    //     vm.dateFrom.setMinutes(0);
+    //     vm.dateFrom.setSeconds(0);
+    //     $log.log('detected date update: ', vm.dateFrom);
+    //     doChart($scope.item);
+    //   }
+    // }, true);
 
     // ---------------------- datepicker stuff above ------------------
 

@@ -38,12 +38,17 @@
     vm.strategies = {};
     vm.actions = {};
 
-    $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
-      if (!selectedSymbol) {
+    $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
+      if (!vm.selectedSymbol || !vm.dateFrom) {
         return;
       }
-      $scope.item.symbol = selectedSymbol;
-      $log.log('detected symbol update: ', vm.selectedSymbol);
+      $scope.item.symbol = vm.selectedSymbol;
+      $scope.item.dateFrom = vm.dateFrom;
+      vm.dateFrom.setHours(0);
+      vm.dateFrom.setMinutes(0);
+      vm.dateFrom.setSeconds(0);
+      $log.log('detected updates: old:{0}, new:{1}'.format(
+        angular.toJson(oldValues), angular.toJson(newValues)));
       doTable($scope.item);
     }, false);
 
@@ -102,15 +107,15 @@
     vm.today();
 
     // update chart on date change...
-    $scope.$watch('vm.dateFrom', function (newValues) {
-      if (newValues) {
-        vm.dateFrom.setHours(0);
-        vm.dateFrom.setMinutes(0);
-        vm.dateFrom.setSeconds(0);
-        $log.log('detected date update: ', vm.dateFrom);
-        doTable($scope.item);
-      }
-    }, true);
+    // $scope.$watch('vm.dateFrom', function (newValues) {
+    //   if (newValues) {
+    //     vm.dateFrom.setHours(0);
+    //     vm.dateFrom.setMinutes(0);
+    //     vm.dateFrom.setSeconds(0);
+    //     $log.log('detected date update: ', vm.dateFrom);
+    //     doTable($scope.item);
+    //   }
+    // }, true);
 
     function fetchStrategies() {
       turbineService.strategies().then(function (response) {

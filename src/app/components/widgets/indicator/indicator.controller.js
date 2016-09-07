@@ -43,23 +43,25 @@
 
     initialise();
 
-    $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
-      if (!selectedSymbol) {
+    $scope.$watchGroup(['vm.selectedSymbol', 'vm.selectedIndicator'], function (newValues, oldValues) {
+      if (!vm.selectedSymbol || !vm.selectedIndicator) {
         return;
       }
-      $scope.item.symbol = selectedSymbol;
-      $log.log('detected symbol update: ', vm.selectedSymbol);
+      $scope.item.symbol = vm.selectedSymbol;
+      $scope.item.indicator = vm.selectedIndicator;
+      $log.log('detected updates: old:{0}, new:{1}'.format(
+        angular.toJson(oldValues), angular.toJson(newValues)));
       doChart($scope.item);
     }, false);
 
-    $scope.$watch('vm.selectedIndicator', function (selectedIndicator) {
-      if (!selectedIndicator) {
-        return;
-      }
-      $scope.item.indicator = selectedIndicator;
-      $log.log('detected indicator update: ', vm.selectedIndicator);
-      doChart($scope.item);
-    }, false);
+    // $scope.$watch('vm.selectedIndicator', function (selectedIndicator) {
+    //   if (!selectedIndicator) {
+    //     return;
+    //   }
+    //   $scope.item.indicator = selectedIndicator;
+    //   $log.log('detected indicator update: ', vm.selectedIndicator);
+    //   doChart($scope.item);
+    // }, false);
 
     // vm.selectSymbol = function (selectedSymbol) {
     //   vm.selectedSymbol = selectedSymbol;

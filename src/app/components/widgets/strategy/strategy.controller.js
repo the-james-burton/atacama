@@ -43,25 +43,26 @@
 
     initialise();
 
-    $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
-      if (!selectedSymbol) {
+    $scope.$watchGroup(['vm.selectedSymbol', 'vm.selectedStrategy'], function (newValues, oldValues) {
+      if (!vm.selectedSymbol || !vm.selectedStrategy) {
         return;
       }
-      // vm.selectedSymbol = selectedSymbol;
-      $scope.item.symbol = selectedSymbol;
-      $log.log('detected symbol update: ', vm.selectedSymbol);
+      $scope.item.symbol = vm.selectedSymbol;
+      $scope.item.strategy = vm.selectedStrategy;
+      $log.log('detected updates: old:{0}, new:{1}'.format(
+        angular.toJson(oldValues), angular.toJson(newValues)));
       doChart($scope.item);
     }, false);
 
-    $scope.$watch('vm.selectedStrategy', function (selectedStrategy) {
-      if (!selectedStrategy) {
-        return;
-      }
-      // vm.selectedStrategy = selectedStrategy;
-      $scope.item.strategy = selectedStrategy;
-      $log.log('detected streategy update: ', vm.selectedStrategy);
-      doChart($scope.item);
-    }, false);
+    // $scope.$watch('vm.selectedStrategy', function (selectedStrategy) {
+    //   if (!selectedStrategy) {
+    //     return;
+    //   }
+    //   // vm.selectedStrategy = selectedStrategy;
+    //   $scope.item.strategy = selectedStrategy;
+    //   $log.log('detected streategy update: ', vm.selectedStrategy);
+    //   doChart($scope.item);
+    // }, false);
 
     vm.reset = function() {
       $log.debug('reset()');
