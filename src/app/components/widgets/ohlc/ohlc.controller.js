@@ -14,7 +14,7 @@
 
   function OhlcWidgetController(
     $scope, ngstomp, $resource, $log, Restangular,
-    elasticsearchService, chartService, turbineService, utilService) {
+    elasticsearchService, chartService, turbineService, utilService, widgetService) {
     var vm = this;
 
     // adjustments to make the chart fit better in the widget...
@@ -47,9 +47,9 @@
       doChart($scope.item);
     }, false);
 
-    $scope.$watch('vm.data', function (data) {
-      $log.info("vm.data change:" + angular.toJson(vm.data));
-    }, false);
+    // $scope.$watch('vm.data', function (data) {
+    //   $log.info("vm.data change:" + angular.toJson(vm.data));
+    // }, false);
 
     // vm.selectSymbol = function (selectedSymbol) {
     //   vm.selectedSymbol = selectedSymbol;
