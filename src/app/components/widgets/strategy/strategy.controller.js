@@ -47,7 +47,7 @@
       if (!selectedSymbol) {
         return;
       }
-      vm.selectedSymbol = selectedSymbol;
+      // vm.selectedSymbol = selectedSymbol;
       $scope.item.symbol = selectedSymbol;
       $log.log('detected symbol update: ', vm.selectedSymbol);
       doChart($scope.item);
@@ -57,10 +57,10 @@
       if (!selectedStrategy) {
         return;
       }
-      vm.selectedStrategy = selectedStrategy;
+      // vm.selectedStrategy = selectedStrategy;
       $scope.item.strategy = selectedStrategy;
       $log.log('detected streategy update: ', vm.selectedStrategy);
-      // doChart($scope.item);
+      doChart($scope.item);
     }, false);
 
     vm.reset = function() {

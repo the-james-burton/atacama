@@ -37,28 +37,28 @@
 
     // vm.isLoaded = false;
     // vm.hasError = false;
+    vm.selectedSymbol = $scope.item.symbol;
     vm.selectedIndicator = $scope.item.indicator;
     vm.values = {};
+
+    initialise();
 
     $scope.$watch('vm.selectedSymbol', function (selectedSymbol) {
       if (!selectedSymbol) {
         return;
       }
-      vm.selectedSymbol = selectedSymbol;
-      $scope.item.symbol = vm.selectedSymbol;
+      $scope.item.symbol = selectedSymbol;
       $log.log('detected symbol update: ', vm.selectedSymbol);
-      doChart($scope.item.settings);
+      doChart($scope.item);
     }, false);
-
 
     $scope.$watch('vm.selectedIndicator', function (selectedIndicator) {
       if (!selectedIndicator) {
         return;
       }
-      vm.selectedIndicator = selectedIndicator;
-      $scope.item.indicator = vm.selectedIndicator;
+      $scope.item.indicator = selectedIndicator;
       $log.log('detected indicator update: ', vm.selectedIndicator);
-      doChart($scope.item.settings);
+      doChart($scope.item);
     }, false);
 
     // vm.selectSymbol = function (selectedSymbol) {
@@ -125,7 +125,7 @@
 
     }
 
-    vm.reset();
+    // vm.reset();
 
     function initialise() {
       vm.config = {
@@ -269,7 +269,7 @@
 
       // $scope.item = item;
       // item.name = vm.selectedSymbol;
-      vm.reset();
+      // vm.reset();
       utilService.unsubscribeTopic(topic);
 
       initialise();
