@@ -35,6 +35,8 @@
 
     vm.status = vm.Status.WAITING;
 
+    vm.chart = {};
+
     //vm.isLoaded = false;
     //vm.hasError = false;
 
@@ -97,8 +99,8 @@
 
       $log.debug('gridster-item-resized {0}x{1}'.format(
         gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
-      vm.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
-      vm.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
+      vm.chart.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
+      vm.chart.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
       // TODO now causes an error... is this needed?
       // $scope.api.update();
     });
@@ -162,20 +164,20 @@
       // vm.isLoaded = false;
       // vm.hasError = false;
 
-      vm.options = {
+      vm.chart.options = {
         chart: {
           // TODO error message appears in console...
         }
       };
 
-      vm.config = {
+      vm.chart.config = {
         deepWatchData: true,
         // deepWatchDataDepth: 1,
         refreshDataOnly: false,
         disabled: true
       };
 
-      vm.data = [];
+      vm.chart.data = [];
       // vm.data = {key: vm.selectedSymbol, values: [{}]};
       // vm.data = {key: '', values: [{}]};
 
@@ -184,14 +186,14 @@
     vm.reset();
 
     function initialise() {
-      vm.config = {
+      vm.chart.config = {
         deepWatchData: true,
         // deepWatchDataDepth: 1,
         refreshDataOnly: false,
         disabled: false
       };
 
-      vm.options = {
+      vm.chart.options = {
         chart: {
           type: 'candlestickBarChart',
           // type: 'ohlcBarChart',
@@ -260,7 +262,7 @@
       promise.then(function (response) {
         utilService.traceLog($scope.item, "elasticsearch");
         var result = elasticsearchService.parseResults(response);
-        vm.data = [{
+        vm.chart.data = [{
           key: vm.selectedSymbol,
           values: result
         }];
@@ -293,7 +295,7 @@
       // TODO avoid $scope?
       utilService.traceLog($scope.item, "rabbit");
       // vm.data[0].values.push(JSON.parse(message.body));
-      vm.data[0].values.push(message.body);
+      vm.chart.data[0].values.push(message.body);
       $scope.$apply();
     }
 

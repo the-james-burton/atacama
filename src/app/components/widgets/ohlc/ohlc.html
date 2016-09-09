@@ -34,7 +34,8 @@
             <i class="fa fa-refresh fa-2x"></i>
         </div>
         <div ng-if="vm.status == vm.Status.LOADED" class="widget-gridster-chart-view">
-          <nvd3 options='vm.options' data='vm.data' api="vm.api" config='vm.config'></nvd3>
+          <!--api="vm.chart.api"-->
+          <nvd3 options='vm.chart.options' data='vm.chart.data' config='vm.chart.config'></nvd3>
         </div>
         <div ng-if="vm.status == vm.Status.ERROR">
             <h4>Error loading widget.</h4>
