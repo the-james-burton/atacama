@@ -21,7 +21,7 @@
     // TODO it works in the browser, but PhantomJS gives this error
     // if we use ES6 keyword 'const' for these variables..
     // PhantomJS 2.1.1 (Linux 0.0.0) ERROR SyntaxError: Unexpected token 'const'
-    const adjustX = -35;
+    var adjustX = -35;
     var adjustY = -65;
 
     // TODO select market in UI
