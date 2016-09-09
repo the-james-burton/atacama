@@ -21,7 +21,7 @@
     // TODO it works in the browser, but PhantomJS gives this error
     // if we use ES6 keyword 'const' for these variables..
     // PhantomJS 2.1.1 (Linux 0.0.0) ERROR SyntaxError: Unexpected token 'const'
-    const adjustX = -35;
+    var adjustX = -35;
     var adjustY = -65;
 
     // TODO select market in UI
@@ -41,6 +41,7 @@
     // load the saved values...
     vm.selectedSymbol = $scope.item.symbol;
     vm.dateFrom = $scope.item.dateFrom;
+    vm.values = {};
 
     $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
       if (!vm.selectedSymbol || !vm.dateFrom) {
@@ -103,14 +104,14 @@
       // $scope.api.update();
     });
 
-    // $scope.$watch('vm.values', function (newValues) {
-    //   if (newValues) {
-    //     vm.data = [{
-    //       key: vm.selectedSymbol,
-    //       values: newValues
-    //     }];
-    //   }
-    // }, true);
+    $scope.$watch('vm.values', function (newValues) {
+      if (newValues) {
+        vm.data = [{
+          key: vm.selectedSymbol,
+          values: newValues
+        }];
+      }
+    }, true);
 
 
     // ---------------------- datepicker stuff below ------------------
@@ -152,6 +153,17 @@
     };
 
     vm.today();
+
+    // update chart on date change...
+    // $scope.$watch('vm.dateFrom', function (newValues) {
+    //   if (newValues) {
+    //     vm.dateFrom.setHours(0);
+    //     vm.dateFrom.setMinutes(0);
+    //     vm.dateFrom.setSeconds(0);
+    //     $log.log('detected date update: ', vm.dateFrom);
+    //     doChart($scope.item);
+    //   }
+    // }, true);
 
     // ---------------------- datepicker stuff above ------------------
 
@@ -259,12 +271,7 @@
 
       promise.then(function (response) {
         utilService.traceLog($scope.item, "elasticsearch");
-        var result = elasticsearchService.parseResults(response);
-        vm.data = [{
-          key: vm.selectedSymbol,
-          values: result
-        }];
-
+        vm.values = elasticsearchService.parseResults(response);
       }, function (err) {
         esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
         $log.error(esError);
