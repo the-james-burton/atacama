@@ -1,0 +1,11 @@
+  <!-- <input type="text" class="form-control"
+    ng-model="selectedSymbol"
+    uib-typeahead="symbol for symbol in vm.symbols | filter:$viewValue | limitTo:8"
+    typeahead-on-select="vm.selectSymbol(selectedSymbol)"></input> -->
+    <p class="input-group">
+
+  <input type="text" class="form-control" uib-datepicker-popup="{{vm.format}}" ng-model="vm.selectedDate" is-open="vm.popup1.opened" datepicker-options="vm.dateOptions" date-disabled="vm.isDisabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats"></input>
+  <span class="input-group-btn">
+    <button type="button" class="form-control btn btn-default" ng-click="vm.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+  </span>
+</p>

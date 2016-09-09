@@ -44,117 +44,9 @@
     vm.selectedSymbol = $scope.item.symbol;
     vm.dateFrom = $scope.item.dateFrom;
 
-    $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
-      if (!vm.selectedSymbol || !vm.dateFrom) {
-        return;
-      }
-      $scope.item.symbol = vm.selectedSymbol;
-      $scope.item.dateFrom = vm.dateFrom;
-      vm.dateFrom.setHours(0);
-      vm.dateFrom.setMinutes(0);
-      vm.dateFrom.setSeconds(0);
-      $log.log('detected updates: old:{0}, new:{1}'.format(
-        angular.toJson(oldValues), angular.toJson(newValues)));
-      doChart($scope.item);
-    }, false);
-
-    // $scope.$watch('vm.data', function (data) {
-    //   $log.info("vm.data change:" + angular.toJson(vm.data));
-    // }, false);
-
-    // vm.selectSymbol = function (selectedSymbol) {
-    //   vm.selectedSymbol = selectedSymbol;
-    //   $log.log('select symbol: ', vm.selectedSymbol);
-    //   doChart($scope.item);
-    // };
-
-    // TODO centralise the rest call data more so widgets can share the results...
-    // {"stocks":[{"market":"FTSE100","symbol":"ABC"},{"market":"FTSE100","symbol":"DEF"}]}
-    // {"indicators":[{"overlay":true,"name":"BollingerBands"},{"overlay":false,"name":"SMA12"}]}
-    // {"strategies":[{"name":"SMAStrategy"},{"name":"CCICorrectionStrategy"}]}
-
-    // fetchStocks();
-
-    // $scope.strategies = [
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'},
-    //   { action: 'sell', symbol: 'ABC', market: 'FTSE100'},
-    //   { action: 'buy', symbol: 'DEF', market: 'FTSE100'}
-    // ];
-
-    // set the size of the chart as the widget is resized...
-    $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
-      // $log.debug('gridster-item-resized offset {0}x{1}'.format($scope.offsetParent.prop('offsetWidth'), $scope.offsetParent.prop('offsetHeight')));
-      // $log.debug('gridster-item-resized dimensions {0}x{1}'.format(gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
-      //vm.options.chart.height = firstHeight + ((item.targetScope.gridsterItem.sizeY - 1) * nextHeight);
-      //vm.options.chart.width = firstWidth + ((item.targetScope.gridsterItem.sizeX - 1) * nextWidth);
-      //console.log('offsetHeight:' + $scope.offsetParent.prop('offsetHeight'));
-      //console.log('offsetWidth:' + $scope.offsetParent.prop('offsetWidth'));
-
-      $log.debug('gridster-item-resized {0}x{1}'.format(
-        gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
-      vm.chart.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
-      vm.chart.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
-      // TODO now causes an error... is this needed?
-      // $scope.api.update();
-    });
-
-    // $scope.$watch('vm.values', function (newValues) {
-    //   if (newValues) {
-    //     vm.data = [{
-    //       key: vm.selectedSymbol,
-    //       values: newValues
-    //     }];
-    //   }
-    // }, true);
-
+    startWatches();
 
     // ---------------------- datepicker stuff below ------------------
-    vm.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    vm.format = vm.formats[0];
-    vm.altInputFormats = ['M!/d!/yyyy'];
-
-    vm.dateOptions = {
-      // dateDisabled: isDisabled,
-      formatYear: 'yy',
-      // maxDate: new Date(2020, 5, 22),
-      // minDate: new Date(),
-      startingDay: 1
-    };
-
-    vm.popup1 = {
-      opened: false
-    };
-
-    // Disable weekend selection
-    vm.isDisabled = function(date, mode) {
-      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-    };
-
-    vm.today = function() {
-      var dateFrom = new Date();
-      dateFrom.setHours(0);
-      dateFrom.setMinutes(0);
-      dateFrom.setSeconds(0);
-      vm.dateFrom = dateFrom;
-    };
-
-    vm.clear = function() {
-      vm.dateFrom = null;
-    };
-
-    vm.open1 = function() {
-      vm.popup1.opened = true;
-    };
-
-    vm.today();
-
     // ---------------------- datepicker stuff above ------------------
 
     vm.reset = function () {
@@ -231,31 +123,6 @@
       };
     }
 
-
-    // for smart-table...
-    // $scope.addStrategies = function(widget) {
-    //    console.log("widget.js::addStrategies");
-    //    reset();
-    //    $scope.typeStrategies = true;
-    //    unsubscribeTopic();
-    //  };
-
-    // I don't think this is necessary anymore...
-    // $scope.$on('$destroy', function() {
-    //   utilService.unsubscribeTopic(topic);
-    // });
-
-    // function fetchStocks() {
-    //   turbineService.symbols(market).then(function (response) {
-    //     // console.log(angular.toJson(response.stocks));
-    //     vm.symbols = _.map(response.stocks, 'symbol');
-    //     // $scope.selectedSymbol = $scope.symbols[0];
-    //   }, function (err) {
-    //     esError = 'unable to load symbols: {0}'.format(err.message);
-    //     $log.error(esError);
-    //   });
-    // }
-
     function fetchHistoricDataFromES(from) {
       var promise = elasticsearchService.getTicksAfter(market, vm.selectedSymbol, from);
 
@@ -299,6 +166,32 @@
       $scope.$apply();
     }
 
+    function startWatches() {
+      // if any user input changes, re-do the chart...
+      $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
+        if (!vm.selectedSymbol || !vm.dateFrom) {
+          return;
+        }
+        $scope.item.symbol = vm.selectedSymbol;
+        $scope.item.dateFrom = vm.dateFrom;
+        // vm.dateFrom.setHours(0);
+        // vm.dateFrom.setMinutes(0);
+        // vm.dateFrom.setSeconds(0);
+        $log.log('detected updates: old:{0}, new:{1}'.format(
+          angular.toJson(oldValues), angular.toJson(newValues)));
+        doChart($scope.item);
+      }, false);
+
+      // set the size of the chart as the widget is resized...
+      $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
+        $log.debug('gridster-item-resized {0}x{1}'.format(
+          gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
+        vm.chart.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
+        vm.chart.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
+        // TODO now causes an error... is this needed?
+        // $scope.api.update();
+      });
+    }
 
     function doChart(item) {
       if (!vm.selectedSymbol) {

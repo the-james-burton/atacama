@@ -15,12 +15,11 @@
         <!-- dont use self-close tags for directives! -->
         <form class="form-inline">
           <symbol-picker selected-symbol="vm.selectedSymbol"></symbol-picker>
-            <p class="input-group">
-              <input type="text" class="form-control" uib-datepicker-popup="{{vm.format}}" ng-model="vm.dateFrom" is-open="vm.popup1.opened" datepicker-options="vm.dateOptions" date-disabled="vm.isDisabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats"></input>
+          <date-picker selected-date="vm.dateFrom"></date-picker>
+              <!-- <input type="text" class="form-control" uib-datepicker-popup="{{vm.format}}" ng-model="vm.dateFrom" is-open="vm.popup1.opened" datepicker-options="vm.dateOptions" date-disabled="vm.isDisabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats"></input>
               <span class="input-group-btn">
                 <button type="button" class="form-control btn btn-default" ng-click="vm.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-            </p>
+              </span> -->
       </form>
 
     </div>
