@@ -41,9 +41,9 @@
 
     vm.today = function () {
       var selectedDate = new Date();
-      selectedDate.setHours(0);
-      selectedDate.setMinutes(0);
-      selectedDate.setSeconds(0);
+      // selectedDate.setHours(0);
+      // selectedDate.setMinutes(0);
+      // selectedDate.setSeconds(0);
       vm.selectedDate = selectedDate;
     };
 
@@ -55,9 +55,24 @@
       vm.popup1.opened = true;
     };
 
+    // ensure the date is always set to the start of the day...
+    $scope.$watch('vm.selectedDate', function (newValue, oldValue) {
+      if (!vm.selectedDate) {
+        return;
+      }
+      vm.selectedDate.setHours(0);
+      vm.selectedDate.setMinutes(0);
+      vm.selectedDate.setSeconds(0);
+    }, false);
+
     // if we have been given a date, then parse it...
     if (vm.selectedDate) {
       vm.selectedDate = new Date(vm.selectedDate);
+    }
+
+    // if we have no date, then init to today...
+    if (angular.isUndefined(vm.selectedDate)) {
+      vm.selectedDate = new Date();
     }
 
   }
