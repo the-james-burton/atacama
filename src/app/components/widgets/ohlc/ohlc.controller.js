@@ -30,6 +30,7 @@
     var topic = '';
     var esError = '';
     var stompError = '';
+    var stompSubscription = '';
 
     vm.Status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
 
@@ -37,24 +38,16 @@
 
     vm.chart = {};
 
-    //vm.isLoaded = false;
-    //vm.hasError = false;
-
     // load the saved values...
     vm.selectedSymbol = $scope.item.symbol;
     vm.dateFrom = $scope.item.dateFrom;
 
     startWatches();
 
-    // ---------------------- datepicker stuff below ------------------
-    // ---------------------- datepicker stuff above ------------------
-
     vm.reset = function () {
       $log.debug('reset()');
 
       vm.status = vm.Status.WAITING;
-      // vm.isLoaded = false;
-      // vm.hasError = false;
 
       vm.chart.options = {
         chart: {
@@ -69,9 +62,11 @@
         disabled: true
       };
 
-      vm.chart.data = [];
-      // vm.data = {key: vm.selectedSymbol, values: [{}]};
-      // vm.data = {key: '', values: [{}]};
+      // vm.chart.data = [];
+      vm.chart.data = [{
+        key: vm.selectedSymbol,
+        values: []
+      }];
 
     };
 
@@ -112,8 +107,8 @@
             tickFormat: function (d) {
               return d3.time.format('%X')(new Date(d));
             },
+            yAxis: {
           },
-          yAxis: {
             // axisLabel: 'Stock Price',
             tickFormat: function (d, i) {
               return '$' + d3.format(',.1f')(d);
@@ -123,29 +118,20 @@
       };
     }
 
-    function fetchHistoricDataFromES(from) {
-      var promise = elasticsearchService.getTicksAfter(market, vm.selectedSymbol, from);
-
-      promise.then(function (response) {
-        utilService.traceLog($scope.item, "elasticsearch");
-        var result = elasticsearchService.parseResults(response);
-        vm.chart.data = [{
-          key: vm.selectedSymbol,
-          values: result
-        }];
-
-      }, function (err) {
-        esError = 'unable to load data: {0}:{1}'.format(vm.selectedSymbol, err.message);
-        $log.error(esError);
-      });
+    function onError(message, err) {
+      vm.status = vm.Status.ERROR;
+      error = '{0}: {1}:{2}'.format(message, vm.selectedSymbol, err.message);
+      $log.error(error);
     }
 
+    // TODO push up into widgetService
+    // TODO return ngStomp object?
     function subscribeToStompUpdates() {
       topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
       //ngstomp.subscribe(topic, onMessage, {}, $scope);
 
       try {
-        ngstomp
+        return ngstomp
           .subscribeTo(topic)
           .callback(onMessage)
           .withBodyInJson()
@@ -153,19 +139,32 @@
           .connect();
         // throw new Error("unable to subscribe to topic: " + topic);
       } catch (err) {
-        stompError = 'unable to connect to: {0}:{1}'.format(topic, err.message);
-        $log.error(stompError);
+        onError('unable to STOMP connect to', err)
       }
     }
 
+    // NOTE as a callback function, this needs to mutate the scope, I think?
     function onMessage(message) {
       // TODO avoid $scope?
       utilService.traceLog($scope.item, "rabbit");
-      // vm.data[0].values.push(JSON.parse(message.body));
+      // use JSON.parse(message.body) if not already an objects...
       vm.chart.data[0].values.push(message.body);
-      $scope.$apply();
+      // $scope.$apply();
     }
 
+    // TODO separate the retrieval of data from the processing
+    // TODO due to ES client use of promises, we need to mutate a parameter...
+    function fetchHistoricDataFromElasticsearch(market, selectedSymbol, fromMilliseconds, callback) {
+      var esPromise = elasticsearchService.getTicksAfter(market, selectedSymbol, fromMilliseconds);
+      esPromise.then(function (response) {
+        var results = elasticsearchService.parseResults(response)
+        callback(results);
+      }, function (err) {
+        onError('unable to load ES data', err)
+      });
+    }
+
+    // NOTE this has side-effects (setups up angular watches), I don't think this can be avoided...
     function startWatches() {
       // if any user input changes, re-do the chart...
       $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
@@ -200,29 +199,22 @@
 
       $log.debug("ohlc.controller.js::doChart");
       vm.status = vm.Status.LOADING;
-      // $scope.item = item;
-      // item.name = vm.selectedSymbol;
       vm.reset();
-      // vm.typeOHLC = true;
       utilService.unsubscribeTopic(topic);
 
       initialise();
 
-      // $scope.message = moment();
-
-      // var ticks = Restangular.one('tick').one($scope.selectedSymbol).one(sod);
-
-      // ticks.get().then(function(response) {
-      //     vm.data[0].values = response.ticks;
-      // });
-
       utilService.traceLog(item, "elasticsearch");
 
       // var sod = moment(0, "HH").format("x");
-      var from = moment(vm.dateFrom).format("x");
-      fetchHistoricDataFromES(from);
+      var fromMilliseconds = moment(vm.dateFrom).format("x");
 
-      subscribeToStompUpdates();
+      fetchHistoricDataFromElasticsearch(market, vm.selectedSymbol, fromMilliseconds,
+        function(results) {
+          vm.chart.data[0].values = vm.chart.data[0].values.concat(results);
+      });
+
+      stompSubscription = subscribeToStompUpdates();
 
       vm.status = vm.Status.LOADED;
       // vm.isLoaded = true;
