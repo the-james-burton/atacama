@@ -42,8 +42,6 @@
     vm.selectedSymbol = $scope.item.symbol;
     vm.dateFrom = $scope.item.dateFrom;
 
-    startWatches();
-
     vm.reset = function () {
       $log.debug('reset()');
 
@@ -71,6 +69,8 @@
     };
 
     vm.reset();
+
+    startWatches();
 
     function initialise() {
       vm.chart.config = {
@@ -107,8 +107,8 @@
             tickFormat: function (d) {
               return d3.time.format('%X')(new Date(d));
             },
-            yAxis: {
           },
+          yAxis: {
             // axisLabel: 'Stock Price',
             tickFormat: function (d, i) {
               return '$' + d3.format(',.1f')(d);
@@ -120,47 +120,19 @@
 
     function onError(message, err) {
       vm.status = vm.Status.ERROR;
-      error = '{0}: {1}:{2}'.format(message, vm.selectedSymbol, err.message);
+      var error = '{0}: {1}:{2}'.format(message, vm.selectedSymbol, err.message);
       $log.error(error);
-    }
-
-    // TODO push up into widgetService
-    // TODO return ngStomp object?
-    function subscribeToStompUpdates() {
-      topic = '/topic/ticks.' + market + '.' + vm.selectedSymbol;
-      //ngstomp.subscribe(topic, onMessage, {}, $scope);
-
-      try {
-        return ngstomp
-          .subscribeTo(topic)
-          .callback(onMessage)
-          .withBodyInJson()
-          .bindTo($scope)
-          .connect();
-        // throw new Error("unable to subscribe to topic: " + topic);
-      } catch (err) {
-        onError('unable to STOMP connect to', err)
-      }
-    }
-
-    // NOTE as a callback function, this needs to mutate the scope, I think?
-    function onMessage(message) {
-      // TODO avoid $scope?
-      utilService.traceLog($scope.item, "rabbit");
-      // use JSON.parse(message.body) if not already an objects...
-      vm.chart.data[0].values.push(message.body);
-      // $scope.$apply();
     }
 
     // TODO separate the retrieval of data from the processing
     // TODO due to ES client use of promises, we need to mutate a parameter...
-    function fetchHistoricDataFromElasticsearch(market, selectedSymbol, fromMilliseconds, callback) {
+    function fetchHistoricDataFromElasticsearch(market, selectedSymbol, fromMilliseconds, successCallback, errorCallback) {
       var esPromise = elasticsearchService.getTicksAfter(market, selectedSymbol, fromMilliseconds);
       esPromise.then(function (response) {
         var results = elasticsearchService.parseResults(response)
-        callback(results);
+        successCallback(results);
       }, function (err) {
-        onError('unable to load ES data', err)
+        errorCallback('unable to load ES data', err)
       });
     }
 
@@ -209,12 +181,24 @@
       // var sod = moment(0, "HH").format("x");
       var fromMilliseconds = moment(vm.dateFrom).format("x");
 
+      // NOTE can't use return value because ES client uses promises...
       fetchHistoricDataFromElasticsearch(market, vm.selectedSymbol, fromMilliseconds,
-        function(results) {
+        function (results) {
           vm.chart.data[0].values = vm.chart.data[0].values.concat(results);
-      });
+        }, onError);
 
-      stompSubscription = subscribeToStompUpdates();
+      try {
+        stompSubscription = widgetService.subscribeToStompUpdates($scope, '/topic/ticks', market, vm.selectedSymbol,
+          function (message) {
+            // TODO avoid $scope?
+            utilService.traceLog($scope.item, "rabbit");
+            // use JSON.parse(message.body) if not already an objects...
+            vm.chart.data[0].values.push(message.body);
+            // $scope.$apply();
+          });
+      } catch (err) {
+        onError('unable to STOMP connect to', err)
+      }
 
       vm.status = vm.Status.LOADED;
       // vm.isLoaded = true;
