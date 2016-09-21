@@ -14,7 +14,7 @@
 
   function StrategyWidgetController(
     $scope, ngstomp, $resource, $log, Restangular,
-    elasticsearchService, chartService, turbineService, utilService) {
+    elasticsearchService, chartService, turbineService, utilService, widgetService) {
     var vm = this;
 
     var sod = moment(0, "HH").format("x");
@@ -264,7 +264,7 @@
 
       // $scope.item = item;
       // vm.reset();
-      utilService.unsubscribeTopic(topic);
+      widgetService.unsubscribeTopic(topic);
 
       initialise();
 

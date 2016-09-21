@@ -14,7 +14,7 @@
 
   function StrategyTableController(
     $scope, ngstomp, $resource, $log, Restangular,
-    elasticsearchService, chartService, turbineService, utilService) {
+    elasticsearchService, chartService, turbineService, utilService, widgetService) {
     var vm = this;
 
     // adjustments to make the chart fit better in the widget...
@@ -179,7 +179,7 @@
       vm.status = vm.Status.LOADING;
       // $scope.item = item;
       item.name = vm.selectedSymbol;
-      utilService.unsubscribeTopic(topic);
+      widgetService.unsubscribeTopic(topic);
 
       utilService.traceLog(item, "elasticsearch");
 
