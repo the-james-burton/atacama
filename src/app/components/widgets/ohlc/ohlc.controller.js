@@ -40,7 +40,7 @@
 
     // load the saved values...
     vm.selectedSymbol = $scope.item.symbol;
-    vm.dateFrom = $scope.item.dateFrom;
+    vm.dateFrom = new Date($scope.item.dateFrom); // marshall saved string into Date object
 
     vm.reset = function () {
       $log.debug('reset()');
@@ -125,7 +125,7 @@
     }
 
     // TODO separate the retrieval of data from the processing
-    // TODO due to ES client use of promises, we need to mutate a parameter...
+    // TODO due to ES client use of promises, we need to use callbacks...
     function fetchHistoricDataFromElasticsearch(market, selectedSymbol, fromMilliseconds, successCallback, errorCallback) {
       var esPromise = elasticsearchService.getTicksAfter(market, selectedSymbol, fromMilliseconds);
       esPromise.then(function (response) {
@@ -140,9 +140,12 @@
     function startWatches() {
       // if any user input changes, re-do the chart...
       $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
+
+        // if we have not got both values then abort...
         if (!vm.selectedSymbol || !vm.dateFrom) {
           return;
         }
+
         $scope.item.symbol = vm.selectedSymbol;
         $scope.item.dateFrom = vm.dateFrom;
         // vm.dateFrom.setHours(0);
@@ -184,7 +187,8 @@
       // NOTE can't use return value because ES client uses promises...
       fetchHistoricDataFromElasticsearch(market, vm.selectedSymbol, fromMilliseconds,
         function (results) {
-          vm.chart.data[0].values = vm.chart.data[0].values.concat(results);
+          // vm.chart.data[0].values = vm.chart.data[0].values.concat(results);
+          vm.chart.data[0].values = results;
         }, onError);
 
       try {

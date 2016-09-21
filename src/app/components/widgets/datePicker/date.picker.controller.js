@@ -65,13 +65,13 @@
       vm.selectedDate.setSeconds(0);
     }, false);
 
-    // if we have been given a date, then parse it...
-    if (vm.selectedDate) {
+    // if we have been given a date in string format, then parse it...
+    if (!_.isDate(vm.selectedDate)) {
       vm.selectedDate = new Date(vm.selectedDate);
     }
 
-    // if we have no date, then init to today...
-    if (angular.isUndefined(vm.selectedDate)) {
+    // if we have missing or invalid date object, then init to today...
+    if (angular.isUndefined(vm.selectedDate) || vm.selectedDate.toString() === 'Invalid Date') {
       vm.selectedDate = new Date();
     }
 
