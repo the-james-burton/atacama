@@ -71,7 +71,8 @@
     }
 
     // if we have missing or invalid date object, then init to today...
-    if (angular.isUndefined(vm.selectedDate) || vm.selectedDate.toString() === 'Invalid Date') {
+    // angular.isUndefined(vm.selectedDate) || vm.selectedDate.toString() === 'Invalid Date'
+    if (A.isInvalid(vm.selectedDate)) {
       vm.selectedDate = new Date();
     }
 

@@ -8,6 +8,8 @@
   /** @ngInject */
   function runBlock($rootScope, $cookies, $log, Restangular, securityService, $location) {
 
+    A.test();
+
     var testObject = {
       one : {
         prop : 'hello'

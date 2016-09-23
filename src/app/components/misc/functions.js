@@ -18,18 +18,24 @@ String.prototype.escapeRegExp = function () {
 
 var A = (function () {
 
-  var testUtils = function () {
+  var test = function () {
     console.log("functions.js working");
   };
 
-  var unsubscribeCallback = function (topic) {
-    console.log("Unsubscribed from " + topic);
+  var toVmProperty = function(property) {
+    return 'vm.' + property;
   };
 
+  var isInvalid = function(value) {
+    var isUndefined = (value === undefined);
+    var isInvalidDate = !isUndefined && (value.toString() === 'Invalid Date');
+    return isUndefined || isInvalidDate;
+  };
 
   return {
-    testUtils: testUtils,
-    unsubscribeCallback: unsubscribeCallback
+    test: test,
+    toVmProperty: toVmProperty,
+    isInvalid: isInvalid
   };
 
 })();

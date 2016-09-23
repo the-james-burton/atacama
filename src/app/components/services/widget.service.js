@@ -17,7 +17,8 @@
       subscribeToStompUpdates: subscribeToStompUpdates,
       emptyChart: emptyChart,
       fetchHistoricDataFromElasticsearch: fetchHistoricDataFromElasticsearch,
-      unsubscribeTopic: unsubscribeTopic
+      unsubscribeTopic: unsubscribeTopic,
+      startWatches: startWatches
     };
 
     // -----------------------------------------------------
@@ -70,9 +71,58 @@
     // -----------------------------------------------------
     function unsubscribeTopic(topic) {
       if (topic.length > 0) {
-        ngstomp.unsubscribe(topic, A.unsubscribeCallback(topic));
+        return ngstomp.unsubscribe(topic, function (topic) {
+          $log.info("Unsubscribed from " + topic);
+        });
       }
     }
+
+    // -----------------------------------------------------
+    // NOTE this has side-effects (setups up angular watches), I don't think this can be avoided...
+    function startWatches(watches, action, scope) {
+
+      var watchKeys = _(watches).map(A.toVmProperty).value();
+      // var watchValues = _(watches).map(_.propertyOf(vm)).value();
+
+      // if any user input changes, re-do the chart...
+      scope.$watchGroup(watchKeys, function (newValues, oldValues) {
+
+        $log.info('newValues:{0}'.format(newValues));
+
+        // use lodash to filter for undefined of 'Invalid Date',
+        // then check that the resulting array is empty...
+        var invalidValues = _(newValues).filter(A.isInvalid).value();
+
+        // if we have any invalid values, then abort...
+        if (invalidValues.length > 0) {
+          return;
+        }
+
+        // load each watch into the scope...
+        _(watches).forEach(function (watch) {
+          scope.item[watch] = scope.vm[watch];
+          //$log.info($scope.item[watch]);
+        });
+
+        //$scope.item.symbol = vm.symbol;
+        //$scope.item.dateFrom = vm.dateFrom;
+        $log.log('detected updates: old:{0}, new:{1}'.format(
+          angular.toJson(oldValues), angular.toJson(newValues)));
+        action(scope.item);
+      }, false);
+
+      // set the size of the chart as the widget is resized...
+      scope.$on('gridster-item-resized', function (item, gridsterWidget) {
+        $log.debug('gridster-item-resized {0}x{1}'.format(
+          gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
+        vm.chart.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
+        vm.chart.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
+        // TODO now causes an error... is this needed?
+        // $scope.api.update();
+      });
+    }
+
+
 
     // -----------------------------------------------------
     $log.debug('widgetService has been created');

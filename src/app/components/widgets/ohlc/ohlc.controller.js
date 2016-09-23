@@ -39,12 +39,12 @@
     vm.chart = {};
 
     // load the saved values...
-    vm.selectedSymbol = $scope.item.symbol;
+    vm.symbol = $scope.item.symbol;
     vm.dateFrom = new Date($scope.item.dateFrom); // marshall saved string into Date object
 
     vm.chart = widgetService.emptyChart();
 
-    startWatches();
+    widgetService.startWatches(['symbol', 'dateFrom'], doChart, $scope);
 
     function initialise(symbol) {
       return {
@@ -99,49 +99,14 @@
 
     function onError(message, err) {
       vm.status = vm.Status.ERROR;
-      var error = '{0}: {1}:{2}'.format(message, vm.selectedSymbol, err.message);
+      var error = '{0}: {1}:{2}'.format(message, vm.symbol, err.message);
       $log.error(error);
       return error;
     }
 
 
-    // NOTE this has side-effects (setups up angular watches), I don't think this can be avoided...
-    function startWatches() {
-      // if any user input changes, re-do the chart...
-      $scope.$watchGroup(['vm.selectedSymbol', 'vm.dateFrom'], function (newValues, oldValues) {
-
-        $log.info('selectedSymbol:{0}, dateFrom:{1}'.format(newValues[0], newValues[1]));
-
-        // TODO use lodash to filter for undefined of 'Invalid Date',
-        // then check that the resulting array is empty...
-        // _(newValues).filter
-
-
-        // if we have not got both values then abort...
-        if (!vm.selectedSymbol || !vm.dateFrom) {
-          return;
-        }
-
-        $scope.item.symbol = vm.selectedSymbol;
-        $scope.item.dateFrom = vm.dateFrom;
-        $log.log('detected updates: old:{0}, new:{1}'.format(
-          angular.toJson(oldValues), angular.toJson(newValues)));
-        doChart($scope.item);
-      }, false);
-
-      // set the size of the chart as the widget is resized...
-      $scope.$on('gridster-item-resized', function (item, gridsterWidget) {
-        $log.debug('gridster-item-resized {0}x{1}'.format(
-          gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
-        vm.chart.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
-        vm.chart.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
-        // TODO now causes an error... is this needed?
-        // $scope.api.update();
-      });
-    }
-
     function doChart(item) {
-      if (!vm.selectedSymbol) {
+      if (!vm.symbol) {
         return;
       }
 
@@ -150,21 +115,21 @@
       // vm.chart = widgetService.emptyChart();
       widgetService.unsubscribeTopic(topic);
 
-      vm.chart = initialise(vm.selectedSymbol);
+      vm.chart = initialise(vm.symbol);
 
       // var sod = moment(0, "HH").format("x");
       var fromMilliseconds = moment(vm.dateFrom).format("x");
       utilService.traceLog(item, "elasticsearch");
 
       // NOTE can't use return value because ES client uses promises...
-      widgetService.fetchHistoricDataFromElasticsearch(market, vm.selectedSymbol, fromMilliseconds,
+      widgetService.fetchHistoricDataFromElasticsearch(market, vm.symbol, fromMilliseconds,
         function (results) {
           // vm.chart.data[0].values = vm.chart.data[0].values.concat(results);
           vm.chart.data[0].values = results;
         }, onError);
 
       try {
-        stompSubscription = widgetService.subscribeToStompUpdates($scope, '/topic/ticks', market, vm.selectedSymbol,
+        stompSubscription = widgetService.subscribeToStompUpdates($scope, '/topic/ticks', market, vm.symbol,
           function (message) {
             // TODO avoid $scope?
             utilService.traceLog($scope.item, "rabbit");
