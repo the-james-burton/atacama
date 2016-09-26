@@ -25,16 +25,17 @@
 
     // starting points for the topics...
     var tickTopicRoot = '/topic/ticks';
+    var indicatorTopicRoot = '/topic/indicators';
 
     var service = {
       subscribeToStompUpdates: subscribeToStompUpdates,
       emptyChart: emptyChart,
-      fetchHistoricDataFromElasticsearch: fetchHistoricDataFromElasticsearch,
       unsubscribeTopic: unsubscribeTopic,
       startWatches: startWatches,
       adjustX: adjustX,
       adjustY: adjustY,
-      tickTopicRoot: tickTopicRoot
+      tickTopicRoot: tickTopicRoot,
+      indicatorTopicRoot: indicatorTopicRoot
     };
 
     // -----------------------------------------------------
@@ -52,18 +53,6 @@
       } catch (err) {
         errorCallback('STOMP subscribeTo error:', err);
       }
-    }
-
-    // -----------------------------------------------------
-    // TODO due to ES client use of promises, we need to use callbacks...
-    function fetchHistoricDataFromElasticsearch(market, selectedSymbol, fromMilliseconds, successCallback, errorCallback) {
-      var esPromise = elasticsearchService.getTicksAfter(market, selectedSymbol, fromMilliseconds);
-      esPromise.then(function (response) {
-        var results = elasticsearchService.parseResults(response)
-        successCallback(results);
-      }, function (err) {
-        errorCallback('unable to load ES data', err)
-      });
     }
 
     // -----------------------------------------------------
