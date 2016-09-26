@@ -17,12 +17,6 @@
     elasticsearchService, chartService, turbineService, utilService, widgetService) {
     var vm = this;
 
-    // adjustments to make the chart fit better in the widget...
-    // TODO it works in the browser, but PhantomJS gives this error
-    // if we use ES6 keyword 'const' for these variables..
-    // PhantomJS 2.1.1 (Linux 0.0.0) ERROR SyntaxError: Unexpected token 'const'
-    var adjustX = -35;
-    var adjustY = -65;
 
     // TODO select market in UI
     var market = 'FTSE100';
@@ -31,6 +25,8 @@
     var esError = '';
     var stompError = '';
     var stompSubscription = '';
+
+    $log.info(widgetService.adjustX);
 
     vm.Status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
 
@@ -60,8 +56,8 @@
             // type: 'ohlcBarChart',
             // width: $scope.offsetParent.prop('offsetWidth') + adjustX,
             // height: $scope.offsetParent.prop('offsetHeight') + adjustY,
-            width: $scope.gridsterItem.getElementSizeX() + adjustX,
-            height: $scope.gridsterItem.getElementSizeY() + adjustY,
+            width: $scope.gridsterItem.getElementSizeX() + widgetService.adjustX,
+            height: $scope.gridsterItem.getElementSizeY() + widgetService.adjustY,
             margin: {
               top: 20,
               right: 40,

@@ -13,12 +13,23 @@
     .factory('widgetService', widgetService);
 
   function widgetService($log, ngstomp, elasticsearchService) {
+
+    // adjustments to make the chart fit better in the widget...
+    // these declarations MUST come above the returned 'service' object
+    // TODO it works in the browser, but PhantomJS gives this error
+    // if we use ES6 keyword 'const' for these variables..
+    // PhantomJS 2.1.1 (Linux 0.0.0) ERROR SyntaxError: Unexpected token 'const'
+    var adjustX = -35;
+    var adjustY = -65;
+
     var service = {
       subscribeToStompUpdates: subscribeToStompUpdates,
       emptyChart: emptyChart,
       fetchHistoricDataFromElasticsearch: fetchHistoricDataFromElasticsearch,
       unsubscribeTopic: unsubscribeTopic,
-      startWatches: startWatches
+      startWatches: startWatches,
+      adjustX: adjustX,
+      adjustY: adjustY
     };
 
     // -----------------------------------------------------
@@ -115,8 +126,8 @@
       scope.$on('gridster-item-resized', function (item, gridsterWidget) {
         $log.debug('gridster-item-resized {0}x{1}'.format(
           gridsterWidget.getElementSizeX(), gridsterWidget.getElementSizeY()));
-        vm.chart.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
-        vm.chart.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
+        scope.vm.chart.options.chart.width = gridsterWidget.getElementSizeX() + adjustX;
+        scope.vm.chart.options.chart.height = gridsterWidget.getElementSizeY() + adjustY;
         // TODO now causes an error... is this needed?
         // $scope.api.update();
       });
