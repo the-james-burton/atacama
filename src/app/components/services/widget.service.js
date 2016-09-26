@@ -14,13 +14,17 @@
 
   function widgetService($log, ngstomp, elasticsearchService) {
 
-    // adjustments to make the chart fit better in the widget...
     // these declarations MUST come above the returned 'service' object
     // TODO it works in the browser, but PhantomJS gives this error
     // if we use ES6 keyword 'const' for these variables..
     // PhantomJS 2.1.1 (Linux 0.0.0) ERROR SyntaxError: Unexpected token 'const'
+
+    // adjustments to make the chart fit better in the widget...
     var adjustX = -35;
     var adjustY = -65;
+
+    // starting points for the topics...
+    var tickTopicRoot = '/topic/ticks';
 
     var service = {
       subscribeToStompUpdates: subscribeToStompUpdates,
@@ -29,21 +33,25 @@
       unsubscribeTopic: unsubscribeTopic,
       startWatches: startWatches,
       adjustX: adjustX,
-      adjustY: adjustY
+      adjustY: adjustY,
+      tickTopicRoot: tickTopicRoot
     };
 
     // -----------------------------------------------------
     // TODO passing scope in feels wrong... any better way?
-    function subscribeToStompUpdates(scope, topic, market, selectedSymbol, onMessage) {
-      var topic = topic + '.' + market + '.' + selectedSymbol;
-      var result = ngstomp
-        .subscribeTo(topic)
-        .callback(onMessage)
-        .withBodyInJson()
-        .bindTo(scope)
-        .connect();
-      // throw new Error("unable to subscribe to topic: " + topic);
-      return result;
+    function subscribeToStompUpdates(scope, topic, onMessage, errorCallback) {
+      try {
+        var result = ngstomp
+          .subscribeTo(topic)
+          .callback(onMessage)
+          .withBodyInJson()
+          .bindTo(scope)
+          .connect();
+        // throw new Error("unable to subscribe to topic: " + topic);
+        return result;
+      } catch (err) {
+        errorCallback('STOMP subscribeTo error:', err);
+      }
     }
 
     // -----------------------------------------------------
