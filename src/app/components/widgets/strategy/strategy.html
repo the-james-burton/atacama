@@ -27,8 +27,8 @@
         </div> -->
 
         <!-- dont use self-close tags for directives! -->
-        <strategy-picker selected-strategy="vm.selectedStrategy"></strategy-picker>
-        <symbol-picker selected-symbol="vm.selectedSymbol"></symbol-picker>
+        <strategy-picker selected-strategy="vm.strategy"></strategy-picker>
+        <symbol-picker selected-symbol="vm.symbol"></symbol-picker>
       </form>
 
     </div>
@@ -41,7 +41,7 @@
             <i class="fa fa-refresh fa-2x"></i>
         </div>
         <div ng-if="vm.status == vm.Status.LOADED" class="widget-gridster-chart-view">
-          <nvd3 options='vm.options' data='vm.data' api="vm.api" config='vm.config'></nvd3>
+          <nvd3 options='vm.chart.options' data='vm.chart.data' config='vm.chart.config'></nvd3>
         </div>
         <div ng-if="vm.status == vm.Status.ERROR">
             <h4>Error loading widget.</h4>

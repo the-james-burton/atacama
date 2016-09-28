@@ -26,6 +26,7 @@
     // starting points for the topics...
     var tickTopicRoot = '/topic/ticks';
     var indicatorTopicRoot = '/topic/indicators';
+    var strategyTopicRoot = '/topic/strategies';
 
     var service = {
       subscribeToStompUpdates: subscribeToStompUpdates,
@@ -35,7 +36,8 @@
       adjustX: adjustX,
       adjustY: adjustY,
       tickTopicRoot: tickTopicRoot,
-      indicatorTopicRoot: indicatorTopicRoot
+      indicatorTopicRoot: indicatorTopicRoot,
+      strategyTopicRoot: strategyTopicRoot
     };
 
     // -----------------------------------------------------
