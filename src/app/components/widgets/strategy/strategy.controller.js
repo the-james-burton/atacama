@@ -57,6 +57,8 @@
         },
         options: {
           chart: {
+            // linePlusBarChart gets the xaxis correct,
+            // but then seems to drop part of a bar series... :(
             type: 'lineChart',
             width: $scope.gridsterItem.getElementSizeX() + widgetService.adjustX,
             height: $scope.gridsterItem.getElementSizeY() + widgetService.adjustY,
@@ -69,6 +71,7 @@
             showLegend: false,
             showValues: true,
             transitionDuration: 500,
+            focusEnable:false,
             xAxis: {
               // axisLabel: 'Dates',
               tickFormat: function (d) {
@@ -80,23 +83,26 @@
               tickFormat: function (d, i) {
                 return '$' + d3.format(',.1f')(d);
               }
-            },
+            }
           }
         },
         data: [{
           values: [],
+          bar: false,
           key: "position",
           position: 0,
           color: "#d3da41",
           strokeWidth: 2,
         }, {
           values: [],
+          bar: true,
           key: "value",
           position: 1,
           color: "#4b9f51",
-          strokeWidth: 3
+          strokeWidth: 2
         }, {
           values: [],
+          bar: true,
           key: "cash",
           position: 2,
           color: "#af2727",
@@ -120,6 +126,7 @@
       chartService.convertData(vm.chart.data, results);
       // export the results...
       // vm.chart.data = data;
+      $log.info(angular.toJson(vm.chart.data));
     };
 
     // ---------------------------------------------------
@@ -128,7 +135,7 @@
       utilService.traceLog($scope.item, "rabbit");
       // TODO FP style...
       chartService.addData(vm.chart.data, message.body);
-      $scope.$apply();
+      // $scope.$apply();
     };
 
     // -----------------------------------------------------

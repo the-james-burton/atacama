@@ -132,7 +132,7 @@
       utilService.traceLog($scope.item, "rabbit");
       // TODO FP style...
       chartService.addData(vm.chart.data, message.body);
-      $scope.$apply();
+      // $scope.$apply();
     };
 
     // -----------------------------------------------------
