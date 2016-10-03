@@ -150,18 +150,6 @@
       // $scope.$apply();
     };
 
-    // -----------------------------------------------------
-    // TODO due to ES client use of promises, we need to use callbacks...
-    function fetchHistoricDataFromElasticsearch(market, symbol, strategy, fromMilliseconds, successCallback, errorCallback) {
-      var promise = elasticsearchService.getStrategiesAfter(market, symbol, strategy.name, fromMilliseconds);
-      promise.then(function (response) {
-        var results = elasticsearchService.parseResults(response)
-        successCallback(results);
-      }, function (err) {
-        errorCallback('unable to load ES data', err)
-      });
-    }
-
     // ---------------------------------------------------
     function doChart(item) {
       if (!vm.symbol || !vm.strategy || vm.symbol === "") {
@@ -178,7 +166,8 @@
       utilService.traceLog(item, "elasticsearch");
 
       // NOTE can't use return value because ES client uses promises...
-      fetchHistoricDataFromElasticsearch(market, vm.symbol, vm.strategy, fromMilliseconds, loadElasticsearchDataIntoChart, onError);
+      var promise = elasticsearchService.getStrategiesAfter(market, vm.symbol, vm.strategy.name, fromMilliseconds);
+      widgetService.resolveElasticsearchPromise(promise, loadElasticsearchDataIntoChart, onError);
 
       topic = widgetService.strategyTopicRoot + '.' +  market + '.' + vm.symbol + '.' + vm.strategy.name;
       stompSubscription = widgetService.subscribeToStompUpdates($scope, topic, pushNewDataFromStompIntoChart, onError);

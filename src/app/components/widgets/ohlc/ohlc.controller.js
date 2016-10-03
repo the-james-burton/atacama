@@ -123,17 +123,6 @@
       // $scope.$apply();
     };
 
-    // -----------------------------------------------------
-    // TODO due to ES client use of promises, we need to use callbacks...
-    function fetchHistoricDataFromElasticsearch(promise, successCallback, errorCallback) {
-      promise.then(function (response) {
-        var results = elasticsearchService.parseResults(response)
-        successCallback(results);
-      }, function (err) {
-        errorCallback('unable to load ES data', err)
-      });
-    }
-
     // ---------------------------------------------------
     function doChart(item) {
       if (!vm.symbol) {
@@ -153,7 +142,7 @@
 
       // NOTE can't use return value because ES client uses promises...
       var promise = elasticsearchService.getTicksAfter(market, vm.symbol, fromMilliseconds);
-      fetchHistoricDataFromElasticsearch(promise, loadElasticsearchDataIntoChart, onError);
+      widgetService.resolveElasticsearchPromise(promise, loadElasticsearchDataIntoChart, onError);
 
       topic = widgetService.tickTopicRoot + '.' + market + '.' + vm.symbol;
       stompSubscription = widgetService.subscribeToStompUpdates($scope, topic, pushNewDataFromStompIntoChart, onError);

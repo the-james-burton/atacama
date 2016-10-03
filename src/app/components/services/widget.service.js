@@ -31,6 +31,7 @@
 
     var service = {
       subscribeToStompUpdates: subscribeToStompUpdates,
+      resolveElasticsearchPromise: resolveElasticsearchPromise,
       emptyChart: emptyChart,
       unsubscribeTopic: unsubscribeTopic,
       startWatches: startWatches,
@@ -57,6 +58,17 @@
       } catch (err) {
         errorCallback('STOMP subscribeTo error:', err);
       }
+    }
+
+    // -----------------------------------------------------
+    // TODO due to ES client use of promises, we need to use callbacks...
+    function resolveElasticsearchPromise(promise, successCallback, errorCallback) {
+      promise.then(function (response) {
+        var results = elasticsearchService.parseResults(response)
+        successCallback(results);
+      }, function (err) {
+        errorCallback('unable to load ES data', err)
+      });
     }
 
     // -----------------------------------------------------
