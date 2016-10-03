@@ -23,12 +23,20 @@
 
     var topic = '';
     var stompSubscription = '';
+    var status = widgetService.status.WAITING;
 
-    $log.info(widgetService.adjustX);
+    // ---------------------------------------------------
+    vm.isLoading = function () {
+      return status === widgetService.status.LOADING;
+    };
 
-    vm.Status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
+    vm.isLoaded = function () {
+      return status === widgetService.status.LOADED;
+    };
 
-    vm.status = vm.Status.WAITING;
+    vm.isError = function () {
+      return status === widgetService.status.ERROR;
+    };
 
     vm.chart = {};
 
@@ -94,7 +102,7 @@
 
     // ---------------------------------------------------
     function onError(message, err) {
-      vm.status = vm.Status.ERROR;
+      status = widgetService.status.ERROR;
       var error = '{0}: {1}:{2}'.format(message, vm.symbol, err.message);
       $log.error(error);
       return error;
@@ -117,9 +125,8 @@
 
     // -----------------------------------------------------
     // TODO due to ES client use of promises, we need to use callbacks...
-    function fetchHistoricDataFromElasticsearch(market, selectedSymbol, fromMilliseconds, successCallback, errorCallback) {
-      var esPromise = elasticsearchService.getTicksAfter(market, selectedSymbol, fromMilliseconds);
-      esPromise.then(function (response) {
+    function fetchHistoricDataFromElasticsearch(promise, successCallback, errorCallback) {
+      promise.then(function (response) {
         var results = elasticsearchService.parseResults(response)
         successCallback(results);
       }, function (err) {
@@ -134,7 +141,7 @@
       }
 
       $log.debug("ohlc.controller.js::doChart");
-      vm.status = vm.Status.LOADING;
+      status = widgetService.status.LOADING;
       // vm.chart = widgetService.emptyChart();
       widgetService.unsubscribeTopic(topic);
 
@@ -145,12 +152,13 @@
       utilService.traceLog(item, "elasticsearch");
 
       // NOTE can't use return value because ES client uses promises...
-      fetchHistoricDataFromElasticsearch(market, vm.symbol, fromMilliseconds, loadElasticsearchDataIntoChart, onError);
+      var promise = elasticsearchService.getTicksAfter(market, vm.symbol, fromMilliseconds);
+      fetchHistoricDataFromElasticsearch(promise, loadElasticsearchDataIntoChart, onError);
 
       topic = widgetService.tickTopicRoot + '.' + market + '.' + vm.symbol;
       stompSubscription = widgetService.subscribeToStompUpdates($scope, topic, pushNewDataFromStompIntoChart, onError);
 
-      vm.status = vm.Status.LOADED;
+      status = widgetService.status.LOADED;
 
     }
 

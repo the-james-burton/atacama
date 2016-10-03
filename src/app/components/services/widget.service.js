@@ -27,6 +27,7 @@
     var tickTopicRoot = '/topic/ticks';
     var indicatorTopicRoot = '/topic/indicators';
     var strategyTopicRoot = '/topic/strategies';
+    var status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
 
     var service = {
       subscribeToStompUpdates: subscribeToStompUpdates,
@@ -37,7 +38,8 @@
       adjustY: adjustY,
       tickTopicRoot: tickTopicRoot,
       indicatorTopicRoot: indicatorTopicRoot,
-      strategyTopicRoot: strategyTopicRoot
+      strategyTopicRoot: strategyTopicRoot,
+      status: status
     };
 
     // -----------------------------------------------------
@@ -131,8 +133,6 @@
         // $scope.api.update();
       });
     }
-
-
 
     // -----------------------------------------------------
     $log.debug('widgetService has been created');

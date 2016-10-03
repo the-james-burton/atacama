@@ -31,9 +31,20 @@
     sod.setMinutes(0);
     sod.setSeconds(0);
 
-    vm.Status = _.keyBy(['WAITING', 'LOADING', 'LOADED', 'ERROR'], _.identity);
+    var status = widgetService.status.WAITING;
 
-    vm.status = vm.Status.WAITING;
+    // ---------------------------------------------------
+    vm.isLoading = function () {
+      return status === widgetService.status.LOADING;
+    };
+
+    vm.isLoaded = function () {
+      return status === widgetService.status.LOADED;
+    };
+
+    vm.isError = function () {
+      return status === widgetService.status.ERROR;
+    };
 
     vm.chart = {};
 
@@ -94,7 +105,7 @@
 
     // ---------------------------------------------------
     function onError(message, err) {
-      vm.status = vm.Status.ERROR;
+      status = widgetService.status.ERROR;
       var error = '{0}: {1}:{2}'.format(message, vm.symbol, err.message);
       $log.error(error);
       return error;
@@ -153,7 +164,7 @@
         return;
       }
       $log.debug("indicator.controller.js::doChart");
-      vm.status = vm.Status.LOADING;
+      status = widgetService.status.LOADING;
 
       widgetService.unsubscribeTopic(topic);
 
@@ -168,7 +179,7 @@
       topic = widgetService.indicatorTopicRoot + '.' +  market + '.' + vm.symbol + '.' + vm.indicator.name;
       stompSubscription = widgetService.subscribeToStompUpdates($scope, topic, pushNewDataFromStompIntoChart, onError);
 
-      vm.status = vm.Status.LOADED;
+      status = widgetService.status.LOADED;
 
     }
 
