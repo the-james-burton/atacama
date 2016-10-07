@@ -13,7 +13,9 @@
     // https://www.rabbitmq.com/web-stomp.html
     // The /ws is the websocket url according to the does, but it does not seem to exist
     // However, using /stomp does actually result in a websocket connection...
-    var stompUrl = 'https://localhost:15671/stomp';
+    // var stompUrl = 'https://localhost:15671/stomp';
+    var stompUrl = 'http://localhost:15674/stomp';
+
     var csrfToken = "";
 
     // Enable log
@@ -26,7 +28,8 @@
     toastrConfig.preventDuplicates = true;
     toastrConfig.progressBar = true;
 
-    RestangularProvider.setBaseUrl('https://localhost:48002');
+    // RestangularProvider.setBaseUrl('https://localhost:48002');
+    RestangularProvider.setBaseUrl('http://localhost:48002');
 
     // Missing features from RabbitMQ webstomp...
     // RabbitMQ-Web-Stomp is fully compatible with the RabbitMQ-STOMP plugin, with the exception of STOMP heartbeats.
