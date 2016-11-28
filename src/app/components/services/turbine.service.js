@@ -15,7 +15,7 @@
   function turbineService(Restangular, CacheFactory, $log) {
     var service = {
       user: user,
-      symbols: symbols,
+      stocks: stocks,
       indicators: indicators,
       strategies: strategies
     };
@@ -55,7 +55,7 @@
       return Restangular.one('user').get();
     }
 
-    function symbols(market) {
+    function stocks(market) {
       return Restangular.one('turbine').one('stocks').one(market).get();
     }
 

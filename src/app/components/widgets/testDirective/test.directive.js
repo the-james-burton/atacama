@@ -10,11 +10,11 @@
       // require: '^^turbineService',
       templateUrl: 'app/components/widgets/testDirective/test.html',
       link: linkFunc,
-      // controller: 'SymbolPickerController',
+      // controller: 'TickerPickerController',
       // controllerAs: 'vm',
       // bindToController: true,
       scope: {
-        selectedSymbol: '=selectedSymbol'
+        selectedTicker: '=selectedTicker'
       }
     };
   }

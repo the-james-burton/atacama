@@ -41,15 +41,15 @@
     vm.chart = {};
 
     // load the saved values...
-    vm.symbol = $scope.item.symbol;
+    vm.ticker = $scope.item.ticker;
     vm.dateFrom = new Date($scope.item.dateFrom); // marshall saved string into Date object
 
     vm.chart = widgetService.emptyChart();
 
-    widgetService.startWatches(['symbol', 'dateFrom'], doChart, $scope);
+    widgetService.startWatches(['ticker', 'dateFrom'], doChart, $scope);
 
     // ---------------------------------------------------
-    function initialise(symbol) {
+    function initialise(ticker) {
       return {
         config: {
           deepWatchData: true,
@@ -94,7 +94,7 @@
           }
         },
         data: [{
-          key: symbol,
+          key: ticker,
           values: []
         }]
       };
@@ -103,7 +103,7 @@
     // ---------------------------------------------------
     function onError(message, err) {
       status = widgetService.status.ERROR;
-      var error = '{0}: {1}:{2}'.format(message, vm.symbol, err.message);
+      var error = '{0}: {1}:{2}'.format(message, vm.ticker, err.message);
       $log.error(error);
       return error;
     }
@@ -125,7 +125,7 @@
 
     // ---------------------------------------------------
     function doChart(item) {
-      if (!vm.symbol) {
+      if (!vm.ticker) {
         return;
       }
 
@@ -134,17 +134,17 @@
       // vm.chart = widgetService.emptyChart();
       widgetService.unsubscribeTopic(topic);
 
-      vm.chart = initialise(vm.symbol);
+      vm.chart = initialise(vm.ticker);
 
       // var sod = moment(0, "HH").format("x");
       var fromMilliseconds = moment(vm.dateFrom).format("x");
       utilService.traceLog(item, "elasticsearch");
 
       // NOTE can't use return value because ES client uses promises...
-      var promise = elasticsearchService.getTicksAfter(market, vm.symbol, fromMilliseconds);
+      var promise = elasticsearchService.getTicksAfter(vm.ticker, fromMilliseconds);
       widgetService.resolveElasticsearchPromise(promise, loadElasticsearchDataIntoChart, onError);
 
-      topic = widgetService.tickTopicRoot + '.' + market + '.' + vm.symbol;
+      topic = widgetService.tickTopicRoot + '.' + vm.ticker;
       stompSubscription = widgetService.subscribeToStompUpdates($scope, topic, pushNewDataFromStompIntoChart, onError);
 
       status = widgetService.status.LOADED;

@@ -2,26 +2,26 @@
 
   'use strict';
 
-  angular.module('atacamaApp').directive('symbolPicker', symbolPickerDirective);
+  angular.module('atacamaApp').directive('tickerPicker', tickerPickerDirective);
 
-  function symbolPickerDirective() {
+  function tickerPickerDirective() {
     return {
       // require: '?ngModel',
       // require: '^^turbineService',
-      templateUrl: 'app/components/widgets/symbolPicker/symbol.picker.html',
+      templateUrl: 'app/components/widgets/tickerPicker/ticker.picker.html',
       link: linkFunc,
-      controller: 'SymbolPickerController',
+      controller: 'TickerPickerController',
       controllerAs: 'vm',
       bindToController: true,
       scope: {
-        selectedSymbol: '='
+        selectedTicker: '='
       }
     };
   }
 
   function linkFunc(scope, element, attrs, vm) {
     // copy value from vm to local scope...
-    scope.selectedSymbol = vm.selectedSymbol;
+    scope.selectedTicker = vm.selectedTicker;
   }
 
 })();

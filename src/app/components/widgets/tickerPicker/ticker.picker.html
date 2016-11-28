@@ -2,9 +2,9 @@
 
 <!-- <div class="input-group input-group-sm"> -->
   <input type="text" class="form-control"
-    ng-model="selectedSymbol"
-    uib-typeahead="symbol for symbol in vm.symbols | filter:$viewValue | limitTo:8"
-    typeahead-on-select="vm.selectSymbol(selectedSymbol)"></input>
+    ng-model="selectedTicker"
+    uib-typeahead="ticker for ticker in vm.tickers | filter:$viewValue | limitTo:8"
+    typeahead-on-select="vm.selectTicker(selectedTicker)"></input>
 <!-- </div> -->
 
 

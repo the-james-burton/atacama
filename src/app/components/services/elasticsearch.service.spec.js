@@ -1,20 +1,18 @@
 (function () {
   'use strict';
 
-  describe('service webDevTec', function () {
+  describe('service elasticsearchService', function () {
     var elasticsearchService;
     var $log;
 
     // ----------------------------------------------------
     var sod = moment(0, "HH").format("x");
 
-    var marketTerm = { match: { market: "XYZ"} };
-    var symbolTerm = { match: { symbol: "ZYX"} };
+    var tickerTerm = { match: { ticker: "ABC.L"} };
 
     var requiredQueries = function () {
       var arrayOfQueryTerms = [];
-      arrayOfQueryTerms.push(marketTerm);
-      arrayOfQueryTerms.push(symbolTerm);
+      arrayOfQueryTerms.push(tickerTerm);
       return arrayOfQueryTerms;
     };
 
@@ -71,9 +69,8 @@
       var result = elasticsearchService.addDateRangeToQueries(input, sod);
 
       $log.debug(angular.toJson(result));
-      expect(result[0]).toEqual(marketTerm);
-      expect(result[1]).toEqual(symbolTerm);
-      expect(result[2].range.date.from).toEqual(sod);
+      expect(result[0]).toEqual(tickerTerm);
+      expect(result[1].range.date.from).toEqual(sod);
     });
 
     it('should create a complete elasticsearch query', function () {
@@ -85,7 +82,7 @@
       expect(result.query).toBeDefined();
       expect(result.query.bool).toBeDefined();
       expect(result.query.bool.must).toBeDefined();
-      expect(result.query.bool.must.length).toEqual(3);
+      expect(result.query.bool.must.length).toEqual(2); // ticker and range
     });
 
     // describe('getTec function', function() {

@@ -4,15 +4,15 @@
 
   /**
    * @ngdoc function
-   * @name atacamaApp.controller:SymbolPickerController
+   * @name atacamaApp.controller:TickerPickerController
    * @description
    * # WidgetController
    * Controller of the atacamaApp
    */
   angular.module('atacamaApp')
-    .controller('SymbolPickerController', SymbolPickerController);
+    .controller('TickerPickerController', TickerPickerController);
 
-  function SymbolPickerController(
+  function TickerPickerController(
     $scope, $log, turbineService) {
 
     var vm = this;
@@ -23,7 +23,7 @@
     var market = 'FTSE100';
 
     // set to null by default...
-    // vm.selectedSymbol = "";
+    // vm.selectedTicker = "";
 
     // $scope.$watch('search', function (value) {
     //   regex = new RegExp('\\b' + value.escapeRegExp(), 'i');
@@ -36,22 +36,22 @@
     //   return regex.test(name);
     // };
     //
-    vm.selectSymbol = function (selectedSymbol) {
+    vm.selectTicker = function (selectedTicker) {
       // TODO using 'vm' here does not work...
-      $scope.selectedSymbol = selectedSymbol;
-      vm.selectedSymbol = selectedSymbol;
-      $log.log('select symbol: ', selectedSymbol);
+      $scope.selectedTicker = selectedTicker;
+      vm.selectedTicker = selectedTicker;
+      $log.log('select ticker: ', selectedTicker);
     };
 
     fetchStocks();
 
     function fetchStocks() {
-      turbineService.symbols(market).then(function (response) {
+      turbineService.stocks(market).then(function (response) {
         // console.log(angular.toJson(response.stocks));
-        vm.symbols = _.map(response.stocks, 'symbol');
-        // $scope.selectedSymbol = $scope.symbols[0];
+        vm.tickers = _.map(response.stocks, 'ticker');
+        // $scope.selectedTicker = $scope.symbols[0];
       }, function (err) {
-        esError = 'unable to load symbols: {0}'.format(err.message);
+        esError = 'unable to load tickers: {0}'.format(err.message);
         $log.error(esError);
       });
     }

@@ -42,15 +42,15 @@
     vm.actions = {};
 
     // load the saved values...
-    vm.symbol = $scope.item.symbol;
+    vm.ticker = $scope.item.ticker;
     vm.dateFrom = new Date($scope.item.dateFrom); // marshall saved string into Date object
 
-    widgetService.startWatches(['symbol', 'dateFrom'], doTable, $scope);
+    widgetService.startWatches(['ticker', 'dateFrom'], doTable, $scope);
 
     // ---------------------------------------------------
     function onError(message, err) {
       status = widgetService.status.ERROR;
-      var error = '{0}: {1}:{2}'.format(message, vm.symbol, err.message);
+      var error = '{0}: {1}:{2}'.format(message, vm.ticker, err.message);
       $log.error(error);
       return error;
     }
@@ -74,7 +74,7 @@
 
     // ---------------------------------------------------
     function doTable(item) {
-      if (!vm.symbol) {
+      if (!vm.ticker) {
         return;
       }
 
@@ -89,10 +89,10 @@
 
       // NOTE can't use return value because ES client uses promises...
       // TODO fetch all strategies..?
-      var promise = elasticsearchService.getStrategyActionsAfter(market, vm.symbol, "SMAStrategy", fromMilliseconds);
+      var promise = elasticsearchService.getStrategyActionsAfter(vm.ticker, "SMAStrategy", fromMilliseconds);
       widgetService.resolveElasticsearchPromise(promise, loadElasticsearchDataIntoChart, onError);
 
-      topic = widgetService.strategyTopicRoot + '.' +  market + '.' + vm.symbol + '.*';
+      topic = widgetService.strategyTopicRoot + '.' + vm.ticker + '.*';
       stompSubscription = widgetService.subscribeToStompUpdates($scope, topic, pushNewDataFromStompIntoChart, onError);
 
       status = widgetService.status.LOADED;
