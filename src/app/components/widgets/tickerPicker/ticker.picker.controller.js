@@ -19,8 +19,8 @@
     var esError = '';
     var regex;
 
-    // TODO select market in UI
-    var market = 'FTSE100';
+    // TODO select exchange in UI
+    var exchange = 'LSE';
 
     // set to null by default...
     // vm.selectedTicker = "";
@@ -46,7 +46,7 @@
     fetchStocks();
 
     function fetchStocks() {
-      turbineService.stocks(market).then(function (response) {
+      turbineService.stocks(exchange).then(function (response) {
         // console.log(angular.toJson(response.stocks));
         vm.tickers = _.map(response.stocks, 'ticker');
         // $scope.selectedTicker = $scope.symbols[0];

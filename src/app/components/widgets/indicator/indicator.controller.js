@@ -19,8 +19,8 @@
 
     // var sod = moment(0, "HH").format("x");
 
-    // TODO select market in UI
-    var market = 'FTSE100';
+    // TODO select exchange in UI
+    var exchange = 'LSE';
 
     var topic = '';
     var stompSubscription = '';

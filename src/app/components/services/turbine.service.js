@@ -33,7 +33,7 @@
     }
 
     Restangular.addFullRequestInterceptor(function (element, operation, what, url, headers, params, httpConfig) {
-      // https://localhost:48002/turbine/stocks/FTSE100
+      // https://localhost:48002/turbine/stocks/LSE
       // https://localhost:48002/turbine/strategies
       // https://localhost:48002/turbine/indicators
 
@@ -55,8 +55,8 @@
       return Restangular.one('user').get();
     }
 
-    function stocks(market) {
-      return Restangular.one('turbine').one('stocks').one(market).get();
+    function stocks(exchange) {
+      return Restangular.one('turbine').one('stocks').one(exchange).get();
     }
 
     function indicators() {

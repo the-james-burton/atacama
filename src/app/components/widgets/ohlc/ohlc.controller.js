@@ -18,8 +18,8 @@
     var vm = this;
 
 
-    // TODO select market in UI
-    var market = 'FTSE100';
+    // TODO select exchange in UI
+    var exchange = 'LSE';
 
     var topic = '';
     var stompSubscription = '';

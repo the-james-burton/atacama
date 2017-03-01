@@ -19,8 +19,8 @@
     var esError = '';
     var regex;
 
-    // TODO select market in UI
-    var market = 'FTSE100';
+    // TODO select exchange in UI
+    var exchange = 'LSE';
 
     vm.selectStrategy = function (selectedStrategy) {
       // TODO using 'vm' here does not work...
