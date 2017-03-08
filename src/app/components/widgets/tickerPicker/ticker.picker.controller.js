@@ -48,7 +48,7 @@
     function fetchStocks() {
       turbineService.stocks(exchange).then(function (response) {
         // console.log(angular.toJson(response.stocks));
-        vm.tickers = _.map(response.stocks, 'ticker');
+        vm.tickers = _.map(response.stocks, 'ric');
         // $scope.selectedTicker = $scope.symbols[0];
       }, function (err) {
         esError = 'unable to load tickers: {0}'.format(err.message);
