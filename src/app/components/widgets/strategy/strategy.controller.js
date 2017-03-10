@@ -49,13 +49,13 @@
     vm.chart = {};
 
     // load the saved values...
-    vm.ticker = $scope.item.ticker;
+    vm.ric = $scope.item.ric;
     vm.strategy = $scope.item.strategy;
     vm.dateFrom = sod;
 
     vm.chart = widgetService.emptyChart();
 
-    widgetService.startWatches(['ticker', 'strategy', 'dateFrom'], doChart, $scope);
+    widgetService.startWatches(['ric', 'strategy', 'dateFrom'], doChart, $scope);
 
 
     // ---------------------------------------------------
@@ -126,7 +126,7 @@
     // ---------------------------------------------------
     function onError(message, err) {
       status = widgetService.status.ERROR;
-      var error = '{0}: {1}:{2}'.format(message, vm.ticker, err.message);
+      var error = '{0}: {1}:{2}'.format(message, vm.ric, err.message);
       $log.error(error);
       return error;
     }
@@ -152,7 +152,7 @@
 
     // ---------------------------------------------------
     function doChart(item) {
-      if (!vm.ticker || !vm.strategy || vm.ticker === "") {
+      if (!vm.ric || !vm.strategy || vm.ric === "") {
         return;
       }
       $log.debug("strategy.controller.js::doChart");
@@ -166,10 +166,10 @@
       utilService.traceLog(item, "elasticsearch");
 
       // NOTE can't use return value because ES client uses promises...
-      var promise = elasticsearchService.getStrategiesAfter(vm.ticker, vm.strategy.name, fromMilliseconds);
+      var promise = elasticsearchService.getStrategiesAfter(vm.ric, vm.strategy.name, fromMilliseconds);
       widgetService.resolveElasticsearchPromise(promise, loadElasticsearchDataIntoChart, onError);
 
-      topic = widgetService.strategyTopicRoot + '.' + vm.ticker + '.' + vm.strategy.name;
+      topic = widgetService.strategyTopicRoot + '.' + vm.ric + '.' + vm.strategy.name;
       stompSubscription = widgetService.subscribeToStompUpdates($scope, topic, pushNewDataFromStompIntoChart, onError);
 
       status = widgetService.status.LOADED;

@@ -95,7 +95,7 @@
           testone: 96,
           testtwo: 98
         },
-        ticker: "ABC.L",
+        ric: "ABC.L",
         exchange: "LSE",
         name: "testname",
         timestamp: "2015-12-10T07:54:59.942Z"

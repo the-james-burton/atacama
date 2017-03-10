@@ -8,11 +8,11 @@
     // ----------------------------------------------------
     var sod = moment(0, "HH").format("x");
 
-    var tickerTerm = { match: { ticker: "ABC.L"} };
+    var ricTerm = { match: { ric: "ABC.L"} };
 
     var requiredQueries = function () {
       var arrayOfQueryTerms = [];
-      arrayOfQueryTerms.push(tickerTerm);
+      arrayOfQueryTerms.push(ricTerm);
       return arrayOfQueryTerms;
     };
 
@@ -69,7 +69,7 @@
       var result = elasticsearchService.addDateRangeToQueries(input, sod);
 
       $log.debug(angular.toJson(result));
-      expect(result[0]).toEqual(tickerTerm);
+      expect(result[0]).toEqual(ricTerm);
       expect(result[1].range.date.from).toEqual(sod);
     });
 
@@ -82,7 +82,7 @@
       expect(result.query).toBeDefined();
       expect(result.query.bool).toBeDefined();
       expect(result.query.bool.must).toBeDefined();
-      expect(result.query.bool.must.length).toEqual(2); // ticker and range
+      expect(result.query.bool.must.length).toEqual(2); // ric and range
     });
 
     // describe('getTec function', function() {

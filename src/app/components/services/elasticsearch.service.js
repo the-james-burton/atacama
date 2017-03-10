@@ -127,14 +127,14 @@
       });
     }
 
-    function getTicksAfter(ticker, date) {
+    function getTicksAfter(ric, date) {
       //  [2015-09-21 08:09:30,744][INFO ][index.search.slowlog.query] [Fault Zone] [test-tick][4] took[14.8ms], took_millis[14], types[tick], stats[], search_type[DFS_QUERY_THEN_FETCH], total_shards[5], source[{"from":0,"size":17,"query":{"bool":{"must":[{"query_string":{"query":"ABC","fields":["symbol"],"default_operator":"and"}},{"range":{"date":{"from":1442790000000,"to":null,"include_lower":true,"include_upper":true}}}]}}}], extra_source[],
       // var query = createESQuery([
       //   ['exchange', exchange],
       //   ['symbol', symbol]
       // ], date);
       var mustQueryTerms = [
-        { match : {'ticker': ticker}}
+        { match : {'ric': ric}}
       ];
       var query = createESQueryFromDate(mustQueryTerms, [], date);
       $log.debug(angular.toJson(query));
@@ -145,9 +145,9 @@
       });
     }
 
-    function getIndicatorsAfter(ticker, name, date) {
+    function getIndicatorsAfter(ric, name, date) {
       var mustQueryTerms = [
-        { match : {'ticker': ticker}},
+        { match : {'ric': ric}},
         { match : {'name': name}}
       ]
       var query = createESQueryFromDate(mustQueryTerms, [], date);
@@ -159,9 +159,9 @@
       });
     }
 
-    function getStrategiesAfter(ticker, name, date) {
+    function getStrategiesAfter(ric, name, date) {
       var mustQueryTerms = [
-        { match : {'ticker': ticker}},
+        { match : {'ric': ric}},
         { match : {'name': name}}
       ]
       var query = createESQueryFromDate(mustQueryTerms, [], date);
@@ -173,9 +173,9 @@
       });
     }
 
-    function getStrategyActionsAfter(ticker, name, date) {
+    function getStrategyActionsAfter(ric, name, date) {
       var mustQueryTerms = [
-        { match : {'ticker': ticker}},
+        { match : {'ric': ric}},
         { match : {'name': name}}
       ]
       var mustNotQueryTerms = [
