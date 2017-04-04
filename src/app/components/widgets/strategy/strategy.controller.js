@@ -51,7 +51,8 @@
     // load the saved values...
     vm.ric = $scope.item.ric;
     vm.strategy = $scope.item.strategy;
-    vm.dateFrom = sod;
+    // vm.dateFrom = sod;
+    vm.dateFrom = new Date($scope.item.dateFrom); // marshall saved string into Date object
 
     vm.chart = widgetService.emptyChart();
 

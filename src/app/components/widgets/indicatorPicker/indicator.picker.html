@@ -1,4 +1,4 @@
-  <input type="text" class="form-control"
+  <input type="text" class="form-control col-xs-2" style="width: 120px;"
     ng-model="selectedIndicator"
     uib-typeahead="indicator as indicator.name for indicator in vm.indicators | filter:{name: $viewValue} | limitTo:8"
     typeahead-on-select="vm.selectIndicator(selectedIndicator)"></input>

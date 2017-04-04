@@ -1,7 +1,7 @@
 <!-- <pre>Model: {{selected | json}}</pre> -->
 
 <!-- <div class="input-group input-group-sm"> -->
-  <input type="text" class="form-control"
+  <input type="text" class="form-control col-xs-2" style="width: 80px;"
     ng-model="selectedRic"
     uib-typeahead="ric for ric in vm.rics | filter:$viewValue | limitTo:8"
     typeahead-on-select="vm.selectRic(selectedRic)"></input>
