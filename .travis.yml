@@ -4,7 +4,7 @@ before_install:
   - 'gem install sass --version "=3.4.19"'
   - 'gem install compass --version "=1.0.3"'
 node_js:
-  - '4.1'
+  - '4.5'
 before_script:
   - 'npm install -g bower gulp'
   - 'bower install'
