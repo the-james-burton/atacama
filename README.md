@@ -16,6 +16,8 @@ The dashboard currently looks like this. All the 'widgets' are resizable and mov
 
 ![atacama](https://github.com/the-james-burton/atacama/blob/master/docs/atacama.png "atacama")
 
+> *THE ABOVE SCREENSHOT DOES NOT SHOW REAL PRICES! THEY ARE MADE UP WITH RANDOM NUMBERS!*
+
 ## How does it work?
 
 It is a HTML5/Angular-JS single-page application that runs in a web browser. It communicates with three principal back end components...
