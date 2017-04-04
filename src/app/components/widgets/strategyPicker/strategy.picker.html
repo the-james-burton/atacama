@@ -1,4 +1,4 @@
-  <input type="text" class="form-control col-xs-2" style="width: 80px;"
+  <input type="text" class="form-control col-xs-2" style="width: 120px;"
     ng-model="selectedStrategy"
     uib-typeahead="strategy as strategy.name for strategy in vm.strategies | filter:{name: $viewValue} | limitTo:8"
     typeahead-on-select="vm.selectStrategy(selectedStrategy)"></input>
