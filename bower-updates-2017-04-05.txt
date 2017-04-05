@@ -1,0 +1,61 @@
+bower check-new     Checking for new versions of the project dependencies...
+atacama#0.0.0 /home/jimsey/Development/projects/atacama
+├─┬ AngularStompDK#0.8.6 (latest is 0.11.0)
+│ ├── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+│ └── stomp-websocket#2.3.4
+├── angular#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+├─┬ angular-animate#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8 (latest is 1.6.5-build.5353+sha.136a42a)
+├─┬ angular-aria#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├─┬ angular-bootstrap#1.1.2 (latest is 2.5.0)
+│ └── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+├─┬ angular-cache#4.6.0
+│ └── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+├─┬ angular-cookies#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├─┬ angular-gridster#0.13.15
+│ ├── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+│ └── javascript-detect-element-resize#0.5.3
+├─┬ angular-messages#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├─┬ angular-mocks#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├─┬ angular-moment#1.0.0 (1.0.1 available)
+│ ├── angular#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── moment#2.13.0 (2.18.1 available)
+├─┬ angular-nvd3#1.0.9
+│ ├── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+│ ├── d3#3.5.17 (latest is 4.7.4)
+│ └─┬ nvd3#1.8.4 (1.8.5 available)
+│   └── d3#3.5.17 (latest is 4.7.4)
+├─┬ angular-resource#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├─┬ angular-route#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├─┬ angular-sanitize#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├─┬ angular-smart-table#2.1.8
+│ └── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+├─┬ angular-toastr#1.7.0 (latest is 2.1.1)
+│ └── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+├─┬ angular-touch#1.5.8 (1.5.11 available, latest is 1.6.5-build.5353+sha.136a42a)
+│ └── angular#1.5.8
+├── animate.css#3.5.2
+├─┬ bootstrap-sass#3.3.7
+│ └── jquery#3.1.1 (3.2.1 available)
+├── d3#3.5.17 (latest is 4.7.4)
+├── elasticsearch#11.0.1 (latest is 13.0.0-rc1)
+├── font-awesome#4.6.3 (latest is 4.7.0)
+├── lodash#4.16.6 (4.17.4 available)
+├── malarkey#1.3.3
+├── moment#2.13.0 (latest is 2.18.1)
+├─┬ ngstorage#0.3.11
+│ └── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+├── nvd3#1.8.4 (1.8.5 available)
+├─┬ restangular#1.5.2 (latest is 1.6.1)
+│ ├── angular#1.5.8 (1.6.5-build.5353+sha.136a42a available)
+│ └── lodash#4.16.6 (4.17.4 available)
+├── sockjs#0.3.4
+├── stomp-websocket#2.3.4
+└── streamjs#1.6.4
