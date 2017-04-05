@@ -85,7 +85,7 @@
               // axisLabel: 'Dates',
               tickFormat: function (d) {
                 return d3.time.format('%X')(new Date(d));
-              },
+              }
             },
             yAxis1: {
               // axisLabel: 'Stock Price',
@@ -101,7 +101,7 @@
             }
           }
         }
-      }
+      };
     }
 
     // ---------------------------------------------------
@@ -121,7 +121,7 @@
         yAxis: 1,
         position: 0,
         color: "#bdc42d",
-        strokeWidth: 2,
+        strokeWidth: 2
       };
       // if our indicator is an overlay, then that will affect the series generation...
       var overlay = vm.indicator.overlay;

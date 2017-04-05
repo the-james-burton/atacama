@@ -89,7 +89,7 @@
               // axisLabel: 'Dates',
               tickFormat: function (d) {
                 return d3.time.format('%X')(new Date(d));
-              },
+              }
             },
             yAxis: {
               // axisLabel: 'Value',
@@ -105,7 +105,7 @@
           key: "position",
           position: 0,
           color: "#d3da41",
-          strokeWidth: 2,
+          strokeWidth: 2
         }, {
           values: [],
           bar: true,
@@ -121,7 +121,7 @@
           color: "#af2727",
           strokeWidth: 2
         }]
-      }
+      };
     }
 
     // ---------------------------------------------------

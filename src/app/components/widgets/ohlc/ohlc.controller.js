@@ -83,7 +83,7 @@
               // axisLabel: 'Dates',
               tickFormat: function (d) {
                 return d3.time.format('%X')(new Date(d));
-              },
+              }
             },
             yAxis: {
               // axisLabel: 'Stock Price',

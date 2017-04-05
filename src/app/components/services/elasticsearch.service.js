@@ -134,7 +134,7 @@
       //   ['symbol', symbol]
       // ], date);
       var mustQueryTerms = [
-        { match : {'ric': ric}}
+        { match : {ric: ric}}
       ];
       var query = createESQueryFromDate(mustQueryTerms, [], date);
       $log.debug(angular.toJson(query));
@@ -147,9 +147,9 @@
 
     function getIndicatorsAfter(ric, name, date) {
       var mustQueryTerms = [
-        { match : {'ric': ric}},
-        { match : {'name': name}}
-      ]
+        { match : {ric: ric}},
+        { match : {name: name}}
+      ];
       var query = createESQueryFromDate(mustQueryTerms, [], date);
       $log.debug(angular.toJson(query));
       return es.search({
@@ -161,9 +161,9 @@
 
     function getStrategiesAfter(ric, name, date) {
       var mustQueryTerms = [
-        { match : {'ric': ric}},
-        { match : {'name': name}}
-      ]
+        { match : {ric: ric}},
+        { match : {name: name}}
+      ];
       var query = createESQueryFromDate(mustQueryTerms, [], date);
       $log.debug(angular.toJson(query));
       return es.search({
@@ -175,12 +175,12 @@
 
     function getStrategyActionsAfter(ric, name, date) {
       var mustQueryTerms = [
-        { match : {'ric': ric}},
-        { match : {'name': name}}
-      ]
+        { match : {ric: ric}},
+        { match : {name: name}}
+      ];
       var mustNotQueryTerms = [
-        { match : {'action': 'none'}}
-      ]
+        { match : {action: 'none'}}
+      ];
       var query = createESQueryFromDate(mustQueryTerms, mustNotQueryTerms, date);
       $log.debug(angular.toJson(query));
       return es.search({
