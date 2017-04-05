@@ -20,7 +20,7 @@
     "moment": true
   },
   "rules": {
-    "brace-style": [2, "stroustrup", {"allowSingleLine": true}],
+    "brace-style": [2, "1tbs", {"allowSingleLine": true}],
     "camelcase": 1,
     "comma-dangle": [1, "never"],
     "curly": 1,

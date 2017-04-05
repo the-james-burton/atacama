@@ -24,7 +24,7 @@
 
     vm.selectIndicator = function (selectedIndicator) {
       // TODO using 'vm' here does not work...
-      $scope.selectedIndicator = selectedIndicator;
+      //$scope.selectedIndicator = selectedIndicator;
       vm.selectedIndicator = selectedIndicator;
       $log.log('select indicator: ', selectedIndicator);
     };

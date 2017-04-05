@@ -24,7 +24,7 @@
 
     vm.selectStrategy = function (selectedStrategy) {
       // TODO using 'vm' here does not work...
-      $scope.selectedStrategy = selectedStrategy;
+      // $scope.selectedStrategy = selectedStrategy;
       vm.selectedStrategy = selectedStrategy;
       $log.log('select strategy: ', selectedStrategy);
     };

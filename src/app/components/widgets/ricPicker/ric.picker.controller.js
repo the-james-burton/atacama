@@ -38,7 +38,7 @@
     //
     vm.selectRic = function (selectedRic) {
       // TODO using 'vm' here does not work...
-      $scope.selectedRic = selectedRic;
+      //$scope.selectedRic = selectedRic;
       vm.selectedRic = selectedRic;
       $log.log('select ric: ', selectedRic);
     };
