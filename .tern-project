@@ -5,9 +5,11 @@
     "bower_components/moment/moment.js",
     "bower_components/lodash/lodash.js",
     "app/scipts/utils.js",
-    "bower_components/sockjs/sockjs.js"
+    "bower_components/sockjs/sockjs.js",
+    "bower_components/angular-cache/dist/angular-cache.js"
   ],
   "plugins": {
     "angular": {}
-  }
+  },
+  "dontLoad": []
 }

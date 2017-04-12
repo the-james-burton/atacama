@@ -20,7 +20,7 @@
 
   .factory('elasticsearchService', elasticsearchService);
 
-  function elasticsearchService($rootScope, $resource, $log, es) {
+  function elasticsearchService($rootScope, $resource, CacheFactory, $log, es) {
     var service = {
       // createQueryString: createQueryString,
       // createQueryStrings: createQueryStrings,
@@ -29,6 +29,7 @@
       addDateRangeToQueries: addDateRangeToQueries,
       createESQueryFromDate: createESQueryFromDate,
       ping: ping,
+      getTickers: getTickers,
       getTicksAfter: getTicksAfter,
       getIndicatorsAfter: getIndicatorsAfter,
       getStrategiesAfter: getStrategiesAfter,
@@ -66,6 +67,13 @@
     // function createQueryStrings(arrayOfKeyValueTuples) {
     //   return _.map(arrayOfKeyValueTuples, createQueryStringTuple);
     // }
+
+    var tickersCache = CacheFactory('tickersCache', {
+      // maxAge: 15 * 60 * 1000, // Items added to this cache expire after 15 minutes.
+      cacheFlushInterval: 60 * 60 * 1000, // This cache will clear itself every hour.
+      deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
+      storageMode: 'localStorage' // This cache will use `localStorage`.
+    });
 
     function addDateRangeToQueries(mustQueryTerms, date) {
       return mustQueryTerms.concat({
@@ -125,6 +133,35 @@
           $log.info('elasticsearch cluster returned ping');
         }
       });
+    }
+
+    /*
+     * cache the result of the ES query but still return a
+     * compatible promise...
+     */
+    function getTickers() {
+      var p1 = new Promise(function(resolve, reject) {
+        if (tickersCache.info().size > 0) {
+          resolve(tickersCache.get('tickers'));
+        } else {
+          var p2 = getTickersFromElasticsearch();
+          p2.then(function (tickers) {
+            tickersCache.removeAll();
+            tickersCache.put('tickers', tickers);
+            resolve(tickersCache.get('tickers'));
+          });
+        };
+      });
+      return p1;
+    }
+
+    function getTickersFromElasticsearch() {
+      var tickers =  es.search({
+        index: 'turbine-tickers',
+        type: 'turbine-ticker',
+        size: 5000
+      });
+      return tickers;
     }
 
     function getTicksAfter(ric, date) {

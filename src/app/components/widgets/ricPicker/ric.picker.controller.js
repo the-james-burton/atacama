@@ -13,7 +13,7 @@
     .controller('RicPickerController', RicPickerController);
 
   function RicPickerController(
-    $scope, $log, turbineService) {
+    $scope, $log, turbineService, widgetService, elasticsearchService) {
 
     var vm = this;
     var esError = '';
@@ -43,9 +43,26 @@
       $log.log('select ric: ', selectedRic);
     };
 
-    fetchStocks();
+    // fetchStocksFromTheTurbine();
+    fetchStocksFromElasticsearch();
 
-    function fetchStocks() {
+    function fetchStocksFromElasticsearch() {
+      var promise = elasticsearchService.getTickers();
+      widgetService.resolveElasticsearchPromise(promise, loadTickers, onError);
+    }
+
+    function loadTickers(results) {
+      vm.rics = _.map(results, 'ric');
+    }
+
+    function onError(message, err) {
+      status = widgetService.status.ERROR;
+      var error = 'unable to load rics: {0}: {1}'.format(message, err.message);
+      $log.error(error);
+      return error;
+    }
+
+    function fetchStocksFromTheTurbine() {
       turbineService.stocks(exchange).then(function (response) {
         // console.log(angular.toJson(response.stocks));
         vm.rics = _.map(response.stocks, 'ric');
