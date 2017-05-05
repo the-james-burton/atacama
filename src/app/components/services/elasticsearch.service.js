@@ -68,12 +68,17 @@
     //   return _.map(arrayOfKeyValueTuples, createQueryStringTuple);
     // }
 
-    var tickersCache = CacheFactory('tickersCache', {
-      // maxAge: 15 * 60 * 1000, // Items added to this cache expire after 15 minutes.
-      cacheFlushInterval: 60 * 60 * 1000, // This cache will clear itself every hour.
-      deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
-      storageMode: 'localStorage' // This cache will use `localStorage`.
-    });
+    var tickersCache
+
+    // Check to make sure the cache doesn't already exist
+    if (!CacheFactory.get('tickersCache')) {
+      tickersCache = CacheFactory('tickersCache', {
+        // maxAge: 15 * 60 * 1000, // Items added to this cache expire after 15 minutes.
+        cacheFlushInterval: 60 * 60 * 1000, // This cache will clear itself every hour.
+        deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
+        storageMode: 'localStorage' // This cache will use `localStorage`.
+      });
+    }
 
     function addDateRangeToQueries(mustQueryTerms, date) {
       return mustQueryTerms.concat({
